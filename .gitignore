@@ -1,0 +1,23 @@
+# Shared local-only files
+.DS_Store
+Thumbs.db
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+node_modules/
+.pytest_cache/
+.env
+.env.*
+!.env.example
+!.env.sample
+.secrets/
+*.pem
+*.key
+*.sqlite
+*.sqlite3
+*.sqlite-wal
+*.sqlite-shm
+
+# AI Situation Room runtime and local test data
+/AI_Situation_Room/prototype/runtime/

@@ -1,0 +1,72 @@
+#!/bin/zsh
+# Finder에서 더블클릭하여 실행합니다. API 키는 출력하지 않습니다.
+cd -- "${0:A:h}" || exit 1
+export PATH="/Library/Frameworks/Python.framework/Versions/3.11/bin:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:$PATH"
+
+python3 - <<'PYTHON'
+import os
+import runpy
+import subprocess
+import sys
+import threading
+import time
+import urllib.request
+from pathlib import Path
+
+URL = 'http://127.0.0.1:8860/'
+
+def ready():
+    try:
+        with urllib.request.urlopen(URL, timeout=1) as response:
+            return 'AI 종합상황실' in response.read(10000).decode('utf-8')
+    except Exception:
+        return False
+
+def open_browser():
+    subprocess.run(['/usr/bin/open', URL], check=False)
+
+if ready():
+    print('상황실이 이미 실행 중입니다. 브라우저를 엽니다.')
+    open_browser()
+    sys.exit(0)
+
+try:
+    import certifi
+except ImportError:
+    print('인증서 패키지가 필요합니다. 터미널에서 python3 -m pip install certifi 실행 후 다시 열어주세요.')
+    sys.exit(1)
+
+key_file = Path('prototype/.secrets/openai_api_key.txt')
+try:
+    key = key_file.read_text().strip()
+except OSError:
+    print('API 키 파일을 읽을 수 없습니다: prototype/.secrets/openai_api_key.txt')
+    sys.exit(1)
+if not key:
+    print('API 키 파일이 비어 있습니다. 키를 입력하고 다시 실행해주세요.')
+    sys.exit(1)
+
+os.environ['SSL_CERT_FILE'] = certifi.where()
+os.environ['OPENAI_API_KEY'] = key
+
+def wait_and_open():
+    for _ in range(40):
+        if ready():
+            open_browser()
+            return
+        time.sleep(0.25)
+
+print('AI 종합상황실을 시작합니다. 잠시 후 브라우저가 열립니다.', flush=True)
+print('사용 중에는 이 터미널을 열어두세요. 종료하려면 Control + C를 누르세요.', flush=True)
+threading.Thread(target=wait_and_open, daemon=True).start()
+try:
+    runpy.run_module('prototype.server', run_name='__main__')
+except OSError:
+    print('서버를 시작하지 못했습니다. 8860 포트 사용 여부와 저장 폴더 권한을 확인해주세요.')
+    sys.exit(1)
+PYTHON
+
+if (( $? != 0 )); then
+    print '\n실행하지 못했습니다. 위 안내를 확인해주세요.'
+    read -k 1 '?아무 키나 누르면 종료합니다.'
+fi
