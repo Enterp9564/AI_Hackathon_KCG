@@ -50,7 +50,7 @@ training-02,false
 
 첨부만으로 현재 총원을 확정하지 않는다. LIVE 신고·명시적 정정은 모델의 갱신안을 서버가 검사해 저장한다. 인물 ID·이전 상태·원문을 보존하고 인원 분포·환자 그룹을 관리한다. 자료·보고·가정은 세션별로 격리한다.
 
-현재는 단어 기반 검색과 공통 매뉴얼·사용자 제공 동해 세력 근거를 사용한다. Chroma·벡터 RAG·MCP·긴 기억 자동 요약은 없다. 입력 한도를 넘으면 기존 기록을 보존하고 오류를 알린다. 작성 중 초안은 현재 브라우저 메모리에 유지하며 새로고침 후 복원은 보장하지 않는다.
+현재는 단어 기반 검색과 공통 매뉴얼·사용자 제공 동해 세력 근거를 사용한다. Chroma·벡터 RAG·긴 기억 자동 요약은 없다. Link-One·RESAID AI용 승인형 MCP 수신함은 제공한다. 입력 한도를 넘으면 기존 기록을 보존하고 오류를 알린다. 작성 중 초안은 현재 브라우저 메모리에 유지하며 새로고침 후 복원은 보장하지 않는다.
 
 기상 **조회 ↻**는 입력한 위도·경도로 Open-Meteo Forecast를 수동 호출한다. 위치 변경 시 오래된 기상을 무효화한다. 실응답 성공은 추가 검증 대상이며 파고·자동 스케줄·현장 실측은 미연동이다.
 
@@ -77,3 +77,16 @@ python3 prototype/scenarios/check_saved_run.py prototype/runtime/cheonghae-live-
 [청해호 15건 원문](scenarios/cheonghae-fire.md) · [최초 LIVE 실패](scenarios/cheonghae-test-results.md) · [개선 결과](scenarios/cheonghae-improvement-results.md)
 
 과거 LIVE는 당시 설정의 결과다. 최신 medium·UI·매뉴얼 변경 후 새 LIVE 전체 시험과 브라우저 동선·실제 장비 거리·2시간 내구성 검증은 남아 있다.
+
+## Link-One · RESAID AI 연결 준비
+
+[MCP·핫스팟 테스트 안내](../docs/implementation/18-hotspot-testing.md)에서 인증 파일 생성 → 서버 시작 → 사건 ID 연결 → 테스트 보고 제출 순서를 따른다.
+
+```sh
+python3 -m prototype.prepare_mcp
+python3 -m prototype.server --mcp-port 8862
+```
+
+기본은 같은 PC 시험이다. 핫스팟에서는 --mcp-host와 --mcp-allowed-host를 지정한다. 담당자 화면/API는 loopback으로 유지한다. 수신만으로 AI/상황판을 변경하지 않으며, 프로젝트 알림의 **인용하여 전송**에서만 기존 지시를 실행한다. 초안은 유지되고 미확인 보고를 사실로 자동 반영하지 않는다.
+
+도구 계약은 [MCP 수신 서버](../docs/implementation/17-mcp-transport.md), 상태·이력은 [외부 수신함](../docs/implementation/16-external-inbox.md)을 읽는다. 실제 팀 앱·핫스팟 장비·이번 변경의 LIVE 호출 검증은 아직 하지 않았다.

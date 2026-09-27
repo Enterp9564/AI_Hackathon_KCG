@@ -23,9 +23,13 @@ class Engine:
         self.futures={}
         self.slots=threading.BoundedSemaphore(6)
 
-    def submit(self, sid, prompt, kind, assumptions, request_id):
+    def submit(self, sid, prompt, kind, assumptions, request_id, inbox_report_id=None):
         with self.lock:
-            run=self.store.enqueue(sid,prompt,kind,assumptions,request_id)
+            if inbox_report_id:
+                from .inbox import Inbox
+                run=Inbox(self.store).enqueue(sid,inbox_report_id)
+            else:
+                run=self.store.enqueue(sid,prompt,kind,assumptions,request_id)
             if run['id'] not in self.futures and run['status']=='queued':
                 self.futures[run['id']]=Future()
                 self.queues.setdefault(sid,deque()).append(run['id'])
@@ -181,11 +185,21 @@ class Engine:
             if len(json.dumps(context,ensure_ascii=False))>180000:
                 raise ModelError('세션이 초기 프로토타입의 입력 한도를 초과했습니다. 새 세션을 사용하세요. 기존 기록은 보존됩니다.')
             self.store.event(sid,'상황실장 · 요청 해석과 임무 배정',run_id=rid)
-            plan_context=context
+            # External claims and their summaries cannot become ordinary fact-update inputs.
+            plan_history=history if run.get('external_report_id') else [m for m in history if not m.get('external_report_id') and not m.get('external_report_ids')]
+            plan_evidence=context['evidence'] if run.get('external_report_id') else [e for e in context['evidence'] if not e.get('external_report_id')]
+            plan_context=dict(context,history=plan_history,evidence=plan_evidence)
             if run['mode']=='live':
-                plan_context=dict(context,history=[{'role':m['role'],'content':m['content']} for m in history[-4:]],
-                    evidence=[e for e in context['evidence'] if e['id'] in ('facts','incident','weather') or e['id'] in [m['id'] for m in history[-4:]] or e['title']!='사용자 신고 원문'])
+                plan_context=dict(plan_context,history=[{'role':m['role'],'content':m['content'],'external_report_id':m.get('external_report_id')} for m in plan_history[-4:]],
+                    evidence=[e for e in plan_evidence if e['id'] in ('facts','incident','weather') or e['id'] in [m['id'] for m in history[-4:]] or e['title']!='사용자 신고 원문'])
             decision=self.call(run,'commander','plan',plan_context)
+            if run.get('external_report_id'):
+                decision['update']={}
+                if not decision.get('tasks'):
+                    decision['tasks']=[{'role':'intel','instruction':'인용된 외부 보고를 미확인 주장으로 검토하고 근거와 추가 확인사항을 보고하세요.',
+                                       'reason':'담당자가 외부 보고의 검토를 요청했습니다.'}]
+                self.store.event(sid,'외부 보고 인용 검토 · 사실 자동 반영 없음',event_type='external_review',run_id=rid,
+                                 external_report_id=run['external_report_id'])
             decision['questions']=self.information_requests(decision.get('questions',[]),'상황실장')
             decision['dispatch_orders']=self.dispatch_orders(decision.get('dispatch_orders',[]),
                                                               recommended_dispatch(run['prompt'],context['session']))
@@ -197,7 +211,7 @@ class Engine:
                 self.store.event(sid,'상황실장 → 가용세력 출동 지시안 제시',run_id=rid,
                                  dispatch_orders=decision['dispatch_orders'])
             patch=decision.get('update')
-            if patch and run['kind']!='simulation':
+            if patch and run['kind']!='simulation' and not run.get('external_report_id'):
                 session=self.store.apply_update(rid,patch,run['based_on_version'])
                 run=self.store.get_run(rid)
                 context=dict(context,session=session,request=run)
@@ -246,6 +260,7 @@ class Engine:
                                  information_requests=dedup)
             final['timeline']=[{'text':m['content'],'source_id':m['id'],'received_at':m['created_at']} for m in history if m['role']=='user' and m.get('kind')!='simulation']
             final['report_ids']=[r['id'] for r in reports]
+            final['external_report_ids']=sorted({e['external_report_id'] for e in context['evidence'] if e.get('external_report_id')})
             final['basis_version']=run['based_on_version']
             final['assumptions']=run['assumptions']
             self.store.finish_run(rid,final)

@@ -10,7 +10,7 @@
 
 세 프로젝트는 저장소 최상위의 독립 폴더에서 관리합니다. 각 팀원은 자신의 프로젝트 폴더에 코드와 자료를 추가하고 실행 방법을 해당 README에 기록합니다. 현재 Link-One과 RESAID AI에는 안내 문서만 있습니다.
 
-프로젝트 간 API 정보 교환은 [AI 상황실의 향후 개선안](AI_Situation_Room/docs/improvements/01-project-api-integration.md)에 기록되어 있습니다. 실제 연결 대상·인증·데이터 계약은 아직 미정입니다.
+Link-One·RESAID AI용 승인형 MCP 수신 서버를 AI 상황실에 준비했습니다. [MCP 계약](AI_Situation_Room/docs/implementation/17-mcp-transport.md)과 [핫스팟 테스트](AI_Situation_Room/docs/implementation/18-hotspot-testing.md)를 확인하세요. 실제 팀 앱 연결과 결과 송신은 후속 작업입니다.
 
 ## Repository conventions
 

@@ -5,10 +5,12 @@ import mimetypes
 import os
 from pathlib import Path
 import secrets
+import threading
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from urllib.parse import urlparse
 from .store import Store, Conflict
 from .engine import Engine
+from .inbox import Inbox
 from .models import MODEL, ROLES, effort
 from .tools import weather
 from .manuals import manual_evidence
@@ -16,7 +18,8 @@ from .manuals import manual_evidence
 STATIC=Path(__file__).parent/'static'
 
 
-def make_server(store,engine,port=8860):
+def make_server(store,engine,port=8860,mcp_enabled=False):
+    inbox=Inbox(store)
     token=secrets.token_urlsafe(32)
 
     class Handler(BaseHTTPRequestHandler):
@@ -50,14 +53,15 @@ def make_server(store,engine,port=8860):
                     return self.send_json(200,{'token':token,'live_available':bool(os.environ.get('OPENAI_API_KEY')),
                         'profiles':{r:{'name':n,'model':MODEL,'effort':effort(r)} for r,n in ROLES.items()},
                         'capabilities':{'sessions':True,'parallel':True,'csv':True,'lexical_search':True,
-                        'vector_search':False,'mcp':False,'weather_scheduler':False}})
+                        'vector_search':False,'mcp':mcp_enabled,'inbox':True,'weather_scheduler':False}})
+                if path=='/api/inbox':return self.send_json(200,inbox.list())
                 if path=='/api/manuals':return self.send_json(200,manual_evidence())
                 if path=='/api/sessions':return self.send_json(200,store.list_sessions())
                 if path=='/api/monitor':return self.send_json(200,{'session_id':store.pinned()})
                 pieces=path.strip('/').split('/')
                 if len(pieces)==3 and pieces[:2]==['api','sessions']:
                     return self.send_json(200,store.snapshot(pieces[2]))
-                static={'/':'index.html','/monitor':'index.html','/app.js':'app.js','/style.css':'style.css'}.get(path)
+                static={'/':'index.html','/monitor':'index.html','/app.js':'app.js','/inbox.js':'inbox.js','/style.css':'style.css'}.get(path)
                 if static:
                     content=(STATIC/static).read_bytes()
                     mime=mimetypes.guess_type(static)[0] or 'application/octet-stream'
@@ -88,8 +92,10 @@ def make_server(store,engine,port=8860):
                 store.snapshot(sid)
                 if action=='message':
                     result=engine.submit(sid,data.get('prompt'),data.get('kind','analysis'),
-                                         data.get('assumptions',''),data.get('request_id'))
+                                         data.get('assumptions',''),data.get('request_id'),data.get('inbox_report_id'))
                     return self.send_json(202,result)
+                if action=='inbox-link':return self.send_json(200,inbox.link(sid,data.get('project'),data.get('incident_id')))
+                if action=='inbox-action':return self.send_json(200,inbox.act(sid,data.get('report_id'),data.get('action')))
                 if action=='facts':return self.send_json(200,store.set_facts(sid,data.get('facts'),data.get('version')))
                 if action=='attachments':return self.send_json(201,store.add_attachment(sid,data.get('name'),data.get('content')))
                 if action=='pin':
@@ -118,14 +124,27 @@ def main():
     parser=argparse.ArgumentParser(description='AI situation room local prototype')
     parser.add_argument('--port',type=int,default=8860)
     parser.add_argument('--db',default=str(Path(__file__).parent/'runtime'/'room.sqlite'))
+    parser.add_argument('--mcp-port',type=int,help='설정할 때만 MCP listener 활성화 (예: 8862)')
+    parser.add_argument('--mcp-host',default='127.0.0.1')
+    parser.add_argument('--mcp-allowed-host',action='append',default=[])
+    parser.add_argument('--mcp-tokens',default=str(Path(__file__).parent/'.secrets'/'mcp'/'clients.json'))
     args=parser.parse_args()
     store=Store(args.db);store.recover();engine=Engine(store)
-    server=make_server(store,engine,args.port)
+    mcp=None
+    if args.mcp_port is not None:
+        from .mcp_server import make_mcp_server, load_tokens
+        mcp=make_mcp_server(Inbox(store),load_tokens(args.mcp_tokens),args.mcp_host,args.mcp_port,args.mcp_allowed_host)
+    server=make_server(store,engine,args.port,mcp_enabled=mcp is not None)
+    if mcp:
+        threading.Thread(target=mcp.serve_forever,daemon=True).start()
+        print(f'MCP 수신: {args.mcp_host}:{mcp.server_port}/mcp · 담당자 승인 후 검토',flush=True)
     print(f'AI 상황실: http://127.0.0.1:{server.server_port}',flush=True)
     print('Live API: '+('configured' if os.environ.get('OPENAI_API_KEY') else 'not configured · demo available'),flush=True)
     try:server.serve_forever()
     except KeyboardInterrupt:pass
-    finally:server.server_close();engine.close()
+    finally:
+        if mcp: mcp.shutdown();mcp.server_close()
+        server.server_close();engine.close()
 
 
 if __name__=='__main__':main()

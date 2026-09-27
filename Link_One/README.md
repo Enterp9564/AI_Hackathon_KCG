@@ -10,6 +10,6 @@
 
 ## 협업 방향
 
-AI 상황실 및 RESAID AI와 같은 사건의 구조 현황·대상자 상태·확인 요청을 주고받는 방향을 검토합니다. API 주소·인증·데이터 형식은 팀 협의 후 확정하며 현재 연동은 구현되지 않았습니다.
+AI 상황실 및 RESAID AI와 같은 사건의 구조 현황·대상자 상태·확인 요청을 주고받는 방향을 검토합니다. AI 상황실에 담당자 승인형 MCP 수신 서버가 준비되었습니다. 이 프로젝트의 실제 송신 연결은 아직 구현 전입니다. [도구 계약](../AI_Situation_Room/docs/implementation/17-mcp-transport.md)과 [핫스팟 테스트](../AI_Situation_Room/docs/implementation/18-hotspot-testing.md)를 참고해 submit_field_report를 연결합니다. 결과 조회·송신은 후속 협의 대상입니다.
 
 [팀 프로젝트 목록](../README.md) · [AI 상황실](../AI_Situation_Room/README.md) · [RESAID AI](../RESAID_AI/README.md)

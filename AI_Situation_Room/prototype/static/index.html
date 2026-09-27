@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="ko">
-<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>AI 종합상황실 · 운영 프로토타입</title><link rel="stylesheet" href="/style.css"><script src="/app.js" defer></script></head>
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>AI 종합상황실 · 운영 프로토타입</title><link rel="stylesheet" href="/style.css"><script src="/app.js" defer></script><script src="/inbox.js" defer></script></head>
 <body>
 <div class="app-shell">
 <aside class="sidebar">
@@ -12,6 +12,12 @@
 </aside>
 <div class="workspace">
 <header class="topbar"><div><span class="eyebrow">AI OPERATIONS / PROTOTYPE 01</span><h1 id="sessionTitle">상황을 잇고, 판단을 돕다.</h1><div id="sessionMeta" class="muted">하나의 지시에서 함께 움직이는 AI 조직</div></div><div class="header-actions"><span id="modeBadge" class="badge">로컬 프로토타입</span><button id="pinButton" class="quiet" disabled>상황판에 고정</button><a id="backToRoom" class="button quiet" href="/" hidden>상황실로 돌아가기 ↩</a><a class="button quiet" href="/monitor" target="_blank" rel="noopener">대형 화면 ↗</a><button id="fullscreen" class="quiet" hidden>전체화면</button></div></header>
+<div class="inbox-toolbar" aria-label="외부 프로젝트 수신함">
+  <span class="muted">외부 보고</span>
+  <button id="notifyLink" class="inbox-notify" aria-haspopup="dialog">Link-One <span class="inbox-count">0</span></button>
+  <button id="notifyResaid" class="inbox-notify" aria-haspopup="dialog">RESAID AI <span class="inbox-count">0</span></button>
+  <span id="inboxConnection" class="muted" role="status">수신함 연결 중</span>
+</div>
 <div class="systembar"><span id="connection" role="status"><i class="tiny-led"></i> 서버 연결 중</span><span id="clock"></span></div>
 <div id="executionStatus" class="execution-status" role="status" aria-live="polite" aria-atomic="true" hidden></div>
 <div id="emptyState" class="empty-state"><div class="orb">◈</div><span class="eyebrow">YOUR NEXT DECISION STARTS HERE</span><h2>새로운 상황,<br><em>하나의 팀으로.</em></h2><p>상황실장에게 지시하면, 필요한 요원이 검토하고 보고합니다.<br>각 세션의 기억과 근거는 독립적으로 보존됩니다.</p><button id="startSession" class="primary">첫 상황실 열기 <span>→</span></button><div class="empty-steps"><span>01 지시</span><span>02 병렬 검토</span><span>03 보고 · 조언</span></div></div>
@@ -28,5 +34,18 @@
 <footer><span>AI SITUATION ROOM</span><span>사실과 가정은 분리하고, 판단의 근거는 연결합니다.</span><span id="footerSession">LOCAL / PERSISTENT</span></footer>
 </div></div>
 <dialog id="modal"><div class="modal-head"><h2 id="modalTitle"></h2><button id="closeModal" aria-label="닫기">×</button></div><div id="modalBody"></div></dialog>
+<dialog id="inboxPanel" aria-labelledby="inboxTitle">
+  <div class="modal-head"><h2 id="inboxTitle">외부 보고 수신함</h2><button id="closeInbox" aria-label="수신함 닫기">×</button></div>
+  <p class="modal-note">수신만으로 AI나 상황판이 바뀌지 않습니다. 인용은 검토 요청이며, 사실 확정이 아닙니다.</p>
+  <p id="inboxSession" class="inbox-session"></p>
+  <details class="inbox-link"><summary>현재 사건 연결 설정</summary>
+    <p id="inboxLinks" class="modal-note"></p>
+    <form id="inboxLinkForm"><label for="externalIncident">팀 프로젝트의 사건 ID</label><input id="externalIncident" maxlength="120" required placeholder="예: training-incident-a">
+    <button type="submit" class="quiet">현재 사건에 연결</button></form>
+    <p class="modal-note">팀원이 보내는 incident_id와 정확히 같아야 합니다. 연결한 ID는 다른 사건으로 변경할 수 없습니다.</p>
+  </details>
+  <div id="inboxError" class="modal-error" role="alert"></div>
+  <div id="inboxReports"></div>
+</dialog>
 <div id="toast" role="status" hidden></div>
 </body></html>

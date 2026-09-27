@@ -100,3 +100,7 @@ Call: 공통 필드 + `run_id`, `role`, `stage`, `requested_model`, `reasoning_e
 - 첨부·고정·채팅 접수 자체는 상황 version을 증가시키지 않는다. 첨부 변경만으로 기존 보고가 stale이 되지는 않는 현재 한계가 있다.
 - 다른 세션 객체를 특정 session_id와 함께 조회하면 거절한다. 전체 snapshot은 다른 세션의 정보를 포함하지 않는다.
 - 동일 ID로 재접수해도 원문·run을 중복 생성하지 않는다. 상세는 03·05.
+
+## 2026-09-27 추가: 외부 보고 출처
+
+`incident_links`와 `inbox_reports` 스키마는 [16](16-external-inbox.md)이 소유한다. 기존 run·사용자 메시지·직접 인용 결과에는 nullable `external_report_id`를 추가했다. 외부 근거를 사용한 후속 최종 보고와 commander 메시지는 `external_report_ids` 목록을 가진다. 일반 장부 추출에는 이 출처가 있는 요약을 넣지 않는다. 기존 데이터에 필드가 없으면 일반 사용자 입력으로 취급한다.

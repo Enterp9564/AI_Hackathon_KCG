@@ -84,3 +84,22 @@ body.monitor .sidebar,body.monitor .conversation,body.monitor #pinButton,body.mo
 .request-heading{display:flex;align-items:center;justify-content:space-between;gap:10px}.request-count{color:#e7bb75;font:9px ui-monospace,monospace;white-space:nowrap}.request-more{border-top:1px dashed #6b5435;margin-top:5px}.request-more summary{cursor:pointer;color:#e7bb75;font-size:10px;padding:9px 0 3px}.request-more[open] summary{color:#ffe0ad}
 body.monitor .execution-status{margin-top:10px;padding:10px 15px}.execution-status.complete .execution-copy b{color:#b8eee5}.execution-status.warn .execution-copy b{color:#ffd39b}.execution-status.error .execution-copy b{color:#ffadb1}
 @media(max-width:620px){.execution-copy{display:block;flex:1}.execution-copy span{display:block;margin-top:3px}.execution-copy small{display:block;margin-top:3px;white-space:normal}.execution-status{align-items:flex-start}.execution-pulse{margin-top:1px}}
+
+/* External reports are visually separate from accepted incident facts. */
+.inbox-toolbar{display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:12px 28px;border-bottom:1px solid var(--line)}
+.inbox-notify{display:inline-flex;align-items:center;gap:10px;min-height:40px;border:1px solid #53636c;border-radius:8px;background:#172229;color:#e5edf1;padding:7px 14px}
+.inbox-count{min-width:23px;padding:2px 6px;border-radius:5px;background:#2c404a;font-variant-numeric:tabular-nums}
+.inbox-notify.has-unseen{animation:inbox-pulse 2.6s ease-in-out infinite}
+@keyframes inbox-pulse{50%{border-color:#8abca8;box-shadow:0 0 0 3px #8abca81c}}
+#inboxPanel{width:min(700px,calc(100vw - 28px));max-height:86vh;padding:24px;overflow:auto}
+#inboxPanel::backdrop{background:#0008}
+.inbox-session{padding:12px 0;font-weight:600}.inbox-link{padding:12px 0;border-block:1px solid var(--line)}
+#inboxLinkForm{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center}#inboxLinkForm label{grid-column:1/-1}
+.inbox-report{padding:22px 0;border-bottom:1px solid var(--line)}.inbox-report h3{margin:0}.inbox-resolved{opacity:.85}
+.inbox-meta{display:grid;grid-template-columns:90px 1fr;gap:7px;font-size:12px}.inbox-meta dt{color:#92a4ae}.inbox-meta dd{margin:0;overflow-wrap:anywhere}
+.inbox-original{white-space:pre-wrap;overflow-wrap:anywhere;line-height:1.75;padding:16px;background:#172229;border-radius:8px;color:#eef4f4}
+.inbox-question{font-weight:600;margin-top:18px}.inbox-actions{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0}
+.inbox-mismatch{color:#e5b87c}.inbox-history{margin-top:16px;font-size:12px}.inbox-history pre{white-space:pre-wrap;overflow-wrap:anywhere;font:inherit;line-height:1.7}
+.inbox-empty{padding:28px 0;line-height:1.8;color:#a4b2bb}.monitor .inbox-toolbar{display:none}
+@media(prefers-reduced-motion:reduce){.inbox-notify.has-unseen{animation:none;border-color:#8abca8}}
+@media(max-width:600px){.inbox-toolbar{padding:12px 16px;gap:8px}#inboxConnection{flex-basis:100%}#inboxPanel{padding:18px}}

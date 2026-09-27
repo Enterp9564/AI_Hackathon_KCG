@@ -19,7 +19,7 @@ def evidence_for(snapshot, query):
                          'content':json.dumps(session['weather'],ensure_ascii=False)})
     for m in snapshot.get('messages',[]):
         if m['role']=='user' and m.get('kind')!='simulation':
-            evidence.append({'id':m['id'],'title':'사용자 신고 원문','content':m['content'],'reported_at':m['created_at']})
+            evidence.append({'id':m['id'],'title':'미확인 외부 보고 인용' if m.get('external_report_id') else '사용자 신고 원문','content':m['content'], 'external_report_id':m.get('external_report_id'),'reported_at':m['created_at']})
     if session.get('incident'):
         evidence.append({'id':'incident','title':'현재 신고 상태·명부','content':json.dumps(session['incident'],ensure_ascii=False)})
     words = set(re.findall(r'[\w가-힣]{2,}',query.lower()))

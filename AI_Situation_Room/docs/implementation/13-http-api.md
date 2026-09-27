@@ -8,11 +8,11 @@
 
 POST Content-Type은 `application/json`(charset 옵션 허용), Content-Length는 1~220,000바이트, 본문은 JSON 객체여야 한다. 필수값·업무 오류는 각 Store 함수에서 추가 검사한다. 오류 응답은 `{ "error":"사람이 읽는 안내" }`다.
 
-응답은 UTF-8 JSON 또는 정적 파일, Cache-Control:no-store, nosniff와 CSP를 사용한다. CORS 외부 호출용 API가 아니다. 인증된 다중 사용자·프로젝트 간 연동 API는 아직 없다.
+응답은 UTF-8 JSON 또는 정적 파일, Cache-Control:no-store, nosniff와 CSP를 사용한다. CORS 외부 호출용 API가 아니다. 다중 사용자 계정은 없다. 프로젝트 연동은 이 로컬 API와 분리한 [MCP 수신 포트](17-mcp-transport.md)를 사용한다.
 
 ## 2. 조회 경로 (GET)
 
-- `/api/config` → 200: `{token,live_available,profiles,capabilities}`. profiles는 역할별 name/model/effort, capabilities는 sessions/parallel/csv/lexical_search=true, vector_search/mcp/weather_scheduler=false. 모델 정보는 설정 데이터에 있지만 운영 UI에는 숨긴다.
+- `/api/config` → 200: `{token,live_available,profiles,capabilities}`. profiles는 역할별 name/model/effort, capabilities는 sessions/parallel/csv/lexical_search/inbox=true, vector_search/weather_scheduler=false, mcp는 listener 활성 여부. 모델 정보는 설정 데이터에 있지만 운영 UI에는 숨긴다.
 - `/api/manuals` → 200: 공통 매뉴얼·카탈로그 Evidence 배열.
 - `/api/sessions` → 200: Session 배열, 생성 최신순. 별도 `{items:...}` 래퍼 없음.
 - `/api/sessions/{sid}` → 200: [02](02-data-contracts.md)의 Snapshot. 없는 세션은 404.
@@ -92,4 +92,14 @@ run = post('/api/sessions/' + sid + '/message',
 # 이후 GET snapshot의 runs에서 run['id'] 상태를 확인한다.
 ```
 
-현재 외부 프로그램은 로컬 세션 토큰을 공유하는 수준이다. 향후 프로젝트 연동은 [개선안](../improvements/01-project-api-integration.md)의 별도 인증·세션 매핑·전송 계약을 정한 뒤 구현한다.
+외부 프로젝트에는 로컬 세션 토큰을 공유하지 않는다. [MCP 전용 인증·사건 매핑](17-mcp-transport.md)을 사용한다.
+
+## 추가 경로 — 2026-09-27 수신함
+
+- `GET /api/inbox` → `{reports,links,projects}`. 전체 수신 원문·상태·처리 이력과 사건 연결을 반환한다. AI 호출 없음.
+- `POST /api/sessions/:sid/inbox-link` → body `{project,incident_id}`. 현재 사건에 외부 ID 연결. 다른 사건에 이미 연결됐으면 409.
+- `POST /api/sessions/:sid/inbox-action` → `{report_id,action}`. report_id는 서버 receipt ID, action은 seen/later/reject. 다른 사건이면 409. 해당 보고 반환.
+- `POST /api/sessions/:sid/message` → `{inbox_report_id,kind:"analysis"}` 지원. 서버가 원문으로 인용문을 생성하고 기존 실행 큐에 등록, 202 Run 반환. 클라이언트 prompt/assumptions/request_id는 이 경로에서 사용하지 않는다. 같은 보고면 같은 Run. 다른 사건·rejected·대기열 초과는 409.
+- 위 POST는 기존 Host/Origin/X-Session-Token 검사를 그대로 사용한다. `/inbox.js`가 정적 파일 허용 목록에 추가됐다.
+
+전체 데이터와 전이 규칙은 [16](16-external-inbox.md)에 정의한다.

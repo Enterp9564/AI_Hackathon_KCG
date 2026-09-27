@@ -61,3 +61,21 @@ class HTTPTests(unittest.TestCase):
         self.assertEqual(self.request(path+'/message',payload)[1]['id'],r['id'])
         self.assertEqual(len(self.request(path)[1]['messages']),2)
         self.assertEqual(self.request('/api/monitor/message',payload)[0],404)
+
+    def test_inbox_local_approval_and_session_guard(self):
+        from prototype.inbox import Inbox
+        _, s = self.request('/api/sessions', {'title':'A호','mode':'demo'})
+        _, other = self.request('/api/sessions', {'title':'B호','mode':'demo'})
+        path = '/api/sessions/'+s['id']
+        self.assertEqual(self.request(path+'/inbox-link', {'project':'link-one','incident_id':'a'})[0],200)
+        report = Inbox(self.store).receive('link-one', dict(report_id='1', incident_id='a',incident_title='A호',
+                        reported_at='2026-09-27T14:32:00+09:00', content='구조자 상태 변화'))
+        self.assertEqual(self.request('/api/inbox')[1]['reports'][0]['id'],report['id'])
+        payload = {'inbox_report_id':report['id']}
+        self.assertEqual(self.request('/api/sessions/'+other['id']+'/message',payload)[0],409)
+        self.assertEqual(self.request(path+'/message',payload,{'X-Session-Token':'invalid'})[0],403)
+        status, run = self.request(path+'/message',payload)
+        self.assertEqual(status,202)
+        self.engine.wait(run['id'])
+        self.assertEqual(self.request(path+'/message',payload)[1]['id'],run['id'])
+        self.assertEqual(len(self.store.snapshot(s['id'])['runs']),1)

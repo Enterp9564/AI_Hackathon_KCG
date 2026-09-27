@@ -168,6 +168,8 @@ class Store:
         from .incident import merge_update
         with self.db() as db:
             run=self._object(db,rid,kind='runs');sid=run['session_id']
+            if run.get('external_report_id'):
+                raise Conflict('외부 보고 인용은 사실 확정이 아닙니다. 확인한 상황은 직접 반영하세요.')
             session=self._session(db,sid)
             if run.get('update_applied'):
                 if run.get('applied_patch') != patch:raise Conflict('이미 반영된 요청에 다른 갱신입니다.')
@@ -193,26 +195,31 @@ class Store:
 
     def enqueue(self, sid, content, kind, assumptions, request_id):
         content, request_id = text(content), text(request_id, 120)
+        if request_id.startswith('inbox:'):
+            raise ValueError('inbox: 요청 ID는 외부 보고 승인 전용입니다.')
         if kind not in ('analysis', 'simulation'):
             raise ValueError('지원하지 않는 요청 유형입니다.')
         assumptions = text(assumptions, 3000) if kind == 'simulation' else ''
         with self.db() as db:
-            session = self._session(db, sid)
-            for previous in self._items(db, sid, 'runs'):
-                if previous['request_id'] == request_id:
-                    if (previous['prompt'], previous['kind'], previous['assumptions']) != (content, kind, assumptions):
-                        raise Conflict('같은 요청 ID에 다른 내용이 전달되었습니다.')
-                    return previous
-            pending = [r for r in self._items(db, sid, 'runs') if r['status'] in ('queued', 'running')]
-            if len(pending) >= 8:
-                raise Conflict('대기 중인 요청이 많습니다. 현재 작업 후 다시 보내주세요.')
-            run = self._add(db, sid, 'runs', dict(request_id=request_id, prompt=content, kind=kind,
-                assumptions=assumptions, status='queued', based_on_version=session['version'],
-                mode=session['mode'], started_at=None, ended_at=None, decision=None, final=None, error=None))
-            self._add(db, sid, 'messages', dict(role='user', content=content, run_id=run['id'],
-                kind=kind, assumptions=assumptions))
-            self._add(db, sid, 'events', dict(type='received', label='사용자 지시 접수', run_id=run['id']))
-            return run
+            return self._enqueue(db, sid, content, kind, assumptions, request_id)
+
+    def _enqueue(self, db, sid, content, kind, assumptions, request_id, external_report_id=None):
+        session = self._session(db, sid)
+        for previous in self._items(db, sid, 'runs'):
+            if previous['request_id'] == request_id:
+                if (previous['prompt'], previous['kind'], previous['assumptions']) != (content, kind, assumptions):
+                    raise Conflict('같은 요청 ID에 다른 내용이 전달되었습니다.')
+                return previous
+        pending = [r for r in self._items(db, sid, 'runs') if r['status'] in ('queued', 'running')]
+        if len(pending) >= 8:
+            raise Conflict('대기 중인 요청이 많습니다. 현재 작업 후 다시 보내주세요.')
+        run = self._add(db, sid, 'runs', dict(request_id=request_id, prompt=content, kind=kind,
+            assumptions=assumptions, status='queued', based_on_version=session['version'],
+            external_report_id=external_report_id, mode=session['mode'], started_at=None, ended_at=None, decision=None, final=None, error=None))
+        self._add(db, sid, 'messages', dict(role='user', content=content, run_id=run['id'],
+            kind=kind, assumptions=assumptions, external_report_id=external_report_id))
+        self._add(db, sid, 'events', dict(type='received', label='사용자 지시 접수', run_id=run['id']))
+        return run
 
     def get_run(self, rid, sid=None):
         with self.db() as db:
@@ -234,7 +241,7 @@ class Store:
         with self.db() as db:
             return self._add(db, run['session_id'], 'tasks', dict(run_id=run['id'], role=role,
                 instruction=instruction, reason=reason, status='assigned', started_at=None,
-                ended_at=None, report=None, error=None, based_on_version=run['based_on_version']))
+                ended_at=None, report=None, error=None, based_on_version=run['based_on_version'], external_report_id=run.get('external_report_id')))
 
     def update_task(self, tid, **fields):
         with self.db() as db:
@@ -259,7 +266,8 @@ class Store:
             if final:
                 self._add(db, run['session_id'], 'messages', dict(role='commander', run_id=rid,
                     content=final['summary'], report=final, status=status, kind=run['kind'],
-                    based_on_version=run['based_on_version']))
+                    based_on_version=run['based_on_version'], external_report_id=run.get('external_report_id'),
+                    external_report_ids=final.get('external_report_ids',[])))
             self._add(db, run['session_id'], 'events', dict(type='final', run_id=rid,
                 label='최종 보고 전달' if status == 'completed' else '작업 결과: ' + status))
             self._put_session(db, session)

@@ -64,4 +64,4 @@
 
 ## 6. 범위 밖
 
-현재 외부 DB 서비스, Redis/Celery, WebSocket/SSE, 벡터DB, MCP 서버, 권한 계정, 실제 출동 연동은 없다. 프로젝트 간 연동은 [별도 개선안](../improvements/01-project-api-integration.md)이다. 이를 지금의 실행 의존성으로 추가하지 않는다.
+현재 외부 DB 서비스, Redis/Celery, WebSocket/SSE, 벡터DB, 권한 계정, 실제 출동 연동은 없다. 프로젝트 간 보고 수신은 별도 MCP 포트와 [승인 수신함](16-external-inbox.md)으로 구현했다. `server.main`이 UI와 선택적 MCP listener를 같은 Store로 조립한다. 송신은 [별도 개선안](../improvements/01-project-api-integration.md)이다. 이를 지금의 실행 의존성으로 추가하지 않는다.

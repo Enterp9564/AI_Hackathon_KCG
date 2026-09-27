@@ -29,3 +29,7 @@ python3 -m prototype.server --port 8860
 - 루트의 번호 문서: 제품 요구·계획·설계·검증 이력.
 
 검증 명령과 실제 결과는 [진행 기록](prototype/PROGRESS.md)을 확인합니다. 과거 문서 ZIP은 보존 자료이며 최신 문서를 자동 포함하지 않습니다.
+
+## 외부 프로젝트 MCP 수신
+
+Link-One·RESAID AI 보고는 수신함에 저장하며 담당자가 **인용하여 전송**한 경우에만 AI가 검토합니다. [MCP 계약](docs/implementation/17-mcp-transport.md) · [핫스팟 테스트 준비](docs/implementation/18-hotspot-testing.md). 실제 팀 앱·핫스팟 장비 검증은 아직 하지 않았습니다.
