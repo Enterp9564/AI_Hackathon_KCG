@@ -1,5 +1,7 @@
 # 04. 신고·정정·현재 장부
 
+> 임시 프로젝트명: **HAEON(해온)** · 해양경찰 멀티에이전트 의사결정 지원 시스템. [명칭·소개 기준](../PROJECT_NAMING.md) (2026-09-27). ‘AI 오케스트라’는 협업 방식의 설명이며 이름에 포함하지 않는다.
+
 > 현재 구현 기준: 2026-09-27. [목록](README.md) · 구현: [incident.py](../../prototype/incident.py), Store.apply_update / set_facts
 
 ## 1. 상태 구조

@@ -1,4 +1,6 @@
-# AI 종합상황실 — 상시 모니터링과 실사용 UI·UX 설계
+# HAEON(해온) — 상시 모니터링과 실사용 UI·UX 설계
+
+> 임시 프로젝트명: **HAEON(해온)** · 해양경찰 멀티에이전트 의사결정 지원 시스템. [명칭·소개 기준](docs/PROJECT_NAMING.md) (2026-09-27). ‘AI 오케스트라’는 협업 방식의 설명이며 이름에 포함하지 않는다.
 
 > 2026-09-27 문서 연결: 상세 구현·화면 상태·고정/복귀·검증은 [고정 대형 상황판](docs/implementation/11-monitor.md)과 [담당자 화면](docs/implementation/10-operator-ui.md)에 정리했다.
 

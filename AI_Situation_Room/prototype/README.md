@@ -1,4 +1,6 @@
-# AI 종합상황실 — 실행형 프로토타입
+# HAEON(해온) — 실행형 프로토타입
+
+> 임시 프로젝트명: **HAEON(해온)** · 해양경찰 멀티에이전트 의사결정 지원 시스템. [명칭·소개 기준](../docs/PROJECT_NAMING.md) (2026-09-27). ‘AI 오케스트라’는 협업 방식의 설명이며 이름에 포함하지 않는다.
 
 > 구현을 이어갈 AI: [기능별 상세 구현 문서](../docs/implementation/README.md) · [향후 프로젝트 API 연동](../docs/improvements/01-project-api-integration.md). 상세 명세는 2026-09-27 소스를 대조했으며 기존 시험 결과와 구별한다.
 

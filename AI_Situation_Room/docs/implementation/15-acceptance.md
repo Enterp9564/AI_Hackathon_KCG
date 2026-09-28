@@ -1,5 +1,7 @@
 # 15. 검증과 인수 기준
 
+> 임시 프로젝트명: **HAEON(해온)** · 해양경찰 멀티에이전트 의사결정 지원 시스템. [명칭·소개 기준](../PROJECT_NAMING.md) (2026-09-27). ‘AI 오케스트라’는 협업 방식의 설명이며 이름에 포함하지 않는다.
+
 > 2026-09-27 문서화. 아래는 시험 설계이며 새로 실행한 결과가 아니다. 실제 결과는 [PROGRESS](../../prototype/PROGRESS.md)에 날짜별로 기록한다. [목록](README.md)
 
 ## 1. 시험 층위
@@ -20,7 +22,7 @@ node --check prototype/static/app.js
 python3 -m unittest discover -s prototype/tests -q
 ```
 
-앞의 단위 명령은 기존 39개, discover는 HTTP 3개를 더한 기존 42개 구성이다. 숫자는 이후 테스트 변경 시 다시 확인한다. 현재 문서화에서 재실행했다고 해석하지 않는다.
+2026-09-28 소스에서 test_ 메서드를 정적으로 집계하면 앞의 핵심 단위 39개 + inbox 12개 = 네트워크 없는 Python 단위 51개, HTTP 4개 + MCP HTTP 4개 = 총 59개다. 이는 현재 정의 수이며 오늘 실행 통과를 뜻하지 않는다. 이전 42개 기록은 MCP 추가 전 구성이다. JS 공유 전송과 브라우저 검사는 별도다.
 
 저장 파일이 있는 로컬 환경에서만:
 
@@ -47,9 +49,9 @@ python3 prototype/scenarios/check_saved_run.py prototype/runtime/cheonghae-live-
 
 ## 4. HTTP 수용 사례
 
-기존 test_http 3개는 악성 Origin·잘못된 토큰 거절, 세션 입력·snapshot의 무작업, message 왕복·중복 접수·없는 monitor 쓰기 경로를 확인한다.
+현재 test_http 4개는 악성 Origin·잘못된 토큰 거절, 세션 입력·snapshot의 무작업, message 왕복·중복 접수·없는 monitor 쓰기 경로, 수신함 로컬 승인/세션 경계를 확인한다. test_mcp 4개는 handshake/도구/멱등 수신, 인증/Origin/Host/버전, project/입력, 알림의 제출 금지/충돌 보존을 확인한다.
 
-추가 인수 시에는 facts 버전 충돌, CSV 오류, weather 실패/동시 수정, 진행 중 삭제·고정 세션 삭제, 잘못된 Host·본문 크기를 별도로 시험한다. 기존 HTTP 3개가 이 전체를 포괄하지 않는다.
+추가 인수 시에는 facts 버전 충돌, CSV 오류, weather 실패/동시 수정, 진행 중 삭제·고정 세션 삭제, 잘못된 Host·본문 크기를 별도로 시험한다. 기존 HTTP/MCP 8개가 이 전체를 포괄하지 않는다.
 
 ## 5. 브라우저 수용 절차
 
@@ -97,3 +99,87 @@ python3 prototype/scenarios/check_saved_run.py prototype/runtime/cheonghae-live-
 날짜/코드 기준, 실행 명령·입력, 모드·모델·effort, 임시 DB/산출물 위치, 기대값, 관측값, PASS/FAIL/미실시, 실패·수정·재실행 경과를 남긴다. 키·원본 환경값은 쓰지 않는다. 단위·HTTP·브라우저·LIVE 각 줄을 구별한다.
 
 문서만 변경한 작업은 링크·JSON 예제·경로·코드 계약·변경 범위를 검사한다. 앱 시험을 실행하지 않았다면 과거 통과 기록을 이번 통과 기록으로 옮기지 않는다.
+
+## 9. 2026-09-28 재구현 시험 이름 목록
+
+아래는 현재 소스의 시험 식별자다. 구현하는 기능의 테스트부터 만들고 기대값은 해당 명세와 21의 계약 예제를 따른다. 이름이 존재하는 것과 시험 통과/완전한 커버리지는 다르다.
+
+### test_engine.py
+
+- `EngineTests.test_parallel_reports_final_and_separate_memory`
+- `EngineTests.test_simulation_advice_keeps_facts_and_assumptions`
+- `EngineTests.test_duplicate_submission_does_not_execute_twice`
+- `EngineTests.test_change_during_execution_marks_old_report`
+- `EngineTests.test_provider_error_is_not_success_or_demo_fallback`
+- `EngineTests.test_simple_information_request_only_assigns_information`
+- `EngineTests.test_commander_can_request_missing_information_without_assigning_agents`
+- `EngineTests.test_specialist_information_request_is_forwarded_to_user`
+- `EngineTests.test_fire_report_creates_manual_dispatch_orders`
+- `EngineTests.test_queued_followup_receives_previous_final_and_no_future_input`
+- `EngineTests.test_one_session_backlog_does_not_block_other_session`
+
+### test_http.py
+
+- `HTTPTests.test_origin_and_write_token_enforced`
+- `HTTPTests.test_session_input_and_snapshot_do_not_create_jobs`
+- `HTTPTests.test_message_roundtrip_and_monitor_write_rejected`
+- `HTTPTests.test_inbox_local_approval_and_session_guard`
+
+### test_inbox.py
+
+- `InboxTests.test_receipt_only_and_original_preserved`
+- `InboxTests.test_reception_idempotency_and_conflict`
+- `InboxTests.test_unknown_incident_and_source`
+- `InboxTests.test_defer_reject_history`
+- `InboxTests.test_wrong_session_and_concurrent_approval`
+- `InboxTests.test_queue_full_rolls_back_approval`
+- `InboxTests.test_restart_retains_dedup_and_deleted_session_does_not_reroute`
+- `InboxTests.test_quote_cannot_apply_facts_even_if_model_requests_update`
+- `InboxTests.test_later_plan_does_not_treat_quote_as_user_fact`
+- `InboxTests.test_approval_and_reject_race_has_one_terminal_outcome`
+- `InboxTests.test_live_agents_use_refreshed_facts`
+- `InboxTests.test_external_provenance_survives_followup_summaries`
+
+### test_incident.py
+
+- `IncidentTests.test_patch_preserves_name_identity_and_other_attributes_and_audit`
+- `IncidentTests.test_transfer_does_not_inflate_rescued_and_persists`
+- `IncidentTests.test_invalid_sum_rejects_whole_transaction`
+- `IncidentTests.test_simulation_cannot_mutate`
+- `IncidentTests.test_idempotency_version_and_separate_session`
+- `IncidentTests.test_unknown_fields_and_wrong_types_rejected`
+- `IntakeFlowTests.test_intake_persists_before_analysis_and_simple_update_skips_specialists`
+- `IntakeFlowTests.test_original_reports_are_citable_and_simulation_not_evidence_fact`
+- `IntakeFlowTests.test_basic_manual_and_force_catalog_are_always_available_as_evidence`
+- `ManualIncidentTests.test_manual_note_edit_preserves_remaining_and_rejects_bad_total`
+- `ManualIncidentTests.test_receipt_never_cites_missing_facts`
+- `ManualIncidentTests.test_explicit_leading_report_time_is_saved_without_model_guess`
+- `ManualIncidentTests.test_name_correction_updates_derived_notes_but_keeps_original_message`
+- `ManualIncidentTests.test_final_report_keeps_full_original_timeline`
+- `ManualIncidentTests.test_distribution_is_complete_snapshot_not_additive_places`
+
+### test_mcp.py
+
+- `MCPTests.test_handshake_tools_and_idempotent_receipt`
+- `MCPTests.test_auth_origin_host_and_protocol`
+- `MCPTests.test_project_identity_and_invalid_arguments`
+- `MCPTests.test_notification_cannot_submit_and_conflict_preserves_original`
+
+### test_models.py
+
+- `ModelContractTests.test_actual_request_uses_role_effort_and_session_input`
+- `ModelContractTests.test_incomplete_or_refusal_response_is_not_report`
+
+### test_store.py
+
+- `StoreTests.test_facts_are_separate_and_survive_reopen`
+- `StoreTests.test_retries_create_one_run_and_message`
+- `StoreTests.test_version_conflict_and_invalid_counts_do_not_write`
+- `StoreTests.test_attachment_and_run_cannot_cross_sessions`
+- `StoreTests.test_simulation_requires_assumptions_and_does_not_change_facts`
+- `StoreTests.test_missing_session_rejected`
+- `StoreTests.test_delete_session_removes_records_and_pinned_setting`
+- `StoreTests.test_delete_session_rejects_running_work`
+- `StoreTests.test_location_change_clears_old_place_weather`
+- `StoreTests.test_restart_marks_unfinished_runs_interrupted`
+- `StoreTests.test_completed_report_becomes_stale_after_later_correction`

@@ -1,0 +1,241 @@
+{
+  "documentation_date": "2026-09-28",
+  "purpose": "documentation-only reconstruction; not a completed rebuild",
+  "source_documents": [
+    {
+      "path": "docs/PROJECT_NAMING.md",
+      "sha256": "a578c0658fa449ecd185c4f4eca2c573cc5711b66772d792d3ed3b38acdc8e82"
+    },
+    {
+      "path": "docs/implementation/README.md",
+      "sha256": "c31e12d8bb64538fd23b04ca2c0de4b42afdfbd7234dd7fb5d4dce76e96d50d6"
+    },
+    {
+      "path": "docs/implementation/01-architecture.md",
+      "sha256": "210a26b060fea9fa0bcb3ef29db9da5cca3df892a88f9d5e1c6929ddded92d88"
+    },
+    {
+      "path": "docs/implementation/02-data-contracts.md",
+      "sha256": "933ee303f96533c55edba9545eca5f09d0c80eeabda1dac9c6cd1df2bb0d3bcf"
+    },
+    {
+      "path": "docs/implementation/03-sessions-memory.md",
+      "sha256": "a25a4b88c0f50f92a3ebf39dd8a8448071a29cdb5fc412d5af1b0816c958e84b"
+    },
+    {
+      "path": "docs/implementation/04-incident-ledger.md",
+      "sha256": "f385f2b476d62b638b2c68314662e50f527d4a562dc146a081a54f9a1c68baab"
+    },
+    {
+      "path": "docs/implementation/05-orchestration.md",
+      "sha256": "860ac43d7caa8954986eebf325c523c4fa4c3dd9985565bda0db8586f0b561e1"
+    },
+    {
+      "path": "docs/implementation/06-model-contracts.md",
+      "sha256": "cb08ae45dda67ecf8395a3e2c8239115d9f06e923fde50113d107c9e4dfc54be"
+    },
+    {
+      "path": "docs/implementation/07-evidence.md",
+      "sha256": "a87632688360d59333998b5903d1c3c758b908b2f490e516c3159eddfb36970d"
+    },
+    {
+      "path": "docs/implementation/08-questions-dispatch.md",
+      "sha256": "8f29a26e789670a61cdd8138257a80e69923978300807645f8ae97e475da4da6"
+    },
+    {
+      "path": "docs/implementation/09-simulation.md",
+      "sha256": "e4f685a23467d13f2524369a5f9105621862add1ca2bd45b2120e7aaf4366cfa"
+    },
+    {
+      "path": "docs/implementation/10-operator-ui.md",
+      "sha256": "a37674d2b0471f2e5242a9cd6e225e018c7513606ec5824135493d503281ec42"
+    },
+    {
+      "path": "docs/implementation/11-monitor.md",
+      "sha256": "7395f1d220f4a6e927ae6e999cb481e26aba04629f6a227b7ae91b32acf7235c"
+    },
+    {
+      "path": "docs/implementation/12-weather.md",
+      "sha256": "87e4400d584131dff56754e46f4ab928cc0ce9f0ace339cc57ef207e5b40df97"
+    },
+    {
+      "path": "docs/implementation/13-http-api.md",
+      "sha256": "e04734fe0c241687cc37b4782c93a427bfe61116e6bdab95ba0318f37a1f8af2"
+    },
+    {
+      "path": "docs/implementation/14-runtime.md",
+      "sha256": "c0d8e01a7eeb016ed03bcc10a59839041d97ae275fdc4ec307c6f34074d8ea62"
+    },
+    {
+      "path": "docs/implementation/15-acceptance.md",
+      "sha256": "f90b0fe83231f66dfe714a9fbd5c47ccb37bdf539e4063973b2096a8c7531f21"
+    },
+    {
+      "path": "docs/implementation/16-external-inbox.md",
+      "sha256": "f9525e8dcfb4173ba033c2f648f17005cb178ad1f5b032fb97f0771baa850752"
+    },
+    {
+      "path": "docs/implementation/17-mcp-transport.md",
+      "sha256": "1b72d467d5ee01b9f38b3b561bba288a2efeaf406bc56be533d52994fe52bb58"
+    },
+    {
+      "path": "docs/implementation/18-hotspot-testing.md",
+      "sha256": "4be77e51fcbd71f6df2717824bbd2d846781f80f53db8768fc36ab8eb8c3e0f8"
+    },
+    {
+      "path": "docs/implementation/19-ui-reconstruction.md",
+      "sha256": "1ee80dac5e5bab106160ea11b4679ea0a97fe7c2343a028a5431dfdad2bf512b"
+    },
+    {
+      "path": "docs/implementation/20-module-interfaces.md",
+      "sha256": "a5f82775a3738c912864291475603c71c3db0d5a5661c1cc2590e8c10542de38"
+    },
+    {
+      "path": "docs/implementation/21-contract-examples.md",
+      "sha256": "6fdbaa6a7c71c25a4805858b133308058c2c4a97f24f6f83db72768fb57945d8"
+    },
+    {
+      "path": "docs/implementation/22-target-gaps.md",
+      "sha256": "132601ba4e2af83fbc9bdae90ccc823f29eb7fb5f86ec19c15a790e2363f0222"
+    },
+    {
+      "path": "docs/implementation/23-prompt-reference.md",
+      "sha256": "d563240a50a841ed6d35dae8c97e09c12f292d562cb60d1b985a09f7d695a27c"
+    },
+    {
+      "path": "docs/handoff/REBUILD_PLAN.md",
+      "sha256": "cd6421c982a75c10f0e6126b58001baa2afe08502f63d99de9d78a977da053d5"
+    },
+    {
+      "path": "docs/FOLDER_GUIDE.md",
+      "sha256": "f514bacd25a0ad117a3aeab44aee8b8449b277b3b16adc03818e09e95b7f9bd0"
+    },
+    {
+      "path": "prototype/manuals/basic-response-manual.md",
+      "sha256": "8d772cf8191124b47dc211fc8d7f7b4370bec0a9cbcf9b866bc328b537ae8323"
+    },
+    {
+      "path": "prototype/manuals/donghae_assets.json",
+      "sha256": "6fdef0a6aaaed647b9cb963a8537ffde7f518fae7c48eabc27c894c2afc43983"
+    },
+    {
+      "path": "prototype/scenarios/cheonghae-fire.md",
+      "sha256": "5a67ddab5a924b8caf1a304bdb2444e24d856fec1929231db433be9e91c3c112"
+    }
+  ],
+  "code_baseline_fingerprints_only": [
+    {
+      "path": "prototype/__init__.py",
+      "sha256": "cb8a2b4fb7f6ad830437a84829b06e9ad7f8fc723baab32379f015372436bd87"
+    },
+    {
+      "path": "prototype/engine.py",
+      "sha256": "2d160d4e50917dfca88357216359d4a9e879e44a88358478bebb0aea52c23923"
+    },
+    {
+      "path": "prototype/inbox.py",
+      "sha256": "474a4cccbca52e823be2de16fdfe365bb6cdcc0b7be7486c22d858e42176b4cf"
+    },
+    {
+      "path": "prototype/incident.py",
+      "sha256": "cb0d9cbfde392b9dbf430a8d7814ba585b637032cb6c7f3b6f92121d4a950aee"
+    },
+    {
+      "path": "prototype/manuals.py",
+      "sha256": "e5d4a0e92d6876a9a1c5e790eec2dbb893a77ceee6b498e455c737a516946366"
+    },
+    {
+      "path": "prototype/mcp_server.py",
+      "sha256": "fbcbb9b4c621aff3a2b0de124e892240e9fa3c599492f6be1dde5e173b54aa55"
+    },
+    {
+      "path": "prototype/models.py",
+      "sha256": "c429c5a2c40a45458b20a5be893678cab12d0f8c148adf35c347e253b879a9f2"
+    },
+    {
+      "path": "prototype/prepare_mcp.py",
+      "sha256": "a029ebfde81a16f9d49812a9eee8a9d725aff30b7ddfcdf1ce8b74f4c1d6c73e"
+    },
+    {
+      "path": "prototype/send_field_report.py",
+      "sha256": "d6f6565ddc80650837f97493bbe8993f02c18fd5242f4ff1963a32cf2ccd1fce"
+    },
+    {
+      "path": "prototype/server.py",
+      "sha256": "a5a6f2d9bd229261a1827d4a08f85a3dcaf2618e42e629b1e7f24299a0f5556e"
+    },
+    {
+      "path": "prototype/store.py",
+      "sha256": "cb5795918be2db1a50db456394d1a928ffb98a8a1940a515d7d3e0f05ef45cb2"
+    },
+    {
+      "path": "prototype/tools.py",
+      "sha256": "2e2054202d188117814e0ab7e9e860160253b09ea3185468a2c3613fbf69f842"
+    },
+    {
+      "path": "prototype/static/app.js",
+      "sha256": "1117fe6bbeae77970ec02fab9824744fd279e8baf4c069ce9e53b1fc74c89328"
+    },
+    {
+      "path": "prototype/static/inbox.js",
+      "sha256": "b06a398c88fca1d532b5f756e6b605b2ff95dd6367db0492f81a5b8abb202c98"
+    },
+    {
+      "path": "prototype/static/index.html",
+      "sha256": "69a388cd601aba0a691b54c21190389aab6346519c105f2bde2045361da37f9c"
+    },
+    {
+      "path": "prototype/static/style.css",
+      "sha256": "9c3cde912fee5e6331007f185e6c7f56f244e7cb5d23e5f32455c6d42f5138c9"
+    },
+    {
+      "path": "prototype/tests/browser_inbox.cjs",
+      "sha256": "6a25505922a79175f4486ca413a50a097cf527387f88147e68ce123962c7cda4"
+    },
+    {
+      "path": "prototype/tests/test_engine.py",
+      "sha256": "ee9d27d265df24ce5a65215a577c18d0054f6ff9a07bdfdc4d713a4c72ff1f30"
+    },
+    {
+      "path": "prototype/tests/test_http.py",
+      "sha256": "774d661da58c2c92ac76b6b81b1a0a755b4db975826d2bf4e9b0c5f95e87ac24"
+    },
+    {
+      "path": "prototype/tests/test_inbox.py",
+      "sha256": "0332157cb54bf443e52baa028529eeebc02c2691961870f50b8505e0b1c6d5c9"
+    },
+    {
+      "path": "prototype/tests/test_incident.py",
+      "sha256": "d7fcd6e78e25b7f58ded7abae1538137ea22dc0aebbbbcea3f479e298c43fa65"
+    },
+    {
+      "path": "prototype/tests/test_mcp.py",
+      "sha256": "a4012ec2b4ff8b523469d24d0e4a997c0bcd6497ab3294642bed422ecd0ea42b"
+    },
+    {
+      "path": "prototype/tests/test_models.py",
+      "sha256": "5dacf51a596971b2761ae23b1c05db01d566a6d3646a06ad84d9c428a6d3741f"
+    },
+    {
+      "path": "prototype/tests/test_send.cjs",
+      "sha256": "8a3ab689da5ae6b3ac0dad6021a64f060cb80c4d91122c6a55e8bcfc59c0bf53"
+    },
+    {
+      "path": "prototype/tests/test_store.py",
+      "sha256": "999ef6e9e3cdffb5cc104dbda4058c30065e48d6b3ae020283e8b1f45fa4bf92"
+    }
+  ],
+  "bundle_document_sha256": "f26b8df0aca30f2419d9462e0cf8cbb9d66ec654ca251c79bccdfb8e03db556b",
+  "excluded": [
+    "prototype/.secrets",
+    "prototype/runtime",
+    ".env",
+    "application source payloads",
+    "user credentials"
+  ],
+  "archive_files": [
+    "HAEON_REBUILD_SPEC.md",
+    "README.md",
+    "manifest.json"
+  ]
+}

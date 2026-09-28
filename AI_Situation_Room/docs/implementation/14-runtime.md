@@ -1,5 +1,7 @@
 # 14. 실행·보안·백업·복구
 
+> 임시 프로젝트명: **HAEON(해온)** · 해양경찰 멀티에이전트 의사결정 지원 시스템. [명칭·소개 기준](../PROJECT_NAMING.md) (2026-09-27). ‘AI 오케스트라’는 협업 방식의 설명이며 이름에 포함하지 않는다.
+
 > 현재 구현 기준: 2026-09-27. [목록](README.md) · 실행 명령의 기준은 [prototype/README](../../prototype/README.md)
 
 ## 1. 최소 실행 환경
@@ -18,7 +20,7 @@ python3 -m prototype.server --port 8860
 python3 -m prototype.server --port 8861 --db /tmp/situation-room-doc-test.sqlite
 ```
 
-루프백 전용이며 외부 호스트 바인딩 옵션은 없다. 키 없는 직접 실행은 DEMO에 사용할 수 있다. 직접 실행한 서버는 키 파일이나 .env를 자동 읽지 않는다.
+UI 서버는 루프백 전용이며 UI의 외부 호스트 바인딩 옵션은 없다. 선택적 MCP listener에만 --mcp-host/--mcp-allowed-host를 적용한다. 키 없는 직접 실행은 DEMO에 사용할 수 있다. 직접 실행한 서버는 키 파일이나 .env를 자동 읽지 않는다.
 
 ## 2. macOS 더블클릭 경로
 

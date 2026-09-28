@@ -1,35 +1,18 @@
-# AI Situation Room · AI 종합상황실
+# HAEON(해온)
 
-담당자의 신고·정정·질문을 세션별로 기록하고, 상황실장과 전문요원의 검토·근거·대응 제안을 보여주는 로컬 프로토타입입니다. Python HTTP·SQLite·HTML/CSS/JavaScript를 사용합니다.
+**해양경찰 멀티에이전트 의사결정 지원 시스템** · 임시 프로젝트명
 
-## 문서 시작점
+사용자가 상황실장에게 지시하면 전문 AI 요원들이 업무를 나눠 검토하고, 상황실장이 보고·근거·필요한 질문을 모아 대응 판단을 돕는 로컬 프로토타입이다. ‘AI 오케스트라’는 협업 방식의 설명이며 이름에 포함하지 않는다. 최종 현장 판단은 사용자에게 있다.
 
-- [문서 안내와 최신 결정](00_문서안내_최신결정.md)
-- [현재 상태와 인수인계](13_현재상태_요구사항_인수인계.md)
-- [기능별 상세 구현 문서](docs/implementation/README.md)
-- [향후 프로젝트 API 연동](docs/improvements/01-project-api-integration.md)
-- [개발 진입 지침](AGENTS.md)
+## 원하는 작업으로 이동
 
-## 실행
+- **다른 AI에서 재구현:** [문서 전달 안내](docs/handoff/README.md) → [통합 재구현 명세](docs/handoff/HAEON_REBUILD_SPEC.md).
+- **현재 앱 실행:** [prototype/README.md](prototype/README.md). Python 3.11+ / SQLite / HTML·CSS·JavaScript, 로컬 기본 주소 127.0.0.1:8860.
+- **현재 상태·남은 일:** [인수인계](13_현재상태_요구사항_인수인계.md).
+- **기능 계약·개발 순서:** [상세 명세](docs/implementation/README.md), [재구현 계획](docs/handoff/REBUILD_PLAN.md).
+- **발표:** [한글 발표자료 안내](00_발표자료/00_읽어주세요.md). 실제 앱과 별도의 설명 자료다.
+- **문서·폴더 찾기:** [문서 안내](docs/README.md), [폴더 구조 검토](docs/FOLDER_GUIDE.md).
 
-저장소 최상위에서 프로젝트 폴더로 이동합니다.
+코딩 AI는 [AGENTS.md](AGENTS.md)를 먼저 읽는다. LIVE는 서버 키와 모델 접근이 필요하며 DEMO는 규칙 기반이다. 세션과 원문은 로컬에 저장한다. 키·토큰·runtime 원본은 저장소/배포 묶음에 넣지 않는다.
 
-```sh
-cd AI_Situation_Room
-python3 -m prototype.server --port 8860
-```
-
-키 없이 직접 실행하면 DEMO를 사용할 수 있습니다. 브라우저에서 http://127.0.0.1:8860/ 을 엽니다. LIVE 설정·macOS 더블클릭·인증서는 [실행 README](prototype/README.md)를 따릅니다. 키와 runtime 데이터는 저장소에 포함하지 않습니다.
-
-## 프로젝트 구성
-
-- `prototype/`: 실제 앱, 테스트, 공통 매뉴얼, 가상 시나리오.
-- `docs/`: 기능별 구현 명세, 개선안, 학습자료와 과거 개발계획.
-- `presentation/`: 발표 HTML·원본 근거·미리보기. 실제 앱과 별도 산출물입니다.
-- 루트의 번호 문서: 제품 요구·계획·설계·검증 이력.
-
-검증 명령과 실제 결과는 [진행 기록](prototype/PROGRESS.md)을 확인합니다. 과거 문서 ZIP은 보존 자료이며 최신 문서를 자동 포함하지 않습니다.
-
-## 외부 프로젝트 MCP 수신
-
-Link-One·RESAID AI 보고는 수신함에 저장하며 담당자가 **인용하여 전송**한 경우에만 AI가 검토합니다. [MCP 계약](docs/implementation/17-mcp-transport.md) · [핫스팟 테스트 준비](docs/implementation/18-hotspot-testing.md). 실제 팀 앱·핫스팟 장비 검증은 아직 하지 않았습니다.
+2026-09-28 재구현 문서 현행화. 소스 대조와 문서 검증은 앱 기능 구현·새 LIVE 시험과 구별한다. 현재 저장소 설정의 모델명은 제공자의 현재 가용성을 보장하지 않는다.

@@ -1,0 +1,978 @@
+{
+  "team": [
+    {
+      "scene": 10,
+      "chapter": "우리의 목표",
+      "title": "잘 만든 프로젝트를,<br><em>수상할 팀 성과로.</em>",
+      "lead": "각자의 아이디어는 이미 있습니다.<br>이제 심사위원이 높게 평가할 이유를<br>우리 팀의 결과물에 더해봅시다.",
+      "sub": "개인의 완성도는 지키고,<br>팀으로 보여줄 성과는 더 크게.",
+      "visual": "<div class=\"award-opening\"><div class=\"opening-word\">수상<span>우리가 함께 노릴 목표</span></div><div class=\"opening-step\"><span>개인</span><b>내 기능의 완성도</b></div><div class=\"opening-step\"><span>현장</span><b>실제 업무에 쓰이는 가치</b></div><div class=\"opening-step\"><span>팀</span><b>함께 만들었기에 가능한 성과</b></div><p>더 높은 평가를 받을 이유를 만듭니다.</p></div>",
+      "note": "우리 각자 만들고 싶은 프로젝트가 있습니다. 저는 그 아이디어를 살리면서, 이번에는 수상까지 목표로 해봤으면 합니다. 그러려면 각 기능을 잘 만드는 데 더해, 우리 팀이 무엇을 함께 해결했는지 보여줄 필요가 있습니다. 지금부터 각자에게 어떤 이점이 있고, 왜 더 좋은 평가를 기대할 수 있는지 말씀드리겠습니다.",
+      "layout": "split",
+      "seconds": 20,
+      "refs": [
+        "merit",
+        "brief"
+      ],
+      "call": "공동 목표 <strong>각자의 성과를 지키면서 팀의 수상 경쟁력 높이기</strong>",
+      "cue": "API나 구현 방식은 아직 꺼내지 않습니다. 수상 목표와 각자의 이점으로 관심을 모읍니다.",
+      "proof": "공동 시연의 실제 실행과 역할별 기여를 같은 사건 기록으로 확인한다.",
+      "eyebrow": "우리의 목표",
+      "label": "우리의 목표",
+      "why": "우리의 목표를 수상 경쟁력과 팀원의 이점으로 연결한다.",
+      "source": "팀원 설득용 수상 전략 개정 · 사용자 발표자료 제작 요청",
+      "time": "0:00–0:20"
+    },
+    {
+      "scene": 10,
+      "chapter": "높게 평가받을 이유",
+      "title": "평가에서 더 인정받을<br><em>네 가지 이유.</em>",
+      "lead": "배운 기술이 실제 업무에 쓰이고,<br>함께 만든 결과가 눈에 보일 때<br>설득할 근거가 늘어납니다.",
+      "sub": "수상 전략: 교육성과·기술 완성도·협업·현장성",
+      "visual": "<div class=\"merit-grid\"><article class=\"merit-item\"><small>교육 활용</small><h3>배운 것을 한 업무에 적용</h3><p>기술별 결과가 실제 대응안에 쓰이는 과정</p></article><article class=\"merit-item\"><small>기술 완성도</small><h3>입력부터 후속 조치까지 완성</h3><p>앞 단계의 결과를 다음 단계가 사용하는 동작</p></article><article class=\"merit-item\"><small>협업</small><h3>역할별 기여가 함께 작동</h3><p>각자의 기능이 다른 사람의 업무에 주는 도움</p></article><article class=\"merit-item\"><small>현장 가치</small><h3>변경·누락을 확인하는 구조</h3><p>정보가 바뀌면 판단도 함께 검토되는 모습</p></article></div><div class=\"visual-foot\">제공 커리큘럼을 바탕으로 한 수상 전략 · 공식 가산점 항목·배점은 미확인</div>",
+      "note": "제가 보는 평가상의 강점은 네 가지입니다. 첫째, 교육에서 배운 기술을 실제 업무에 적용했다는 점입니다. 둘째, 입력부터 후속 대응까지 작동해 기술 완성도를 보여줄 수 있습니다. 셋째, 팀원의 기여가 서로의 기능에 쓰이면 협업의 결과가 분명해집니다. 넷째, 현장의 변경과 누락을 다루면 업무 적용 가치도 설명할 수 있습니다. 공식 가산점이나 배점은 아직 확인되지 않았지만, 이런 결과를 증명하는 것이 더 높은 평가를 노릴 근거라고 생각합니다.",
+      "layout": "split",
+      "seconds": 40,
+      "refs": [
+        "curriculum",
+        "merit"
+      ],
+      "call": "평가를 설득하는 방식 <strong>이점이 있다 → 왜 생기는가 → 실제로 보여준다</strong>",
+      "cue": "장면의 이점과 그 이유를 연결해서 말합니다.",
+      "proof": "공동 시연의 실제 실행과 역할별 기여를 같은 사건 기록으로 확인한다.",
+      "eyebrow": "높게 평가받을 이유",
+      "label": "높게 평가받을 이유",
+      "why": "높게 평가받을 이유를 수상 경쟁력과 팀원의 이점으로 연결한다.",
+      "source": "사용자 제공 교육 커리큘럼 · 팀원 설득용 수상 전략 개정",
+      "time": "0:20–1:00"
+    },
+    {
+      "scene": 10,
+      "chapter": "각자에게 돌아오는 이점",
+      "title": "내 프로젝트의 가치를<br><em>더 크게 보여줄 기회.</em>",
+      "lead": "원하는 기능은 직접 완성하고,<br>그 결과가 다른 업무에 쓰이는 모습까지<br>자신의 성과로 보여줄 수 있습니다.",
+      "sub": "아이디어·화면·개발 방식을 존중합니다.<br>공동 작업의 부담은 나누겠습니다.",
+      "visual": "<div class=\"depth-stack\"><article class=\"depth-sheet\"><span class=\"sheet-index\">01</span><div><small>개발 자율성</small><h3>내가 만들고 싶은 기능을 유지</h3><p>현재 프로젝트와 전문성을 그대로 살리기</p></div></article><article class=\"depth-sheet\"><span class=\"sheet-index\">02</span><div><small>성과의 확장</small><h3>다음 업무에 쓰이는 결과까지</h3><p>단독 기능 시연에 현장 활용 장면을 더하기</p></div></article><article class=\"depth-sheet\"><span class=\"sheet-index\">03</span><div><small>개발 지원</small><h3>막히는 문제를 함께 해결</h3><p>공동 시연 준비와 개발 문제 해결 지원</p></div></article></div><div class=\"visual-foot\"></div>",
+      "note": "각자에게도 분명한 이점이 있어야 합니다. 만들고 싶은 기능과 화면은 그대로 가져가시면 됩니다. 여기에 내 결과가 다른 업무에서 어떻게 쓰이는지까지 보여줄 수 있다면, 프로젝트의 활용 가치를 더 크게 설명할 수 있습니다. 공동 작업에서 생기는 개발 부담은 제가 최대한 함께 해결하겠습니다.",
+      "layout": "wide",
+      "seconds": 25,
+      "refs": [
+        "merit",
+        "brief"
+      ],
+      "call": "개인의 이점 <strong>개발 자율성 · 더 넓은 활용 장면 · 문제 해결 지원</strong>",
+      "cue": "장면의 이점과 그 이유를 연결해서 말합니다.",
+      "proof": "공동 시연의 실제 실행과 역할별 기여를 같은 사건 기록으로 확인한다.",
+      "eyebrow": "각자에게 돌아오는 이점",
+      "label": "각자에게 돌아오는 이점",
+      "why": "각자에게 돌아오는 이점를 수상 경쟁력과 팀원의 이점으로 연결한다.",
+      "source": "팀원 설득용 수상 전략 개정 · 사용자 발표자료 제작 요청",
+      "time": "1:00–1:25"
+    },
+    {
+      "scene": 10,
+      "chapter": "2팀에 이미 있는 강점",
+      "title": "우리는 한 사고의<br><em>서로 다른 순간을 맡습니다.</em>",
+      "lead": "현장 구조를 보는 사람,<br>응급 지원을 보는 사람,<br>전체 상황을 보는 사람이 한 팀에 있습니다.",
+      "sub": "2팀 · 신진섭 · 채민주 · 김대성 · 송민주",
+      "visual": "<div class=\"depth-stack\"><article class=\"depth-sheet\"><span class=\"sheet-index\">01</span><div><small>신진섭 · Link-One</small><h3>현장 구조</h3><p>누가 어디서 어떤 상태로 구조됐는가</p></div></article><article class=\"depth-sheet\"><span class=\"sheet-index\">02</span><div><small>채민주 · RESAID AI</small><h3>응급 지원</h3><p>대상자의 상태와 필요한 확인은 무엇인가</p></div></article><article class=\"depth-sheet\"><span class=\"sheet-index\">03</span><div><small>김대성·송민주 · AI 상황실</small><h3>종합 상황</h3><p>여러 보고를 보고 어떤 대응을 검토할 것인가</p></div></article></div><div class=\"visual-foot\">기존 신청 과제의 역할 기준 · 세부 분담은 팀에서 조정</div>",
+      "note": "우리 팀의 구성은 이 목표에 잘 맞습니다. 신진섭님의 Link-One은 현장 구조를, 채민주님의 RESAID AI는 응급 지원을 다룹니다. 김대성과 송민주가 맡은 AI 상황실은 여러 보고를 종합합니다. 같은 해양사고 안에서 서로의 결과가 필요해지는 세 역할이 이미 모여 있습니다.",
+      "layout": "split",
+      "seconds": 25,
+      "refs": [
+        "roster",
+        "projects",
+        "merit"
+      ],
+      "call": "우리 팀의 기회 <strong>현장 구조 · 응급 지원 · 종합 상황이 같은 사고에 필요하다</strong>",
+      "cue": "장면의 이점과 그 이유를 연결해서 말합니다.",
+      "proof": "공동 시연의 실제 실행과 역할별 기여를 같은 사건 기록으로 확인한다.",
+      "eyebrow": "2팀에 이미 있는 강점",
+      "label": "2팀에 이미 있는 강점",
+      "why": "2팀에 이미 있는 강점를 수상 경쟁력과 팀원의 이점으로 연결한다.",
+      "source": "최신 팀 편성 이미지 · 4번 · 신청팀 분석 및 팀 구성 · 2번 · 팀원 설득용 수상 전략 개정",
+      "time": "1:25–1:50"
+    },
+    {
+      "scene": 10,
+      "chapter": "현장에서 생기는 빈틈",
+      "title": "한쪽 정보가 바뀌면,<br><em>다른 판단은 괜찮을까요?</em>",
+      "lead": "현장에서 대상자의 상태를 정정했는데,<br>응급 지원과 상황실에 이전 정보가 남으면<br>다시 확인해야 할 일이 생깁니다.",
+      "sub": "가상 예시: 상태 변경 보고가 늦게 전달된 상황",
+      "visual": "<div class=\"mismatch-scene\"><div class=\"report-strip fresh\"><small>현장 구조</small><h3>“대상자 상태가 바뀌었습니다.”</h3><p>새로운 현장 보고</p></div><div class=\"delay-caption\">이 변경을 다른 곳도 알고 있을까요?</div><div class=\"lag-reports\"><article><small>응급 지원</small><h3>변경 전 상태로 검토</h3><p>추가 확인이 늦어질 수 있음</p></article><article><small>상황실</small><h3>이전 현황으로 종합</h3><p>지원 검토가 달라질 수 있음</p></article></div></div>",
+      "note": "가상 상황 하나를 생각해 보겠습니다. 현장에서 구조 대상자의 상태를 정정했습니다. 그런데 응급 지원은 변경 전 상태를 보고 있고, 상황실도 이전 현황을 보고 있다면 어떨까요? 개별 기능이 잘 작동해도 새 정보가 전달되지 않으면 다시 확인하거나 같은 내용을 여러 번 입력해야 합니다. 우리가 함께 해결할 수 있는 현장의 빈틈이 바로 여기에 있습니다.",
+      "layout": "split",
+      "seconds": 30,
+      "refs": [
+        "merit",
+        "brief"
+      ],
+      "call": "해결할 문제 <strong>서로 다른 최신 정보 · 전달 누락 · 반복 확인</strong>",
+      "cue": "장면의 이점과 그 이유를 연결해서 말합니다.",
+      "proof": "공동 시연의 실제 실행과 역할별 기여를 같은 사건 기록으로 확인한다.",
+      "eyebrow": "현장에서 생기는 빈틈",
+      "label": "현장에서 생기는 빈틈",
+      "why": "현장에서 생기는 빈틈를 수상 경쟁력과 팀원의 이점으로 연결한다.",
+      "source": "팀원 설득용 수상 전략 개정 · 사용자 발표자료 제작 요청",
+      "time": "1:50–2:20"
+    },
+    {
+      "scene": 10,
+      "chapter": "심사위원에게 보여줄 장면",
+      "title": "변경 보고 하나로,<br><em>다음 판단까지 바뀐다면.</em>",
+      "lead": "현장 정정이 반영되고,<br>필요한 확인이 돌아오고,<br>그 근거로 대응안이 갱신되는 장면입니다.",
+      "sub": "그 과정에서 각 프로젝트의 기여가 드러납니다.",
+      "visual": "<div class=\"flow-plane\"><div class=\"flow-step\"><span>01</span><div><h3>현장 보고</h3><p>대상자 상태의 변경을 전달</p></div></div><div class=\"flow-step\"><span>02</span><div><h3>전문 검토</h3><p>새 상태에 필요한 정보 확인</p></div></div><div class=\"flow-step\"><span>03</span><div><h3>종합 판단</h3><p>확인 결과와 근거로 대응안 갱신</p></div></div><div class=\"flow-step\"><span>04</span><div><h3>현장 피드백</h3><p>바뀐 이유와 추가 확인사항 공유</p></div></div></div><div class=\"visual-foot\">제안하는 공동 시연 · 정보 전달과 갱신의 실제 동작으로 증명</div>",
+      "note": "이제 반대의 장면을 보여주면 됩니다. 현장의 변경 보고가 들어오자 응급 지원에서 필요한 확인을 하고, 상황실이 근거를 모아 대응안을 갱신합니다. 결과가 다시 현장에 전달되는 겁니다. 이 장면 하나에서 현장성, 협업, 판단의 근거를 함께 보여줄 수 있습니다. 그러면 각자 만든 프로젝트로 이 흐름을 어떻게 만들 수 있을까요?",
+      "layout": "journey",
+      "seconds": 25,
+      "refs": [
+        "merit",
+        "brief"
+      ],
+      "call": "심사에 남길 장면 <strong>새 정보 → 전문 검토 → 대응안 갱신 → 현장 피드백</strong>",
+      "cue": "마지막 문장에서 한 박자 멈춘 뒤 7장으로 넘깁니다. 여기까지 연결 방식은 공개하지 않습니다.",
+      "proof": "공동 시연의 실제 실행과 역할별 기여를 같은 사건 기록으로 확인한다.",
+      "eyebrow": "심사위원에게 보여줄 장면",
+      "label": "심사위원에게 보여줄 장면",
+      "why": "심사위원에게 보여줄 장면를 수상 경쟁력과 팀원의 이점으로 연결한다.",
+      "source": "팀원 설득용 수상 전략 개정 · 사용자 발표자료 제작 요청",
+      "time": "2:20–2:45"
+    },
+    {
+      "scene": 10,
+      "chapter": "우리의 제안",
+      "title": "각자 만들고,<br><em>API로 함께 완성합시다.</em>",
+      "lead": "프로젝트의 결과를 주고받는<br>작은 연결부를 더하면,<br>각자의 기능으로 공동 시연을 만들 수 있습니다.",
+      "sub": "API는 서로의 정보를 주고받는 약속입니다.<br>개별 프로젝트는 독립적으로 유지합니다.",
+      "visual": "<div class=\"network\"><div class=\"orbit\"></div><div class=\"net-node field\"><small>FIELD / 현장 구조</small><h3>Link-One</h3><p>구조 현황 · 대상자 상태</p><b>신진섭</b></div><div class=\"net-node aid\"><small>CARE / 응급 지원</small><h3>RESAID AI</h3><p>상태 해석 · 추가 확인 요청</p><b>채민주</b></div><div class=\"net-node command\"><small>COMMAND / 종합 판단</small><h3>AI 상황실</h3><p>근거 종합 · 임무와 계획 갱신</p><b>김대성 · 송민주</b></div><div class=\"net-label up\">상태 보고 ↑ ↓ 확인 요청</div><div class=\"net-label across\">응급 지원 요청 ⇄ 결과·근거</div><div class=\"net-core\">하나의 사건<br><strong>API</strong><small>연동 제안</small></div></div><div class=\"visual-foot\">연결선은 제안한 정보 흐름 · 실제 송수신 결과는 구현 후 확인</div>",
+      "note": "제안은 간단합니다. 각자의 프로젝트는 자유롭게 개발하고, 마지막에 API로 필요한 결과를 주고받읍시다. API는 서로 다른 프로그램이 정보를 교환하는 약속입니다. Link-One이 현장 정보를 보내면 상황실이 받고, RESAID AI의 검토와 필요한 확인을 주고받은 뒤 결과를 다시 현장에 공유하는 방식입니다. 각자 만든 기능을 살리면서, 한 팀이 완성한 대응 흐름을 보여줄 수 있습니다.",
+      "layout": "split",
+      "seconds": 35,
+      "refs": [
+        "brief",
+        "projects",
+        "merit"
+      ],
+      "call": "연결이 더하는 가치 <strong>개별 완성도 + 실제 연동 기술 + 공동 대응 시연</strong>",
+      "cue": "장면의 이점과 그 이유를 연결해서 말합니다.",
+      "proof": "공동 시연의 실제 실행과 역할별 기여를 같은 사건 기록으로 확인한다.",
+      "eyebrow": "우리의 제안",
+      "label": "우리의 제안",
+      "why": "우리의 제안를 수상 경쟁력과 팀원의 이점으로 연결한다.",
+      "source": "사용자 발표자료 제작 요청 · 신청팀 분석 및 팀 구성 · 2번 · 팀원 설득용 수상 전략 개정",
+      "time": "2:45–3:20"
+    },
+    {
+      "scene": 10,
+      "chapter": "중심 기술 1 / 판단과 근거",
+      "title": "AI가 상황을 읽고,<br><em>RAG가 근거를 더합니다.</em>",
+      "lead": "복합 사고에 필요한 여러 지침을 찾아,<br>현재 상황과 함께 검토하도록 설계합니다.",
+      "sub": "",
+      "visual": "<div class=\"reasoning-map\"><div class=\"map-input\"><small>현장 보고</small><h3>“충돌 후 화재,<br>일부 인명 추락”</h3><p>서로 겹친 사고 상황</p></div><div class=\"map-arrow a1\">→</div><div class=\"reasoning-core\"><small>AI 상황실 · 상황 해석과 종합</small><h3>상황을 이해하고 <br>필요한 대응을 검토</h3><div class=\"core-questions\"><span>무슨 위험인가?</span><span>어떤 근거가 필요한가?</span><span>무엇을 더 확인할까?</span></div></div><div class=\"map-arrow a2\">→</div><div class=\"map-output\"><small>사람에게 제시</small><h3>이유가 있는<br>대응 제안</h3><p>근거 · 미확인사항<br>확인 질문</p></div><div class=\"rag-bridge\"><span>관련 근거 요청 ↓</span><b>RAG · 필요한 구절 검색</b><span>찾은 근거 제공 ↑</span></div><div class=\"manual-bank\"><article><small>충돌</small><b>선체·사건 확인</b></article><article><small>화재</small><b>위험·적용 조건</b></article><article><small>인명 구조</small><b>대상자·구조 현황</b></article></div><div class=\"map-conclusion\">AI는 상황에 맞춰 종합하고, 매뉴얼은 그 판단의 근거를 제공합니다.</div></div>",
+      "note": "그 중심에는 AI 상황실이 있습니다. 첨부한 스토리의 핵심을 두 장으로 설명드리겠습니다. 먼저 AI가 현재 상황을 해석하고, RAG가 필요한 매뉴얼 구절을 찾아 근거로 제공합니다. 충돌과 화재, 인명 추락이 함께 일어나면 관련 지침을 함께 검토하는 겁니다. AI는 그 근거와 현장 정보를 종합해 대응안을 제안합니다. 법령과 필수 절차를 지키고, 사람이 최종 판단하는 구조입니다.",
+      "layout": "concept",
+      "seconds": 40,
+      "refs": [
+        "story",
+        "ragpaper",
+        "state"
+      ],
+      "call": "핵심 개념 <strong>상황을 해석하는 AI + 여러 지침을 찾는 RAG → 근거 있는 대응안</strong>",
+      "cue": "왼쪽 신고 → 중앙 AI → 아래 다중 매뉴얼 → 오른쪽 대응안 순으로 짚습니다.",
+      "proof": "벡터 검색 질의·실제 구절·적용 조건·제안의 연결을 확인한다. 벡터 RAG는 추가 구현 목표다.",
+      "eyebrow": "중심 기술 1 / 판단과 근거",
+      "label": "중심 기술 1 / 판단과 근거",
+      "why": "중심 기술 1 / 판단과 근거를 수상 경쟁력과 팀원의 이점으로 연결한다.",
+      "source": "AI_situation_room_RAG_story.md · Lewis et al. · NeurIPS 2020 · 13_현재상태_요구사항_인수인계.md",
+      "time": "3:20–4:00"
+    },
+    {
+      "scene": 10,
+      "chapter": "중심 기술 2 / 교육내용의 집약",
+      "title": "배운 기술이 모여,<br><em>한 번의 판단에 쓰입니다.</em>",
+      "lead": "AI 상황실은 현장·응급·지침을 모아 해석하는 기술 집약부입니다.<br>각 프로젝트의 전문 정보가 있어야 종합 판단의 재료가 완성됩니다.",
+      "sub": "",
+      "visual": "<div class=\"integration-map\"><div class=\"source-column\"><article><small>Link-One</small><h3>현장 구조 정보</h3></article><article><small>RESAID AI</small><h3>응급 지원 정보</h3></article><article><small>매뉴얼·지침</small><h3>대응의 근거</h3></article></div><div class=\"integration-arrow\">⇄</div><div class=\"integration-center\"><div class=\"hub-title\"><small>우리 팀의 기술 집약부</small><h3>AI 상황실</h3></div><div class=\"tech-bands\"><div><b>자연어 처리</b><span>보고의 의미 이해</span></div><div><b>임베딩 · RAG</b><span>관련 근거 검색</span></div><div><b>Agent · 도구 연동</b><span>전문 검토·정보 확인</span></div><div><b>신뢰성 검증</b><span>누락·충돌·출처 대조</span></div></div></div><div class=\"integration-arrow\">→</div><div class=\"integration-result\"><small>한 사건의 결과</small><h3>대응 제안</h3><p>왜 필요한가</p><h3>확인 질문</h3><p>무엇이 부족한가</p><h3>변경 이유</h3><p>어떤 정보가 바뀌었나</p></div><div class=\"education-return\"><strong>교육에서 배운 기술</strong><span>→</span><strong>각자의 전문 정보</strong><span>→</span><strong>하나의 업무 결과</strong></div></div>",
+      "note": "두 번째는 교육 활용입니다. 현장 구조 정보와 응급 지원 정보, 지침의 근거가 중앙의 AI 상황실에 모입니다. 여기에서 자연어 처리로 보고를 이해하고, 임베딩과 RAG로 근거를 찾고, 에이전트와 도구로 전문 검토를 나눈 뒤 누락과 충돌을 점검합니다. 여러 기술을 하나의 판단에 집약하는 구조입니다. 각 프로젝트가 제공하는 전문 정보가 이 흐름을 완성합니다. 배운 기술이 실제 업무에 어떻게 쓰였는지 한눈에 보여줄 수 있다는 것이 평가상의 강점입니다.",
+      "layout": "concept",
+      "seconds": 40,
+      "refs": [
+        "story",
+        "curriculum",
+        "merit",
+        "state"
+      ],
+      "call": "교육성과를 보여줄 설계 <strong>벡터 RAG·프로젝트 연동은 구현 목표 · 실제 동작 후 성과로 제시</strong>",
+      "cue": "양쪽 프로젝트도 독립된 전문성을 가진다는 점을 강조합니다. 중앙은 기술 통합의 책임을 맡습니다.",
+      "proof": "각 교육요소의 실제 입력·출력을 확인한다. MCP는 실제 프로토콜 요청·응답, 모델 비교는 같은 조건의 별도 시험이 필요하다.",
+      "eyebrow": "중심 기술 2 / 교육내용의 집약",
+      "label": "중심 기술 2 / 교육내용의 집약",
+      "why": "중심 기술 2 / 교육내용의 집약를 수상 경쟁력과 팀원의 이점으로 연결한다.",
+      "source": "AI_situation_room_RAG_story.md · 사용자 제공 교육 커리큘럼 · 팀원 설득용 수상 전략 개정 · 13_현재상태_요구사항_인수인계.md",
+      "time": "4:00–4:40"
+    },
+    {
+      "scene": 10,
+      "chapter": "정확성을 높이는 경로",
+      "title": "정보의 빈틈을 줄여,<br><em>현장 판단을 더 정확하게.</em>",
+      "lead": "같은 사건의 최신 정보를 보고,<br>서로 다른 보고를 대조하고,<br>근거와 함께 다시 판단하도록 합니다.",
+      "sub": "정확성 향상은 공동 시험으로 확인할 목표입니다.",
+      "visual": "<div class=\"accuracy-list\"><article><div><small>전달 누락</small><h3>변경 전 정보가 남음</h3></div><span>→</span><div><b>상태 변경 공유</b><p>새 보고의 반영 여부 확인</p></div></article><article><div><small>불일치</small><h3>보고마다 내용이 다름</h3></div><span>→</span><div><b>출처와 대상자 대조</b><p>확인 질문으로 차이 해소</p></div></article><article><div><small>판단 근거 부족</small><h3>왜 필요한지 알기 어려움</h3></div><span>→</span><div><b>여러 지침과 상황 검토</b><p>근거·적용 조건 함께 제시</p></div></article></div><div class=\"visual-foot\">연동 전후에 누락·정정 반영·근거 오류를 비교 · 정확도 향상 수치는 미측정</div>",
+      "note": "현장에서 정확성이 나아질 수 있는 이유도 구체적으로 설명할 수 있습니다. 첫째, 변경 보고를 공유하면 이전 정보가 남는 문제를 줄일 수 있습니다. 둘째, 현장과 응급 지원의 보고를 같은 대상자로 대조하면 불일치를 찾기 쉽습니다. 셋째, 여러 지침을 근거로 검토하면 제안의 이유를 확인할 수 있습니다. 연결만으로 정답이 보장되는 것은 아니므로, 같은 사건으로 연동 전후의 누락과 정정 반영, 근거 오류를 비교해 실제 개선을 확인하겠습니다.",
+      "layout": "split",
+      "seconds": 35,
+      "refs": [
+        "merit",
+        "story",
+        "brief"
+      ],
+      "call": "현장 가치의 증거 <strong>누락 감소 · 정정 반영 · 근거 오류를 같은 사례로 비교</strong>",
+      "cue": "장면의 이점과 그 이유를 연결해서 말합니다.",
+      "proof": "공동 시연의 실제 실행과 역할별 기여를 같은 사건 기록으로 확인한다.",
+      "eyebrow": "정확성을 높이는 경로",
+      "label": "정확성을 높이는 경로",
+      "why": "정확성을 높이는 경로를 수상 경쟁력과 팀원의 이점으로 연결한다.",
+      "source": "팀원 설득용 수상 전략 개정 · AI_situation_room_RAG_story.md · 사용자 발표자료 제작 요청",
+      "time": "4:40–5:15"
+    },
+    {
+      "scene": 10,
+      "chapter": "왜 수상에 유리한가",
+      "title": "높게 평가받을 이유가<br><em>실제 결과로 남습니다.</em>",
+      "lead": "협업·연동 기술·정확성·교육 활용을<br>각각 설명할 수 있는 공동 결과물.<br>이것이 우리가 노릴 평가상의 이점입니다.",
+      "sub": "",
+      "visual": "<div class=\"award-proof\"><article><b>협업</b><div><h3>내 결과가 동료의 판단을 바꾼다</h3><p>보여줄 증거 · 세 프로젝트의 왕복 처리와 역할별 기여</p></div></article><article><b>API 기술</b><div><h3>서로 다른 프로그램이 실제로 작동한다</h3><p>보여줄 증거 · 요청·응답·상태 반영·실패 처리</p></div></article><article><b>현장 정확성</b><div><h3>잘못 전달된 정보를 발견하고 바로잡는다</h3><p>보여줄 증거 · 불일치 발견 → 확인 → 관련 결과 갱신</p></div></article><article><b>교육 활용</b><div><h3>배운 기술이 대응안의 근거가 된다</h3><p>보여줄 증거 · 검색 구절·에이전트 보고·검증 결과</p></div></article></div>",
+      "note": "이제 왜 평가에서 이점이 생기는지 정리할 수 있습니다. 협업은 서로의 결과가 다음 판단에 쓰이는 것으로 증명합니다. API 기술은 실제 요청과 응답, 상태 반영으로 증명합니다. 현장 정확성은 불일치를 발견하고 확인한 뒤 결과를 갱신하는 과정으로 보여줍니다. 교육 활용은 검색한 근거와 요원 보고가 대응안에 쓰인 장면으로 보여줍니다. 이 네 가지를 한 사건에서 보여줄 수 있다면, 각 프로젝트의 성과에 팀 전체의 설득력을 더할 수 있습니다.",
+      "layout": "split",
+      "seconds": 35,
+      "refs": [
+        "merit",
+        "curriculum",
+        "brief"
+      ],
+      "call": "우리가 노리는 평가 이점 <strong>협업의 결과 + 연동 기술의 완성도 + 현장 활용 + 교육성과</strong>",
+      "cue": "장면의 이점과 그 이유를 연결해서 말합니다.",
+      "proof": "공동 시연의 실제 실행과 역할별 기여를 같은 사건 기록으로 확인한다.",
+      "eyebrow": "왜 수상에 유리한가",
+      "label": "왜 수상에 유리한가",
+      "why": "왜 수상에 유리한가를 수상 경쟁력과 팀원의 이점으로 연결한다.",
+      "source": "팀원 설득용 수상 전략 개정 · 사용자 제공 교육 커리큘럼 · 사용자 발표자료 제작 요청",
+      "time": "5:15–5:50"
+    },
+    {
+      "scene": 10,
+      "chapter": "추가 부담을 줄이는 방법",
+      "title": "각자의 개발에 집중하고,<br><em>연결할 범위는 작게.</em>",
+      "lead": "공통으로 정할 것은 시연 사건과 교환할 정보.<br>연결 코드·형식 조정·통합 문제는<br>제가 최대한 지원하겠습니다.",
+      "sub": "개별 기능 완성 → 작은 연결 시험 → 공동 시연",
+      "visual": "<div class=\"depth-stack\"><article class=\"depth-sheet\"><span class=\"sheet-index\">01</span><div><small>각자 집중</small><h3>기존 프로젝트의 핵심 기능</h3><p>화면·도구·개발 방식은 자유롭게</p></div></article><article class=\"depth-sheet\"><span class=\"sheet-index\">02</span><div><small>함께 합의</small><h3>가상 사건 하나와 필요한 정보</h3><p>처음에는 보고·확인·갱신 한 흐름만</p></div></article><article class=\"depth-sheet\"><span class=\"sheet-index\">03</span><div><small>제가 지원</small><h3>API 연결과 통합 문제 해결</h3><p>정보 형식 조정 · 오류 확인 · 시연 준비</p></div></article></div><div class=\"visual-foot\"></div>",
+      "note": "추가 작업이 부담스러울 수 있다는 점도 알고 있습니다. 그래서 각자 핵심 기능을 우선 완성하고, 공동 시연은 가상 사건 하나로 좁히겠습니다. 초기에 주고받을 정보만 맞추고 작은 연결부터 확인하겠습니다. API 연결 코드와 형식 조정, 통합 과정에서 막히는 문제는 제가 최대한 지원하겠습니다. 연결이 늦어져도 각자의 기능과 성과는 남도록 준비하겠습니다.",
+      "layout": "wide",
+      "seconds": 30,
+      "refs": [
+        "merit",
+        "brief"
+      ],
+      "call": "현실적인 진행 <strong>개발 자율성 유지 · 공동 범위 최소화 · 연결 지원</strong>",
+      "cue": "장면의 이점과 그 이유를 연결해서 말합니다.",
+      "proof": "공동 시연의 실제 실행과 역할별 기여를 같은 사건 기록으로 확인한다.",
+      "eyebrow": "추가 부담을 줄이는 방법",
+      "label": "추가 부담을 줄이는 방법",
+      "why": "추가 부담을 줄이는 방법를 수상 경쟁력과 팀원의 이점으로 연결한다.",
+      "source": "팀원 설득용 수상 전략 개정 · 사용자 발표자료 제작 요청",
+      "time": "5:50–6:20"
+    },
+    {
+      "scene": 10,
+      "chapter": "수상 전략을 보여줄 시연",
+      "title": "심사위원이 따라갈<br><em>하나의 사건을 만듭시다.</em>",
+      "lead": "사고를 접수하고, 새 정보를 반영하고,<br>근거를 확인해 대응안을 갱신하는 흐름에<br>세 프로젝트의 기여를 담겠습니다.",
+      "sub": "각 장면에서 누가 무엇을 더했는지 보여줍니다.",
+      "visual": "<div class=\"flow-plane\"><div class=\"flow-step\"><span>01</span><div><h3>신고와 구조 보고</h3><p>Link-One · 현장 정보의 출발</p></div></div><div class=\"flow-step\"><span>02</span><div><h3>대상자 확인</h3><p>RESAID AI · 필요한 정보 보완</p></div></div><div class=\"flow-step\"><span>03</span><div><h3>근거와 종합</h3><p>AI 상황실 · 대응 제안과 이유</p></div></div><div class=\"flow-step\"><span>04</span><div><h3>정정과 공동 갱신</h3><p>세 프로젝트 · 바뀐 결과 확인</p></div></div></div><div class=\"visual-foot\">실제 연동이 끝난 범위로 시연 · 교육요소별 근거와 실패 기록도 준비</div>",
+      "note": "공동 발표는 한 사건을 따라가게 만들면 됩니다. Link-One에서 신고와 구조 정보를 보여주고, RESAID AI가 필요한 상태를 확인합니다. 상황실은 매뉴얼 근거와 보고를 모아 대응안을 제안합니다. 마지막에 현장 정보를 하나 정정해 세 프로젝트의 결과가 어떻게 바뀌는지 보여줍니다. 이 흐름이면 각자의 기능, 협업의 효과, 기술의 쓰임을 심사위원이 함께 이해할 수 있습니다.",
+      "layout": "journey",
+      "seconds": 30,
+      "refs": [
+        "merit",
+        "brief"
+      ],
+      "call": "발표의 차별화 <strong>세 기능의 소개 → 한 사건을 함께 해결한 결과</strong>",
+      "cue": "장면의 이점과 그 이유를 연결해서 말합니다.",
+      "proof": "공동 시연의 실제 실행과 역할별 기여를 같은 사건 기록으로 확인한다.",
+      "eyebrow": "수상 전략을 보여줄 시연",
+      "label": "수상 전략을 보여줄 시연",
+      "why": "수상 전략을 보여줄 시연를 수상 경쟁력과 팀원의 이점으로 연결한다.",
+      "source": "팀원 설득용 수상 전략 개정 · 사용자 발표자료 제작 요청",
+      "time": "6:20–6:50"
+    },
+    {
+      "scene": 10,
+      "chapter": "개발 지원 약속",
+      "title": "연결과 개발 지원은<br><em>제가 함께하겠습니다.</em>",
+      "lead": "각자 만들고 싶은 기능에 집중하세요.<br>공동 결과물을 만드는 연결 작업은<br>제가 최대한 지원하겠습니다.",
+      "sub": "",
+      "visual": "<div class=\"promise-plane\"><span class=\"quote-mark\">“</span><h3>API 연결과 개발 지원은<br>제가 최대한 맡겠습니다.</h3><p>각자의 핵심 기능에 집중할 수 있도록 지원하겠습니다.</p><div class=\"promise-items\"><div>요청·응답 형식 정리</div><div>연결 코드와 오류 점검</div><div>통합 시연·문제 해결 지원</div></div></div>",
+      "note": "저는 API 연결이나 개발 관련 지식이 어느 정도 있으니, 마지막 연결 작업과 개발 중 막히는 부분을 최대한 지원하겠습니다. 각자 만들고 싶은 기능을 우선 잘 만들어 주세요. 정보 형식을 맞추는 일, 연결 코드를 붙이는 일, 오류를 확인하고 공동 시연을 준비하는 일은 함께 풀겠습니다. 여러분의 프로젝트가 실제 현장의 다음 업무에 쓰이는 모습까지 보여줄 수 있도록 돕겠습니다.",
+      "layout": "promise",
+      "seconds": 35,
+      "refs": [
+        "merit",
+        "brief"
+      ],
+      "call": "지원할 일 <strong>API 연결 · 개발 문제 해결 · 통합 시연 준비</strong>",
+      "cue": "장면의 이점과 그 이유를 연결해서 말합니다.",
+      "proof": "공동 시연의 실제 실행과 역할별 기여를 같은 사건 기록으로 확인한다.",
+      "eyebrow": "개발 지원 약속",
+      "label": "개발 지원 약속",
+      "why": "개발 지원 약속를 수상 경쟁력과 팀원의 이점으로 연결한다.",
+      "source": "팀원 설득용 수상 전략 개정 · 사용자 발표자료 제작 요청",
+      "time": "6:50–7:25"
+    },
+    {
+      "scene": 10,
+      "chapter": "팀에 드리는 제안",
+      "title": "각자의 성과에,<br><em>팀의 수상 경쟁력을.</em>",
+      "lead": "개발의 자유는 유지하고,<br>함께 만들었기에 가능한 현장 가치를<br>하나의 결과물로 보여줍시다.",
+      "sub": "먼저 정할 두 가지<br>① 공동 시연 사건 ② 서로에게 필요한 정보",
+      "visual": "<div class=\"closing-composition\"><div class=\"closing-merit\">개인 완성도<span>+</span>팀의 협업 성과</div><h3>실제로 쓰이는 기술,<br>함께 검증한 현장 가치.</h3><div class=\"closing-award\">수상을 목표로<br><strong>함께 완성합시다.</strong></div></div>",
+      "note": "제가 제안하는 것은 각자의 좋은 프로젝트에 팀으로서의 성과를 더하는 일입니다. 서로의 전문성을 활용하고, 배운 기술을 실제 업무에 쓰고, 정보가 바뀌어도 함께 대응하는 모습을 보여주자는 겁니다. 그러면 우리의 결과물을 더 높게 평가할 근거도 많아집니다. 먼저 공동 시연 사건과 서로에게 필요한 정보만 정해봅시다. 연결과 개발은 최대한 지원하겠습니다. 수상을 목표로 함께 완성했으면 합니다.",
+      "layout": "split",
+      "seconds": 35,
+      "refs": [
+        "merit",
+        "brief"
+      ],
+      "call": "우리의 선택 <strong>각자 자유롭게 완성하고 · 함께 작동하는 성과로 수상을 노리기</strong>",
+      "cue": "장면의 이점과 그 이유를 연결해서 말합니다.",
+      "proof": "공동 시연의 실제 실행과 역할별 기여를 같은 사건 기록으로 확인한다.",
+      "eyebrow": "팀에 드리는 제안",
+      "label": "팀에 드리는 제안",
+      "why": "팀에 드리는 제안를 수상 경쟁력과 팀원의 이점으로 연결한다.",
+      "source": "팀원 설득용 수상 전략 개정 · 사용자 발표자료 제작 요청",
+      "time": "7:25–8:00"
+    }
+  ],
+  "final": [
+    {
+      "scene": 10,
+      "chapter": "세 프로젝트의 공동 대응",
+      "eyebrow": "01 / 세 프로젝트의 공동 대응",
+      "title": "현장의 변화가,<br><em>함께 움직이도록.</em>",
+      "lead": "현장 구조 · 응급 지원 · AI 상황실.<br>하나의 사고 정보를 연결해<br>대응안을 함께 갱신하는 2팀입니다.",
+      "sub": "신진섭 · 채민주 · 김대성 · 송민주<br>현재 프로토타입 + API 연동 확장 제안",
+      "label": "세 프로젝트의 공동 대응",
+      "call": "2팀 <strong>현장 구조 ⇄ 응급 지원 ⇄ 종합 상황</strong>",
+      "note": "해양사고에서는 현장의 구조 보고, 대상자의 상태, 상황실의 대응 판단이 함께 바뀝니다. 2팀은 Link-One, RESAID AI, AI 상황실을 같은 사건으로 연결하는 방향을 제안합니다. 먼저 현재 상황실의 흐름을 설명하고, 그 판단의 근거와 세 프로젝트의 연동 목표를 보여드리겠습니다.",
+      "cue": "화면의 핵심 관계를 짚고 다음 장면으로 이어갑니다.",
+      "refs": [
+        "roster",
+        "projects",
+        "brief"
+      ],
+      "why": "세 프로젝트의 공동 대응를 통해 앞 장면의 문제와 다음 실행을 연결한다.",
+      "proof": "제안한 흐름의 실제 입력·출력과 근거 기록을 확보한다.",
+      "source": "최신 팀 편성 이미지 · 4번 · 신청팀 분석 및 팀 구성 · 2번 · 사용자 발표자료 제작 요청",
+      "visual": "<div class=\"network\"><div class=\"orbit\"></div><div class=\"net-node field\"><small>FIELD / 현장 구조</small><h3>Link-One</h3><p>구조 현황 · 대상자 상태</p><b>현장의 변화가 입력된다</b></div><div class=\"net-node aid\"><small>CARE / 응급 지원</small><h3>RESAID AI</h3><p>상태 해석 · 추가 확인 요청</p><b>필요한 확인을 돌려준다</b></div><div class=\"net-node command\"><small>COMMAND / 종합 판단</small><h3>AI 상황실</h3><p>근거 종합 · 임무와 계획 갱신</p><b>현장에 대응 제안을 공유한다</b></div><div class=\"net-label up\">상태 보고 ↑ ↓ 확인 요청</div><div class=\"net-label across\">응급 지원 요청 ⇄ 결과·근거</div><div class=\"net-core\">하나의 사건<br><strong>API</strong><small>연동 제안</small></div></div><div class=\"visual-foot\">연결선은 제안한 정보 흐름 · 실제 송수신 결과는 구현 후 확인</div>",
+      "seconds": 20,
+      "time": "0:00–0:20"
+    },
+    {
+      "scene": 1,
+      "chapter": "사건 접수",
+      "eyebrow": "02 / 사건 접수",
+      "title": "신고는 하나.<br><em>확인할 것은<br>여러 가지.</em>",
+      "lead": "승선원은 정확한가.<br>현장 기상과 대응지침은 무엇인가.<br>어떤 가용자원을 검토해야 하는가.",
+      "sub": "신고·명부·기상·지침을 연결해<br>공통 상황을 정리하는 것이 출발점입니다.",
+      "label": "사건 접수",
+      "call": "S0 <strong>신고상 5명 · 구조 보고 4명 · 소재 미확인 1명</strong>",
+      "note": "가상 어선 A호의 충돌 신고입니다. 신고상 승선원은 5명, 구조 보고는 4명, 소재 미확인은 1명입니다. 침수 여부는 아직 확인되지 않았습니다. 이 입력에서 무엇을 조사하고 누구에게 맡길지 결정하는 것이 상황실장의 역할입니다.",
+      "cue": "5·4·1을 짚고 바로 다음 장면의 요원 지시로 연결합니다.",
+      "time": "0:20–0:45",
+      "refs": [
+        "s0",
+        "strategy"
+      ],
+      "why": "최초 인원과 미확인 정보를 짧게 제시해 뒤의 불일치 확인에 기준점을 만든다.",
+      "proof": "신고 원문, 출처, 접수시각이 저장된 화면을 제시한다.",
+      "source": "02 3. 첫 입력 S0 · 06 2. 심사위원에게 먼저 증명할 것",
+      "seconds": 25
+    },
+    {
+      "scene": 4,
+      "chapter": "왜 여러 AI인가",
+      "eyebrow": "03 / 왜 여러 AI인가",
+      "title": "필요한 전문성에,<br><em>추론을 집중.</em>",
+      "lead": "상황실장은 필요한 요원만 선택하고,<br>요원은 각자의 지침·자료·도구로<br>맡은 문제를 집중 검토합니다.",
+      "sub": "독립 작업은 병렬로, 재검토는 영향받는 임무만.<br>반복 낭비를 줄이고 판단을 돕는 것이 목표입니다.",
+      "label": "왜 여러 AI인가",
+      "call": "선택과 집중 <strong>필요한 요원 선택 → 전문 검토 → 보고 종합</strong>",
+      "note": "필요한 순간, 필요한 전문성에 추론을 집중하는 구조입니다. 사용자는 하나의 대화를 이어가고, 상황실장은 그때 필요한 요원만 선택합니다. 요원들은 각자의 지침·자료·도구로 집중 검토하고, 독립 작업은 동시에 수행합니다. 바뀐 정보에 영향받는 임무만 재검토해 불필요한 반복을 줄이는 것이 목표입니다. 보고는 상황실장이 종합해 사용자의 판단을 돕습니다.",
+      "cue": "역할별 전문화는 지침·자료·도구 구성입니다. 별도 모델 학습 완료를 뜻하지 않습니다. 하나의 사용자 대화와 역할별 작업 맥락을 구분합니다. 총비용·속도·품질 효과는 아직 미측정입니다.",
+      "time": "0:45–1:15",
+      "refs": [
+        "focus",
+        "roles"
+      ],
+      "why": "사용자 요청을 반영해 다중 에이전트의 필요성을 선택 배정·역할별 맥락·집중 검토·선택적 재검토로 설명한다. 자원 절감은 달성 결과가 아닌 설계 목표로 표시한다.",
+      "proof": "단일 에이전트·전원 호출·선택 호출을 같은 사건·모델·자료·도구 접근으로 비교한다. 총 토큰·비용·최초/최종 보고 시간·누락·모순과 실제 병렬 구간을 기록한다.",
+      "source": "05 3.1 왜 여러 AI 에이전트인가 · 01 3. 역할과 책임",
+      "seconds": 30
+    },
+    {
+      "scene": 10,
+      "chapter": "사건을 함께 보는 세 역할",
+      "eyebrow": "04 / 사건을 함께 보는 세 역할",
+      "title": "현장·응급·상황,<br><em>연결할 이유.</em>",
+      "lead": "Link-One은 현장 구조 정보를,<br>RESAID AI는 응급 지원 정보를,<br>AI 상황실은 종합 대응안을 다룹니다.",
+      "sub": "각 프로젝트는 독립적으로 개발하고,<br>결과와 확인 요청을 API로 교환할 계획입니다.",
+      "label": "사건을 함께 보는 세 역할",
+      "call": "개발 방향 <strong>독립 기능을 유지하며 같은 사건의 정보 교환</strong>",
+      "note": "현재 신고 예시를 팀 전체 흐름으로 넓혀 보겠습니다. 현장 구조는 Link-One, 응급 지원은 RESAID AI, 보고의 종합과 계획 갱신은 AI 상황실이 맡습니다. 각 프로젝트를 자유롭게 만들고 필요한 정보만 API로 연결한다는 방향입니다. 이 연동은 아직 구현 전인 확장 제안입니다.",
+      "cue": "화면의 핵심 관계를 짚고 다음 장면으로 이어갑니다.",
+      "refs": [
+        "roster",
+        "projects",
+        "brief"
+      ],
+      "why": "사건을 함께 보는 세 역할를 통해 앞 장면의 문제와 다음 실행을 연결한다.",
+      "proof": "제안한 흐름의 실제 입력·출력과 근거 기록을 확보한다.",
+      "source": "최신 팀 편성 이미지 · 4번 · 신청팀 분석 및 팀 구성 · 2번 · 사용자 발표자료 제작 요청",
+      "visual": "<div class=\"network\"><div class=\"orbit\"></div><div class=\"net-node field\"><small>FIELD / 현장 구조</small><h3>Link-One</h3><p>구조 현황 · 대상자 상태</p><b>신진섭</b></div><div class=\"net-node aid\"><small>CARE / 응급 지원</small><h3>RESAID AI</h3><p>상태 해석 · 추가 확인 요청</p><b>채민주</b></div><div class=\"net-node command\"><small>COMMAND / 종합 판단</small><h3>AI 상황실</h3><p>근거 종합 · 임무와 계획 갱신</p><b>김대성 · 송민주</b></div><div class=\"net-label up\">상태 보고 ↑ ↓ 확인 요청</div><div class=\"net-label across\">응급 지원 요청 ⇄ 결과·근거</div><div class=\"net-core\">하나의 사건<br><strong>API</strong><small>연동 제안</small></div></div><div class=\"visual-foot\">연결선은 제안한 정보 흐름 · 실제 송수신 결과는 구현 후 확인</div>",
+      "seconds": 25,
+      "time": "1:15–1:40"
+    },
+    {
+      "scene": 10,
+      "chapter": "상황실의 판단 구조",
+      "eyebrow": "05 / 상황실의 판단 구조",
+      "title": "상황을 읽고,<br><em>대응안을 만든다.</em>",
+      "lead": "신고를 이해하고 필요한 임무를 나눈 뒤,<br>요원 보고를 모아 대응안을 구성합니다.<br>새 보고가 오면 다시 검토합니다.",
+      "sub": "End-to-End: 접수부터 대응안까지 이어지는 흐름<br>AI가 제안하고, 사람이 최종 판단합니다.",
+      "label": "상황실의 판단 구조",
+      "call": "설계의 중심 <strong>상황 해석 → 전문 검토 → 대응안 → 재검토</strong>",
+      "note": "첨부 스토리의 출발점은 접수부터 대응 방향 도출까지 AI가 상황을 해석하는 구조입니다. 여기서 End-to-End는 업무 흐름이 이어진다는 의미로 쓰겠습니다. 단일 신경망을 종단간 학습했다는 뜻은 아닙니다. 전문요원의 검토와 프로그램의 형식·합계 검사를 거쳐 사람이 판단할 수 있는 제안을 만듭니다.",
+      "cue": "화면의 핵심 관계를 짚고 다음 장면으로 이어갑니다.",
+      "refs": [
+        "story",
+        "state"
+      ],
+      "why": "상황실의 판단 구조를 통해 앞 장면의 문제와 다음 실행을 연결한다.",
+      "proof": "제안한 흐름의 실제 입력·출력과 근거 기록을 확보한다.",
+      "source": "AI_situation_room_RAG_story.md · 13_현재상태_요구사항_인수인계.md",
+      "visual": "<div class=\"flow-plane\"><div class=\"flow-step\"><span>01</span><div><h3>상황 인지</h3><p>신고와 현장 정보를 사건에 연결</p></div></div><div class=\"flow-step\"><span>02</span><div><h3>전문 검토</h3><p>필요한 요원 선택·독립 임무 병렬 수행</p></div></div><div class=\"flow-step\"><span>03</span><div><h3>종합 제안</h3><p>근거·미확인사항·우선순위 제시</p></div></div><div class=\"flow-step\"><span>04</span><div><h3>재검토</h3><p>상태가 바뀌면 관련 임무와 계획 갱신</p></div></div></div><div class=\"visual-foot\">단일 모델의 종단간 학습이나 자율 지휘 구현을 뜻하지 않음</div>",
+      "seconds": 30,
+      "time": "1:40–2:10"
+    },
+    {
+      "scene": 10,
+      "chapter": "판단의 근거",
+      "eyebrow": "06 / 판단의 근거",
+      "title": "그 판단에는<br><em>어떤 근거가 있나.</em>",
+      "lead": "유창한 답변만으로는 부족합니다.<br>적용한 지침과 빠진 정보를<br>사람이 확인할 수 있어야 합니다.",
+      "sub": "근거 없는 조치 · 절차 누락 · 보고 간 모순<br>이 세 가지를 검증 대상으로 둡니다.",
+      "label": "판단의 근거",
+      "call": "검증할 질문 <strong>출처가 있는가 · 현재 상황에 적용되는가 · 누락은 없는가</strong>",
+      "note": "AI가 상황을 해석할 수 있다는 설명 다음에는 그 판단을 어떻게 검토할지 답해야 합니다. 적용 지침, 빠진 정보, 보고 간 충돌을 드러내겠습니다. RAG와 검증요원은 이 문제를 줄이기 위한 설계이며 정확성을 자동 보장하지 않습니다.",
+      "cue": "화면의 핵심 관계를 짚고 다음 장면으로 이어갑니다.",
+      "refs": [
+        "story",
+        "state"
+      ],
+      "why": "판단의 근거를 통해 앞 장면의 문제와 다음 실행을 연결한다.",
+      "proof": "제안한 흐름의 실제 입력·출력과 근거 기록을 확보한다.",
+      "source": "AI_situation_room_RAG_story.md · 13_현재상태_요구사항_인수인계.md",
+      "visual": "<div class=\"depth-stack \"><article class=\"depth-sheet\"><span class=\"sheet-index\">01</span><div><small>근거</small><h3>이 조치를 제안한 이유</h3><p>문서·구절·버전·적용 조건 확인</p></div></article><article class=\"depth-sheet\"><span class=\"sheet-index\">02</span><div><small>정보</small><h3>아직 모르는 것은 무엇인가</h3><p>확인 질문과 필요한 이유 표시</p></div></article><article class=\"depth-sheet\"><span class=\"sheet-index\">03</span><div><small>검증</small><h3>서로 맞지 않는 보고는 없는가</h3><p>인원 정합성·출처·상황 버전 점검</p></div></article></div><div class=\"visual-foot\">근거를 제시하는 기능과 정확성 보장은 구분</div>",
+      "seconds": 25,
+      "time": "2:10–2:35"
+    },
+    {
+      "scene": 10,
+      "chapter": "RAG가 맡는 역할",
+      "eyebrow": "07 / RAG가 맡는 역할",
+      "title": "관련 지침을,<br><em>판단의 근거로.</em>",
+      "lead": "매뉴얼을 구절로 나눠 임베딩하고,<br>현재 상황과 관련된 내용을 검색해<br>AI의 검토 자료로 제공합니다.",
+      "sub": "RAG: 검색한 근거를 활용한 답변 생성<br>벡터 검색은 추가 구현 목표입니다.",
+      "label": "RAG가 맡는 역할",
+      "call": "구현 후 보여줄 증거 <strong>검색 질의 → 관련 구절 → 반영한 대응안</strong>",
+      "note": "RAG는 관련 자료를 검색해 모델이 참고하도록 하는 구조입니다. 현재 앱은 단어 기반 자료 검색이고 벡터 검색은 앞으로 구현해야 합니다. 문서의 버전과 적용 조건도 확인해야 하므로 검색 유사도를 대응의 중요도로 취급하지 않습니다. 실제 검색 구절이 어떤 제안에 쓰였는지 연결해 보여주는 것을 목표로 합니다.",
+      "cue": "화면의 핵심 관계를 짚고 다음 장면으로 이어갑니다.",
+      "refs": [
+        "story",
+        "ragpaper",
+        "state"
+      ],
+      "why": "RAG가 맡는 역할를 통해 앞 장면의 문제와 다음 실행을 연결한다.",
+      "proof": "제안한 흐름의 실제 입력·출력과 근거 기록을 확보한다.",
+      "source": "AI_situation_room_RAG_story.md · Lewis et al. · NeurIPS 2020 · 13_현재상태_요구사항_인수인계.md",
+      "visual": "<div class=\"depth-stack \"><article class=\"depth-sheet\"><span class=\"sheet-index\">01</span><div><small>RETRIEVE</small><h3>여러 관련 구절 검색</h3><p>충돌·화재·구조 등 필요한 주제를 함께 탐색</p></div></article><article class=\"depth-sheet\"><span class=\"sheet-index\">02</span><div><small>CHECK</small><h3>적용 조건·버전 확인</h3><p>유사도는 관련성의 단서 · 조치 우선순위와 구분</p></div></article><article class=\"depth-sheet\"><span class=\"sheet-index\">03</span><div><small>GENERATE</small><h3>근거를 연결한 대응안</h3><p>문서와 구절을 표시하고 미확인사항 질문</p></div></article></div><div class=\"visual-foot\">현재 앱은 단어 기반 자료 검색 · 벡터 RAG는 구현 전</div>",
+      "seconds": 35,
+      "time": "2:35–3:10"
+    },
+    {
+      "scene": 10,
+      "chapter": "근거와 판단의 관계",
+      "eyebrow": "08 / 근거와 판단의 관계",
+      "title": "지침을 읽은 뒤,<br><em>상황에 맞춰 검토.</em>",
+      "lead": "검색한 문장을 현재 보고와 대조하고,<br>적용 조건과 빠진 정보를 확인해<br>필요한 대응안을 구성합니다.",
+      "sub": "법령·필수 절차는 지켜야 할 제약입니다.<br>여러 근거의 해석과 종합을 AI가 돕습니다.",
+      "label": "근거와 판단의 관계",
+      "call": "역할의 구분 <strong>RAG는 근거 공급 · AI는 종합 제안 · 사람은 최종 판단</strong>",
+      "note": "RAG를 쓴다면 결국 매뉴얼을 그대로 읽는 것 아니냐는 질문이 나올 수 있습니다. 여기서 검색 자료는 현재 상황을 검토할 근거입니다. 법령과 필수 절차는 지키면서, 여러 근거의 적용 조건을 비교하고 미확인 정보를 묻는 역할을 AI가 맡습니다. 최종 운영 판단은 사람이 합니다.",
+      "cue": "화면의 핵심 관계를 짚고 다음 장면으로 이어갑니다.",
+      "refs": [
+        "story",
+        "state"
+      ],
+      "why": "근거와 판단의 관계를 통해 앞 장면의 문제와 다음 실행을 연결한다.",
+      "proof": "제안한 흐름의 실제 입력·출력과 근거 기록을 확보한다.",
+      "source": "AI_situation_room_RAG_story.md · 13_현재상태_요구사항_인수인계.md",
+      "visual": "<div class=\"flow-plane\"><div class=\"flow-step\"><span>01</span><div><h3>근거 확인</h3><p>문서·구절·개정 시점</p></div></div><div class=\"flow-step\"><span>02</span><div><h3>상황과 대조</h3><p>확인된 사실·추정·미확인 구분</p></div></div><div class=\"flow-step\"><span>03</span><div><h3>제약과 충돌 검토</h3><p>필수 절차·근거 간 불일치 확인</p></div></div><div class=\"flow-step\"><span>04</span><div><h3>제안과 사람의 판단</h3><p>이유·한계·추가 질문을 함께 제시</p></div></div></div><div class=\"visual-foot\">검색 결과를 읽는 것과 올바르게 적용하는 것은 별도 검증</div>",
+      "seconds": 35,
+      "time": "3:10–3:45"
+    },
+    {
+      "scene": 10,
+      "chapter": "복합 사고와 다중 근거",
+      "eyebrow": "09 / 복합 사고와 다중 근거",
+      "title": "현실의 사고는<br><em>여러 지침에 걸친다.</em>",
+      "lead": "충돌과 화재, 인명 추락이 겹치면<br>관련 매뉴얼을 함께 검토하고<br>현재 상황에 맞는 대응안을 구성합니다.",
+      "sub": "법령과 필수 절차를 제약으로 지키고,<br>판단 근거의 충돌·빈틈은 확인합니다.",
+      "label": "복합 사고와 다중 근거",
+      "call": "기술 목표 <strong>복수 근거 + 현장 정보 + 적용 조건 → 종합 제안</strong>",
+      "note": "한 번의 사고가 한 종류의 매뉴얼에만 들어맞지는 않을 수 있습니다. 충돌, 화재, 인명 구조의 근거를 함께 찾고 현장 정보와 대조하자는 것이 스토리의 핵심입니다. 매뉴얼을 참고한다는 말이 법령이나 필수 절차를 무시한다는 뜻은 아닙니다. 매뉴얼에 없는 조합을 다루는 능력도 별도의 평가가 필요합니다.",
+      "cue": "화면의 핵심 관계를 짚고 다음 장면으로 이어갑니다.",
+      "refs": [
+        "story"
+      ],
+      "why": "복합 사고와 다중 근거를 통해 앞 장면의 문제와 다음 실행을 연결한다.",
+      "proof": "제안한 흐름의 실제 입력·출력과 근거 기록을 확보한다.",
+      "source": "AI_situation_room_RAG_story.md",
+      "visual": "<div class=\"depth-stack \"><article class=\"depth-sheet\"><span class=\"sheet-index\">01</span><div><small>충돌</small><h3>사건과 선체 상태</h3><p>확인된 사실과 추가 확인사항</p></div></article><article class=\"depth-sheet\"><span class=\"sheet-index\">02</span><div><small>화재</small><h3>화재 관련 조건</h3><p>위험 요소와 적용 지침</p></div></article><article class=\"depth-sheet\"><span class=\"sheet-index\">03</span><div><small>인명 구조</small><h3>대상자 상태와 구조 보고</h3><p>현장·응급 지원 정보와 함께 검토</p></div></article></div><div class=\"visual-foot\">가상 복합 사고 · 매뉴얼별 검색 결과는 구현 후 검증</div>",
+      "seconds": 35,
+      "time": "3:45–4:20"
+    },
+    {
+      "scene": 10,
+      "chapter": "다중 매뉴얼 검색 설계",
+      "eyebrow": "10 / 다중 매뉴얼 검색 설계",
+      "title": "관련 근거를<br><em>함께 찾는다.</em>",
+      "lead": "충돌·화재·인명 구조로 질의를 나누고,<br>관련 구절의 출처와 적용 조건을 모아<br>요원이 함께 검토하도록 설계합니다.",
+      "sub": "검색 유사도는 관련성의 단서입니다.<br>조치 우선순위는 상황과 필수 기준으로 판단합니다.",
+      "label": "다중 매뉴얼 검색 설계",
+      "call": "RAG 검증 <strong>필요한 근거를 찾았는가 · 대응안에 올바르게 반영했는가</strong>",
+      "note": "복합 사건을 하나의 이름으로만 분류하면 필요한 근거가 빠질 수 있습니다. 여러 주제로 검색하고 문서 버전과 적용 조건을 확인하는 구조를 제안합니다. 유사도 점수가 높다고 구조상 우선순위가 높은 것은 아닙니다. 관련 구절을 잘 찾는지와 그 구절을 올바르게 사용하는지를 나눠 검증해야 합니다.",
+      "cue": "화면의 핵심 관계를 짚고 다음 장면으로 이어갑니다.",
+      "refs": [
+        "story",
+        "ragpaper",
+        "state"
+      ],
+      "why": "다중 매뉴얼 검색 설계를 통해 앞 장면의 문제와 다음 실행을 연결한다.",
+      "proof": "제안한 흐름의 실제 입력·출력과 근거 기록을 확보한다.",
+      "source": "AI_situation_room_RAG_story.md · Lewis et al. · NeurIPS 2020 · 13_현재상태_요구사항_인수인계.md",
+      "visual": "<div class=\"depth-stack \"><article class=\"depth-sheet\"><span class=\"sheet-index\">01</span><div><small>INPUT</small><h3>충돌 + 화재 + 인명 추락</h3><p>가상 보고에서 검토할 주제 추출</p></div></article><article class=\"depth-sheet\"><span class=\"sheet-index\">02</span><div><small>RETRIEVAL</small><h3>복수 매뉴얼의 관련 구절</h3><p>문서·버전·구절·적용 조건</p></div></article><article class=\"depth-sheet\"><span class=\"sheet-index\">03</span><div><small>OUTPUT</small><h3>근거를 묶은 검토 자료</h3><p>중복·충돌·부족한 근거 표시</p></div></article></div><div class=\"visual-foot\">벡터 검색·다중 매뉴얼 적용 평가는 구현 후 수행</div>",
+      "seconds": 35,
+      "time": "4:20–4:55"
+    },
+    {
+      "scene": 4,
+      "chapter": "요원의 종합과 검증",
+      "eyebrow": "11 / 요원의 종합과 검증",
+      "title": "근거를 나눠 보고,<br><em>판단을 모은다.</em>",
+      "lead": "상황실장은 필요한 임무를 배정하고,<br>요원은 근거와 확인사항을 보고합니다.<br>종합 결과에는 이유를 남깁니다.",
+      "sub": "역할별 검토와 실제 병렬 실행을 구분해 제시합니다.<br>내부 추론 원문 대신 지시·보고·근거를 보여줍니다.",
+      "label": "요원의 종합과 검증",
+      "call": "확인할 기록 <strong>배정 이유 → 개별 보고 → 검증 → 최종 제안</strong>",
+      "note": "상황실장은 먼저 요청 범위를 파악하고 필요한 전문요원에게 배정하는 방향입니다. 요원은 결과만 보고하는 것이 아니라 근거와 확인할 정보도 돌려줍니다. 독립 작업의 병렬 실행 구간은 실제 기록으로 확인해야 합니다. 현재 첫 배정 단계의 경량화와 질문 우선순위 선정은 남은 개선 과제입니다.",
+      "cue": "화면의 핵심 관계를 짚고 다음 장면으로 이어갑니다.",
+      "refs": [
+        "state",
+        "focus"
+      ],
+      "why": "요원의 종합과 검증를 통해 앞 장면의 문제와 다음 실행을 연결한다.",
+      "proof": "제안한 흐름의 실제 입력·출력과 근거 기록을 확보한다.",
+      "source": "13_현재상태_요구사항_인수인계.md · 05_발표자료.md",
+      "visual": "",
+      "seconds": 25,
+      "time": "4:55–5:20"
+    },
+    {
+      "scene": 10,
+      "chapter": "왕복하는 정보",
+      "eyebrow": "12 / 왕복하는 정보",
+      "title": "보낸 결과가<br><em>다음 판단으로.</em>",
+      "lead": "현장 보고를 보내고,<br>전문 검토와 종합 결과를 돌려받고,<br>새 현장 정보로 다시 갱신합니다.",
+      "sub": "단일 사건의 왕복 흐름 하나를<br>첫 공동 시연 목표로 삼습니다.",
+      "label": "왕복하는 정보",
+      "call": "완료의 기준 <strong>실제 송신·수신·상태 반영 기록이 한 사건으로 연결</strong>",
+      "note": "첫 연결 시연은 작게 잡습니다. 현장 보고를 AI 상황실이 받고 필요한 정보를 RESAID AI에 요청합니다. 돌아온 결과와 근거를 종합해 현장에 확인 요청을 보냅니다. 현장의 후속 보고까지 같은 사건으로 연결하면 왕복 흐름을 보여줄 수 있습니다. 실제 외부 API 연결은 아직 구현 전입니다.",
+      "cue": "화면의 핵심 관계를 짚고 다음 장면으로 이어갑니다.",
+      "refs": [
+        "brief",
+        "story"
+      ],
+      "why": "왕복하는 정보를 통해 앞 장면의 문제와 다음 실행을 연결한다.",
+      "proof": "제안한 흐름의 실제 입력·출력과 근거 기록을 확보한다.",
+      "source": "사용자 발표자료 제작 요청 · AI_situation_room_RAG_story.md",
+      "visual": "<div class=\"flow-plane\"><div class=\"flow-step\"><span>01</span><div><h3>Link-One → AI 상황실</h3><p>사건·구조 현황·대상자 상태</p></div></div><div class=\"flow-step\"><span>02</span><div><h3>AI 상황실 ⇄ RESAID AI</h3><p>응급 지원 요청 ⇄ 확인사항·근거</p></div></div><div class=\"flow-step\"><span>03</span><div><h3>AI 상황실 → Link-One</h3><p>종합 제안·현장 확인 요청</p></div></div><div class=\"flow-step\"><span>04</span><div><h3>Link-One → 두 프로젝트</h3><p>확인 결과·상태 변경 보고</p></div></div></div><div class=\"visual-foot\">API 연동 설계 제안 · 연결 대상과 주소는 협의</div>",
+      "seconds": 35,
+      "time": "5:20–5:55"
+    },
+    {
+      "scene": 6,
+      "chapter": "불일치 확인",
+      "eyebrow": "13 / 불일치 확인",
+      "title": "명부에는 7명.<br><em>먼저 확인한다.</em>",
+      "lead": "최초 신고 5명과 명부 7명을<br>각각의 출처로 함께 남깁니다.<br>실제 탑승 명부인지 사용자에게 묻습니다.",
+      "sub": "명부 전체를 ID로 대조.<br>구조 보고 P01–P04, 나머지 3명은 잠정 집계.",
+      "label": "불일치 확인",
+      "call": "S1 <strong>명부 기준 7 = 4 + 3</strong><span>실제 탑승 확인 전에는 총원을 확정하지 않음</span>",
+      "note": "명부에는 7명이 있습니다. 하지만 최초 신고는 5명이었습니다. 명부의 모든 ID를 대조하고 구조 보고 명단과 비교하되, 이 명부가 실제 출항 명부인지 먼저 확인합니다. 숫자를 자동으로 덮어쓰지 않고 사람이 불일치를 해소하도록 연결하는 장면입니다.",
+      "cue": "확인 질문을 읽고 잠시 멈춥니다. 숫자의 충격보다 확인 절차가 중요한 장면입니다.",
+      "time": "5:55–6:25",
+      "refs": [
+        "s1",
+        "strategy"
+      ],
+      "why": "핵심 차별점인 명부 불일치와 사용자 확인을 발표 전반부로 앞당긴다.",
+      "proof": "중복 ID 검사·전체 명부 대조·불일치 상태·확인 질문을 실제 실행으로 제시한다.",
+      "source": "02 4. 자료와 추가 입력 S1·S2 / S1 · 06 2. 심사위원에게 먼저 증명할 것",
+      "seconds": 30
+    },
+    {
+      "scene": 7,
+      "chapter": "정정과 재지시",
+      "eyebrow": "14 / 정정과 재지시",
+      "title": "정보가 바뀌면,<br><em>임무도 바뀐다.</em>",
+      "lead": "“실제 승선한 7명의 명부가 맞습니다.”<br>정정과 추가 침수 보고를 기록하고,<br>관련 요원에게 재검토를 지시합니다.",
+      "sub": "변경된 정보 → 영향받는 임무 → 수정안<br>이전 계획과 바뀐 이유까지 함께 남깁니다.",
+      "label": "정정과 재지시",
+      "call": "차별점 <strong>추가 입력에 따른 확인 · 재지시 · 계획 갱신</strong>",
+      "note": "사용자가 실제 승선원이 7명이라고 정정했습니다. 총원 7명, 구조 보고 4명, 소재 미확인 3명으로 갱신합니다. 수색구조요원은 바뀐 인원과 침수 보고에 따른 지침을 재검토하고, 자원지원요원은 지원 검토안을 보완하도록 지시할 수 있습니다. 이는 설계상 지시 예시입니다. 실제 앱에서는 상황실장이 필요한 임무를 선택하며 이전 계획과 변경 이유를 함께 남깁니다.",
+      "cue": "인원 정정에서 끝내지 말고 재지시와 수정안까지 연결해 설명합니다. 특정 출동·수색 방법을 임의로 단정하지 않습니다.",
+      "time": "6:25–7:00",
+      "refs": [
+        "s2",
+        "history",
+        "strategy"
+      ],
+      "why": "재지시 장면을 핵심 차별점으로 유지하고 대응안이 왜 바뀌는지까지 설명한다.",
+      "proof": "정정 전후 상황 버전, 새 임무, 수정안, 변경 이유의 연결이 필요하다.",
+      "source": "02 4. 자료와 추가 입력 S1·S2 / S2 · 03 8. 대응안·검증 · 06 2. 심사위원에게 먼저 증명할 것",
+      "seconds": 35
+    },
+    {
+      "scene": 10,
+      "chapter": "연동 후의 정정 흐름",
+      "eyebrow": "15 / 연동 후의 정정 흐름",
+      "title": "하나의 정정이,<br><em>다음 검토로.</em>",
+      "lead": "현장에서 인원이나 상태를 정정하면<br>같은 사건의 최신 정보를 공유하고,<br>영향받는 프로젝트가 결과를 갱신합니다.",
+      "sub": "원문·출처·이전 버전을 보존합니다.<br>중복·이전 버전·실패 응답을 함께 검사합니다.",
+      "label": "연동 후의 정정 흐름",
+      "call": "API가 만드는 협업 <strong>새 보고 → 관련 판단 갱신 → 현장에 결과 반환</strong>",
+      "note": "앞의 인원 정정은 기존 A호 시나리오입니다. 이를 세 프로젝트로 확장하면 현장 변경이 같은 사건을 보는 다른 프로젝트에도 전달되어야 합니다. 최신 정보와 이전 기록을 구분하고 중복 이벤트가 다시 반영되지 않도록 설계합니다. 이 전파 흐름은 구현 후 실제 송수신 기록으로 증명할 목표입니다.",
+      "cue": "화면의 핵심 관계를 짚고 다음 장면으로 이어갑니다.",
+      "refs": [
+        "brief",
+        "state",
+        "story"
+      ],
+      "why": "연동 후의 정정 흐름를 통해 앞 장면의 문제와 다음 실행을 연결한다.",
+      "proof": "제안한 흐름의 실제 입력·출력과 근거 기록을 확보한다.",
+      "source": "사용자 발표자료 제작 요청 · 13_현재상태_요구사항_인수인계.md · AI_situation_room_RAG_story.md",
+      "visual": "<div class=\"flow-plane\"><div class=\"flow-step\"><span>01</span><div><h3>현장 정정</h3><p>원문과 출처를 담은 상태 변경</p></div></div><div class=\"flow-step\"><span>02</span><div><h3>사건 갱신</h3><p>사건 ID·이벤트 ID·버전 확인</p></div></div><div class=\"flow-step\"><span>03</span><div><h3>영향 재검토</h3><p>응급 지원 정보와 상황실 제안 갱신</p></div></div><div class=\"flow-step\"><span>04</span><div><h3>결과 공유</h3><p>변경 이유·확인 요청을 현장에 반환</p></div></div></div><div class=\"visual-foot\">세 프로젝트 정정 전파는 연동 목표 · 현재 앱의 정정과 구분</div>",
+      "seconds": 30,
+      "time": "7:00–7:30"
+    },
+    {
+      "scene": 10,
+      "chapter": "기술을 증거로",
+      "eyebrow": "16 / 기술을 증거로",
+      "title": "기술적 강점은<br><em>작동으로 보여준다.</em>",
+      "lead": "Agent·RAG·도구 연동·검증을<br>하나의 사고 흐름에 담아<br>교육성과를 확인할 수 있게 합니다.",
+      "sub": "기술 평가에서 보여줄 증거를 최대한 확보합니다.<br>공식 배점표는 아직 제공되지 않았습니다.",
+      "label": "기술을 증거로",
+      "call": "시상 전략 <strong>기술 이름 → 업무 기여 → 실행 증거</strong>",
+      "note": "기술은 사용했다는 목록보다 실제 업무 기여로 보여드리겠습니다. Agent는 실제 지시와 보고, RAG는 검색 구절과 반영된 제안, 프로젝트 API는 왕복 요청과 응답입니다. MCP는 별도 프로토콜 증거가 필요합니다. 현재 벡터 RAG, MCP, 두 모델 비교는 미완료이므로 향후 증거 확보 항목으로 표시했습니다.",
+      "cue": "화면의 핵심 관계를 짚고 다음 장면으로 이어갑니다.",
+      "refs": [
+        "edu",
+        "state",
+        "brief"
+      ],
+      "why": "기술을 증거로를 통해 앞 장면의 문제와 다음 실행을 연결한다.",
+      "proof": "제안한 흐름의 실제 입력·출력과 근거 기록을 확보한다.",
+      "source": "06_해커톤_시상_공략.md · 13_현재상태_요구사항_인수인계.md · 사용자 발표자료 제작 요청",
+      "visual": "<div class=\"depth-stack \"><article class=\"depth-sheet\"><span class=\"sheet-index\">01</span><div><small>AGENT + RAG</small><h3>지시·보고와 검색 근거</h3><p>임무 기록 + 질의·구절·반영 조치</p></div></article><article class=\"depth-sheet\"><span class=\"sheet-index\">02</span><div><small>API + MCP</small><h3>연결된 요청과 응답</h3><p>3개 프로젝트 API · MCP는 별도 프로토콜 증거</p></div></article><article class=\"depth-sheet\"><span class=\"sheet-index\">03</span><div><small>EVALUATION</small><h3>같은 조건으로 비교·검증</h3><p>모델 비교 · 모순·중복·실패 사례</p></div></article></div><div class=\"visual-foot\">API 연동 ≠ MCP 구현 · 현재 벡터 RAG·MCP·모델 비교 미완료</div>",
+      "seconds": 35,
+      "time": "7:30–8:05"
+    },
+    {
+      "scene": 10,
+      "chapter": "현재 구현과 확장 목표",
+      "eyebrow": "17 / 현재 구현과 확장 목표",
+      "title": "지금의 기반과<br><em>다음 연결.</em>",
+      "lead": "AI 상황실의 실행·저장·정정 기반 위에<br>벡터 RAG와 프로젝트 API를 더하고,<br>같은 사건으로 전체 흐름을 검증합니다.",
+      "sub": "실행한 범위는 기록으로 제시하고,<br>새 연결은 통합 시험으로 확인합니다.",
+      "label": "현재 구현과 확장 목표",
+      "call": "구분해서 제시 <strong>구현한 기능 · 확인한 결과 · 남은 목표</strong>",
+      "note": "현재 상황실에는 실제 모델 호출, 요원 실행, 저장과 정정의 구현 및 시험 기록이 있습니다. 검색은 단어 기반이고 벡터 RAG와 세 프로젝트 API 연결은 남은 목표입니다. MCP와 두 모델 비교도 아직 완료하지 않았습니다. 최신 설정에서 새 전체 시험과 리허설을 마친 범위만 실제 성과로 제시하겠습니다.",
+      "cue": "화면의 핵심 관계를 짚고 다음 장면으로 이어갑니다.",
+      "refs": [
+        "state"
+      ],
+      "why": "현재 구현과 확장 목표를 통해 앞 장면의 문제와 다음 실행을 연결한다.",
+      "proof": "제안한 흐름의 실제 입력·출력과 근거 기록을 확보한다.",
+      "source": "13_현재상태_요구사항_인수인계.md",
+      "visual": "<div class=\"depth-stack \"><article class=\"depth-sheet\"><span class=\"sheet-index\">01</span><div><small>기존 구현·기록</small><h3>요원 호출 · 병렬 처리 · 저장 · 정정</h3><p>실제 API 호출·장부 갱신 기록 보유</p></div></article><article class=\"depth-sheet\"><span class=\"sheet-index\">02</span><div><small>확장 목표</small><h3>다중 매뉴얼 벡터 검색 · 3개 프로젝트 API</h3><p>현재 검색은 단어 기반 · 외부 연동 미완료</p></div></article><article class=\"depth-sheet\"><span class=\"sheet-index\">03</span><div><small>추가 검증</small><h3>MCP · 두 모델 비교 · 전체 시연</h3><p>최신 설정 LIVE·통합 리허설 필요</p></div></article></div><div class=\"visual-foot\">현재 자료는 기능 설명과 확장 제안 · 실제 앱 실행은 별도</div>",
+      "seconds": 30,
+      "time": "8:05–8:35"
+    },
+    {
+      "scene": 10,
+      "chapter": "검증의 기준",
+      "eyebrow": "18 / 검증의 기준",
+      "title": "성공한 답변과<br><em>실패한 순간까지.</em>",
+      "lead": "인원 정정과 이름 변경,<br>근거 누락과 도구 실패,<br>연동 지연과 중복을 확인합니다.",
+      "sub": "기존 청해호 시험은 실패·수정·재실행을 보존했습니다.<br>A호 발표 예시와 별개의 가상 사건입니다.",
+      "label": "검증의 기준",
+      "call": "측정 원칙 <strong>정답·실패 조건을 먼저 정하고 실제 결과를 기록</strong>",
+      "note": "기존 청해호 시험에서는 첫 실행의 수용 실패와 개선 후 중간 한 건의 차단, 수정과 재실행을 기록했습니다. 최종 저장 검사 PASS가 모든 최신 기능의 무중단 성공을 의미하지는 않습니다. 새 연동에서는 중복, 이전 버전, 상대 프로젝트 실패까지 시험해야 합니다. 모델 비교도 같은 조건으로 별도 수행할 계획입니다.",
+      "cue": "화면의 핵심 관계를 짚고 다음 장면으로 이어갑니다.",
+      "refs": [
+        "state",
+        "verification",
+        "comparison"
+      ],
+      "why": "검증의 기준를 통해 앞 장면의 문제와 다음 실행을 연결한다.",
+      "proof": "제안한 흐름의 실제 입력·출력과 근거 기록을 확보한다.",
+      "source": "13_현재상태_요구사항_인수인계.md · 04_개발계획.md · 06_해커톤_시상_공략.md",
+      "visual": "<div class=\"depth-stack \"><article class=\"depth-sheet\"><span class=\"sheet-index\">01</span><div><small>기존 LIVE 기록</small><h3>청해호 15건의 수정 이력</h3><p>최초 수용 실패 → 개선 → 중간 차단·재실행 → 저장 검사 PASS</p></div></article><article class=\"depth-sheet\"><span class=\"sheet-index\">02</span><div><small>신규 연동 시험 목표</small><h3>중복 · 이전 버전 · 상대 앱 실패</h3><p>누락·덮어쓰기·거짓 성공 표시 검사</p></div></article><article class=\"depth-sheet\"><span class=\"sheet-index\">03</span><div><small>같은 조건의 비교 목표</small><h3>모델·근거·입력·평가기준 고정</h3><p>오류·누락·확인 질문·응답시간 기록</p></div></article></div><div class=\"visual-foot\">저장 검사 PASS는 최신 설정의 새 무중단 LIVE 통과를 뜻하지 않음</div>",
+      "seconds": 35,
+      "time": "8:35–9:10"
+    },
+    {
+      "scene": 3,
+      "chapter": "업무 가치",
+      "eyebrow": "19 / 업무 가치",
+      "title": "무엇이 바뀌었고,<br><em>왜 바뀌었는가.</em>",
+      "lead": "입력 원문에서 요원 보고까지,<br>보고의 근거에서 수정 대응안까지.<br>사람이 확인할 수 있도록 연결합니다.",
+      "sub": "목표: 재입력 부담 감소 · 조사 과정 가시화<br>정정 이력 추적 · 사람의 최종 판단 지원",
+      "label": "업무 가치",
+      "call": "화면의 세 역할 <strong>원본 보존 · 지시와 보고 확인 · 현재 상황과 이전안 비교</strong>",
+      "note": "이 구조의 업무 가치는 다시 정보를 전달하는 부담을 줄이고, 누가 무엇을 조사했는지 보이며, 정정 과정을 추적하는 데 있습니다. 왼쪽에는 원본, 중앙에는 지시와 보고, 오른쪽에는 현재 상황을 둡니다. 대응안에는 변경 이유를 연결합니다. 시간 절감률은 아직 측정하지 않았으므로 기대효과로 설명합니다.",
+      "cue": "패널 분해 효과를 업무 가치 설명에 사용합니다. 사건 ID 등 구현 세부사항은 질문이 있을 때만 덧붙입니다.",
+      "time": "9:10–9:35",
+      "refs": [
+        "value",
+        "ui",
+        "history"
+      ],
+      "why": "화면 구조를 업무 적용 가치의 증거로 사용한다. 미측정 절감률이나 자동 안전 보장은 주장하지 않는다.",
+      "proof": "정정 전후 원문·보고·계획을 같은 사건에서 비교할 수 있어야 한다.",
+      "source": "05 8. 효과와 한계 표현 · 03 1. 화면 원칙 · 03 8. 대응안·검증",
+      "seconds": 25
+    },
+    {
+      "scene": 9,
+      "chapter": "함께 대응하는 프로젝트",
+      "eyebrow": "20 / 함께 대응하는 프로젝트",
+      "title": "",
+      "lead": "",
+      "sub": "",
+      "label": "함께 대응하는 프로젝트",
+      "call": "",
+      "note": "현장은 새 사실을 보내고, 응급 지원은 전문 정보를 보완하며, 상황실은 여러 근거를 모아 대응안을 갱신합니다. 각자의 프로젝트를 살리면서 같은 사건에 함께 반응하는 것이 2팀의 목표입니다. 실제 연결과 검증을 통해 사람이 근거를 확인하고 판단할 수 있는 협업 흐름을 완성하겠습니다.",
+      "cue": "화면의 핵심 관계를 짚고 다음 장면으로 이어갑니다.",
+      "refs": [
+        "brief",
+        "story",
+        "roster"
+      ],
+      "why": "함께 대응하는 프로젝트를 통해 앞 장면의 문제와 다음 실행을 연결한다.",
+      "proof": "제안한 흐름의 실제 입력·출력과 근거 기록을 확보한다.",
+      "source": "사용자 발표자료 제작 요청 · AI_situation_room_RAG_story.md · 최신 팀 편성 이미지 · 4번",
+      "visual": "",
+      "seconds": 25,
+      "time": "9:35–10:00"
+    }
+  ],
+  "references": {
+    "strategy": {
+      "doc": "06_해커톤_시상_공략.md",
+      "section": "2. 심사위원에게 먼저 증명할 것",
+      "quote": "첫 1분 안에 사용자 입력과 실제 임무 지시를 보여준다.",
+      "kind": "전략적 해석",
+      "href": "sources/06_%E1%84%92%E1%85%A2%E1%84%8F%E1%85%A5%E1%84%90%E1%85%A9%E1%86%AB_%E1%84%89%E1%85%B5%E1%84%89%E1%85%A1%E1%86%BC_%E1%84%80%E1%85%A9%E1%86%BC%E1%84%85%E1%85%A3%E1%86%A8.md"
+    },
+    "identity": {
+      "doc": "01_프로젝트.md",
+      "section": "1. 제품 정의",
+      "quote": "핵심 메시지는 **AI Assistant에서 AI Organization으로**다.",
+      "kind": "제품 설계",
+      "href": "sources/01_%E1%84%91%E1%85%B3%E1%84%85%E1%85%A9%E1%84%8C%E1%85%A6%E1%86%A8%E1%84%90%E1%85%B3.md"
+    },
+    "s0": {
+      "doc": "02_데모_시나리오.md",
+      "section": "3. 첫 입력 S0",
+      "quote": "현재 표시는 ‘최초 신고 총원 5명 / 구조 보고 4명 / 소재 미확인 1명’이다.",
+      "kind": "가상 시나리오",
+      "href": "sources/02_%E1%84%83%E1%85%A6%E1%84%86%E1%85%A9_%E1%84%89%E1%85%B5%E1%84%82%E1%85%A1%E1%84%85%E1%85%B5%E1%84%8B%E1%85%A9.md"
+    },
+    "roles": {
+      "doc": "01_프로젝트.md",
+      "section": "3. 역할과 책임",
+      "quote": "상황실장은 의미를 판단하고, 프로그램은 지시 형식·버전·합계를 검사해 실행·저장한다.",
+      "kind": "제품 설계",
+      "href": "sources/01_%E1%84%91%E1%85%B3%E1%84%85%E1%85%A9%E1%84%8C%E1%85%A6%E1%86%A8%E1%84%90%E1%85%B3.md"
+    },
+    "ui": {
+      "doc": "03_UI_UX.md",
+      "section": "1. 화면 원칙",
+      "quote": "화면의 중심은 채팅, 요원 소통, 현재 상황이다.",
+      "kind": "화면 요구사항",
+      "href": "sources/03_UI_UX.md"
+    },
+    "s1": {
+      "doc": "02_데모_시나리오.md",
+      "section": "4. 자료와 추가 입력 S1·S2 / S1",
+      "quote": "명부가 이번 출항의 실제 탑승자 명부인지 사용자에게 묻는다.",
+      "kind": "가상 시나리오",
+      "href": "sources/02_%E1%84%83%E1%85%A6%E1%84%86%E1%85%A9_%E1%84%89%E1%85%B5%E1%84%82%E1%85%A1%E1%84%85%E1%85%B5%E1%84%8B%E1%85%A9.md"
+    },
+    "s2": {
+      "doc": "02_데모_시나리오.md",
+      "section": "4. 자료와 추가 입력 S1·S2 / S2",
+      "quote": "상황실장이 영향받는 요원에게 보완 지시하고 수정 대응안을 만든다.",
+      "kind": "가상 시나리오",
+      "href": "sources/02_%E1%84%83%E1%85%A6%E1%84%86%E1%85%A9_%E1%84%89%E1%85%B5%E1%84%82%E1%85%A1%E1%84%85%E1%85%B5%E1%84%8B%E1%85%A9.md"
+    },
+    "history": {
+      "doc": "03_UI_UX.md",
+      "section": "8. 대응안·검증",
+      "quote": "새 정보 도착 시 기존 계획에 ‘재검토 필요’를 표시하고, 새 계획을 만들면 이전안과 달라진 이유를 보여준다.",
+      "kind": "화면 요구사항",
+      "href": "sources/03_UI_UX.md"
+    },
+    "edu": {
+      "doc": "06_해커톤_시상_공략.md",
+      "section": "3. 교육내용 수용 계획",
+      "quote": "특히 모델 비교는 역할 이름을 여러 개 붙이는 것으로 대신하지 않는다.",
+      "kind": "교육 적용 전략",
+      "href": "sources/06_%E1%84%92%E1%85%A2%E1%84%8F%E1%85%A5%E1%84%90%E1%85%A9%E1%86%AB_%E1%84%89%E1%85%B5%E1%84%89%E1%85%A1%E1%86%BC_%E1%84%80%E1%85%A9%E1%86%BC%E1%84%85%E1%85%A3%E1%86%A8.md"
+    },
+    "api": {
+      "doc": "10_데이터_API_검증기록.md",
+      "section": "1. 최신 결정",
+      "quote": "외부 데이터 API는 **무료 범위의 기상·해상 정보만** 사용한다.",
+      "kind": "확정 범위",
+      "href": "sources/10_%E1%84%83%E1%85%A6%E1%84%8B%E1%85%B5%E1%84%90%E1%85%A5_API_%E1%84%80%E1%85%A5%E1%86%B7%E1%84%8C%E1%85%B3%E1%86%BC%E1%84%80%E1%85%B5%E1%84%85%E1%85%A9%E1%86%A8.md"
+    },
+    "verification": {
+      "doc": "04_개발계획.md",
+      "section": "9. 의미 있는 최소 검증",
+      "quote": "핵심 정상 흐름 1회, 인원 모순 1회, 도구 실패 1회, 복원 확인으로 시작하고 남은 위험에만 추가한다.",
+      "kind": "검증 계획",
+      "href": "sources/04_%E1%84%80%E1%85%A2%E1%84%87%E1%85%A1%E1%86%AF%E1%84%80%E1%85%A8%E1%84%92%E1%85%AC%E1%86%A8.md"
+    },
+    "comparison": {
+      "doc": "06_해커톤_시상_공략.md",
+      "section": "6. 모델 비교와 업무효과",
+      "quote": "비교 항목은 인원 오류, 출처 없는 주장, 확인 질문, 지시 적합성, 응답시간이다.",
+      "kind": "평가 계획",
+      "href": "sources/06_%E1%84%92%E1%85%A2%E1%84%8F%E1%85%A5%E1%84%90%E1%85%A9%E1%86%AB_%E1%84%89%E1%85%B5%E1%84%89%E1%85%A1%E1%86%BC_%E1%84%80%E1%85%A9%E1%86%BC%E1%84%85%E1%85%A3%E1%86%A8.md"
+    },
+    "value": {
+      "doc": "05_발표자료.md",
+      "section": "8. 효과와 한계 표현",
+      "quote": "기대효과는 정보 재입력 감소, 역할별 조사 가시화, 정정 이력 추적으로 설명한다.",
+      "kind": "기대효과",
+      "href": "sources/05_%E1%84%87%E1%85%A1%E1%86%AF%E1%84%91%E1%85%AD%E1%84%8C%E1%85%A1%E1%84%85%E1%85%AD.md"
+    },
+    "limits": {
+      "doc": "06_해커톤_시상_공략.md",
+      "section": "1. 확인된 시상·교육 정보",
+      "quote": "공식 세부 배점·평가표·수상팀 수는 제공자료에서 확인되지 않았다.",
+      "kind": "확인 한계",
+      "href": "sources/06_%E1%84%92%E1%85%A2%E1%84%8F%E1%85%A5%E1%84%90%E1%85%A9%E1%86%AB_%E1%84%89%E1%85%B5%E1%84%89%E1%85%A1%E1%86%BC_%E1%84%80%E1%85%A9%E1%86%BC%E1%84%85%E1%85%A3%E1%86%A8.md"
+    },
+    "rag": {
+      "doc": "04_개발계획.md",
+      "section": "8. 데이터·도구 구현 경계",
+      "quote": "MCP: 클라이언트 → MCP 도구 → 기상 함수 → 외부 API 경로를 실제로 확인한다.",
+      "kind": "구현·검증 계획",
+      "href": "sources/04_%E1%84%80%E1%85%A2%E1%84%87%E1%85%A1%E1%86%AF%E1%84%80%E1%85%A8%E1%84%92%E1%85%AC%E1%86%A8.md"
+    },
+    "focus": {
+      "doc": "05_발표자료.md",
+      "section": "3.1 왜 여러 AI 에이전트인가",
+      "quote": "필요한 순간, 필요한 전문성에 추론을 집중한다.",
+      "kind": "설계 원칙·검증할 기대효과",
+      "href": "sources/05_%E1%84%87%E1%85%A1%E1%86%AF%E1%84%91%E1%85%AD%E1%84%8C%E1%85%A1%E1%84%85%E1%85%AD.md"
+    },
+    "story": {
+      "doc": "AI_situation_room_RAG_story.md",
+      "section": "§1–11 · 사용자 제공 기술 스토리",
+      "quote": "AI가 여러 매뉴얼을 근거로 상황을 판단한다.",
+      "kind": "설계 방향 · 구현 완료 근거 아님",
+      "href": "sources/AI_situation_room_RAG_story.md"
+    },
+    "roster": {
+      "doc": "최신 팀 편성 이미지 · 4번",
+      "section": "2팀 · 해양구조 및 응급 상황 대응",
+      "quote": "팀원 (4명) 신진섭, 채민주, 김대성, 송민주",
+      "kind": "사용자 지정 최신 인원 기준",
+      "href": "sources/current-roster.jpeg"
+    },
+    "projects": {
+      "doc": "신청팀 분석 및 팀 구성 · 2번",
+      "section": "2팀 · 3개 과제",
+      "quote": "Link-One / RESAID AI / 해양경찰 AI 상황실",
+      "kind": "과제 내용 기준 · 인원은 4번 이미지 우선",
+      "href": "sources/team-projects-1-3.jpg"
+    },
+    "other": {
+      "doc": "신청팀 분석 · 1번",
+      "section": "4~6팀 과제",
+      "quote": "AI 행정·보고서 및 지식 에이전트 / 교육·훈련 / 해양안전 예방·점검",
+      "kind": "주제 비교용 · 다른 팀의 구현 수준은 미확인",
+      "href": "sources/team-projects-4-6.jpg"
+    },
+    "brief": {
+      "doc": "사용자 발표자료 제작 요청",
+      "section": "2026-09-27 · 협업 제안",
+      "quote": "각자의 프로젝트를 자유롭게 만들되 마지막에 3프로젝트를 연동",
+      "kind": "사용자 요청 · 구체 연결 방식은 제안",
+      "href": "PRESENTATION_BRIEF.md"
+    },
+    "state": {
+      "doc": "13_현재상태_요구사항_인수인계.md",
+      "section": "§8–10 · 기존 검증 및 남은 과제",
+      "quote": "현재 Agent·저장·정정·병렬 실행 증거는 있고 벡터 RAG·MCP·멀티모델 비교는 없다.",
+      "kind": "기존 기록 · 새 LIVE 검증 아님",
+      "href": "sources/13_%ED%98%84%EC%9E%AC%EC%83%81%ED%83%9C_%EC%9A%94%EA%B5%AC%EC%82%AC%ED%95%AD_%EC%9D%B8%EC%88%98%EC%9D%B8%EA%B3%84.md"
+    },
+    "ragpaper": {
+      "doc": "Lewis et al. · NeurIPS 2020",
+      "section": "Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks",
+      "quote": "검색 자료를 생성 모델에 결합하는 RAG 연구. 이 프로젝트의 성능 측정값은 아니다.",
+      "kind": "기술 참고 · 요약",
+      "href": "https://arxiv.org/abs/2005.11401"
+    },
+    "curriculum": {
+      "doc": "사용자 제공 교육 커리큘럼",
+      "section": "9/30 AI 에이전트 개발 · 10/1 시상",
+      "quote": "RAG 기반 생성, MCP 기반 도구 연동 에이전트, 멀티모델 비교 및 에이전트 신뢰성 검증. 우수 프로젝트 시상(과학기술정보통신부장관상).",
+      "kind": "제공 원자료 · 평가 배점표는 아님",
+      "href": "sources/curriculum.png"
+    },
+    "merit": {
+      "doc": "팀원 설득용 수상 전략 개정",
+      "section": "평가 관점·인과관계·실행 증거",
+      "quote": "협업·기술 통합·현장 정확성·교육 활용을 실제 업무 결과로 증명해 더 높은 평가를 노린다.",
+      "kind": "팀의 수상 전략 · 공식 가산점·배점 미확인",
+      "href": "PRESENTATION_BRIEF.md#수상-경쟁력-중심-개정"
+    }
+  }
+}

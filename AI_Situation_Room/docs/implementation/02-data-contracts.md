@@ -1,5 +1,7 @@
 # 02. 저장 데이터 계약
 
+> 임시 프로젝트명: **HAEON(해온)** · 해양경찰 멀티에이전트 의사결정 지원 시스템. [명칭·소개 기준](../PROJECT_NAMING.md) (2026-09-27). ‘AI 오케스트라’는 협업 방식의 설명이며 이름에 포함하지 않는다.
+
 > 현재 구현 기준: 2026-09-27. [목록](README.md) · 구현: [store.py](../../prototype/store.py)
 
 ## 1. DB 스키마와 공통 규칙
@@ -79,7 +81,7 @@ Report에는 `summary` 문자열, `findings` 문자열 배열, `recommendation` 
 
 필수 `type`, `label`; 필요 시 `run_id`, `task_id`, `source_id`, `before`, `after`, `patch`, `version`, `information_requests`, `dispatch_orders`, `previous_weather`를 저장한다.
 
-현재 type: `received`, `progress`, `facts_updated`, `incident_updated`, `attachment`, `weather`, `weather_failed`, `weather_invalidated`, `final`. 일반 임무 단계는 `progress`의 label과 참조 ID로 구별한다. 이벤트 기록은 실행 추적이며 내부 추론 원문이 아니다.
+현재 type: `received`, `progress`, `facts_updated`, `incident_updated`, `attachment`, `weather`, `weather_failed`, `weather_invalidated`, `external_review`, `final`. 일반 임무 단계는 `progress`의 label과 참조 ID로 구별한다. 이벤트 기록은 실행 추적이며 내부 추론 원문이 아니다.
 
 ## 7. Attachment와 Call
 
