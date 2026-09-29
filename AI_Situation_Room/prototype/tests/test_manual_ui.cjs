@@ -1,0 +1,12 @@
+const fs=require('node:fs'),vm=require('node:vm'),assert=require('node:assert/strict');
+const context={document:{addEventListener(){}},esc:v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])),URL};
+vm.createContext(context);
+vm.runInContext(fs.readFileSync('prototype/static/manuals.js','utf8'),context);
+assert.equal(vm.runInContext("safeManualURL('javascript:alert(1)')",context),'');
+assert.equal(vm.runInContext("safeManualURL('https://www.amsa.gov.au/manual')",context),'https://www.amsa.gov.au/manual');
+const record={search:{status:'partial',warnings:['degraded'],method:'lexical'},items:[{id:'sar:x',title:'<script>unsafe</script>',source_id:'x',source_title:'AMSA',source_version:'2026',content:'<img onerror=evil()>',pdf_pages:[3],locator:'section 1',limitations:['검토 필요'],source_url:'javascript:alert(1)'}]};
+context.record=record;
+const html=vm.runInContext('manualContextHTML(record)',context);
+assert(!html.includes('<script>'));assert(!html.includes('<img'));assert(!html.includes('href="javascript:'));
+assert(html.includes('키워드'));assert(html.includes('부분'));assert(html.includes('검토 필요'));assert(html.includes('PDF 3'));
+console.log('manual UI: 7 checks passed');

@@ -1,0 +1,62 @@
+[
+  {
+    "source_id": "imo-msc-959",
+    "url": "https://wwwcdn.imo.org/localresources/en/OurWork/Safety/Documents/Documents%20relevant%20to%20SAR/MSC-Circ.959%20Interim%20procedures%20for%20MRCCs%20on%20receipt%20of%20distress%20alert.pdf",
+    "path": "originals/imo-msc-959.pdf",
+    "bytes": 37288,
+    "sha256": "3969afa95539a354a0eb85e0a6db3230d88224c33cc91fcf8cd02ef3f56b59b1",
+    "retrieved_at": "2026-09-28",
+    "status": "downloaded"
+  },
+  {
+    "source_id": "imo-msc-1183",
+    "url": "https://wwwcdn.imo.org/localresources/en/OurWork/Safety/Documents/MSC.1-Circ.1183%20-%20Guidelines%20On%20The%20Provision%20Of%20External%20Support%20As%20An%20Aid%20To%20Incident%20Containment.pdf",
+    "path": "originals/imo-msc-1183.pdf",
+    "bytes": 142896,
+    "sha256": "d323d79b8cf239abf43d29800261472c95fc6bccb44e8c28afc753a12f7a9699",
+    "retrieved_at": "2026-09-28",
+    "status": "downloaded"
+  },
+  {
+    "source_id": "imo-msc-1447",
+    "url": "https://wwwcdn.imo.org/localresources/en/OurWork/Safety/Documents/Documents%20relevant%20to%20SAR/MSC.1-CIRC.1447%20Guidelines%20for%20the%20development%20of%20plans%20and%20procedures%20for%20recovery%20of%20persons%20from%20the%20water.pdf",
+    "path": "originals/imo-msc-1447.pdf",
+    "bytes": 17034,
+    "sha256": "9f8e32725904e2324e2afda80b89098cb46a5581cf86dc733c76ea73fedd4a14",
+    "retrieved_at": "2026-09-28",
+    "status": "downloaded"
+  },
+  {
+    "source_id": "imo-comsar-31",
+    "url": "https://wwwcdn.imo.org/localresources/en/OurWork/Safety/Documents/COMSAR.1-Circ.31%20-%20Guidance%20For%20Mass%20Rescue%20Operations.pdf",
+    "path": "originals/imo-comsar-31.pdf",
+    "bytes": 174100,
+    "sha256": "4910a6c85895962d83b7e654d9aa565ae75722ef1aafe8b2db769e0635a1a754",
+    "retrieved_at": "2026-09-28",
+    "status": "downloaded"
+  },
+  {
+    "source_id": "imo-msc-1218",
+    "url": "https://wwwcdn.imo.org/localresources/en/OurWork/Safety/Documents/MSC.1-Circ.1218%20-%20Guidance%20On%20Exchange%20Of%20Medical%20Information%20BetweenTelemedical%20Assistance%20Services.pdf",
+    "path": "originals/imo-msc-1218.pdf",
+    "bytes": 183098,
+    "sha256": "14dcd7b1812705fedb2d5fac1252f1aeea4361a7c569ea5595867d64cef68db8",
+    "retrieved_at": "2026-09-28",
+    "status": "downloaded"
+  },
+  {
+    "source_id": "uscg-ci-16130-2i",
+    "url": "https://media.defense.gov/2026/Feb/03/2003870365/-1/-1/0/CI_16130_2I.PDF",
+    "status": "failed",
+    "error": "Command '['/usr/bin/curl', '--fail', '--location', '--silent', '--show-error', '--max-time', '25', '--max-filesize', '25000000', 'https://media.defense.gov/2026/Feb/03/2003870365/-1/-1/0/CI_16130_2I.PDF']' returned non-zero exit status 56."
+  },
+  {
+    "source_id": "amsa-natsar-2026",
+    "url": "https://www.amsa.gov.au/sites/default/files/2026-03/natsar-manual-2026.pdf",
+    "path": "originals/amsa-natsar-2026.pdf",
+    "bytes": 12048401,
+    "sha256": "9ac09c787c7f80b951bc3d4406757e9e82fa492f6f8858aebc6247bf0ecd0520",
+    "retrieved_at": "2026-09-28",
+    "status": "downloaded"
+  }
+]

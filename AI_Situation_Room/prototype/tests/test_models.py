@@ -25,6 +25,8 @@ class ModelContractTests(unittest.TestCase):
         self.assertIn('json', sent[0]['input'].lower())
         self.assertEqual(json.loads(sent[1]['input'])['context'],{'session':{'id':'B'}})
         self.assertFalse(sent[0]['store'])
+        self.assertIn('현장 계측 장비의 실측값', sent[0]['instructions'])
+        self.assertIn('조언을 먼저', sent[1]['instructions'])
 
     def test_incomplete_or_refusal_response_is_not_report(self):
         for payload in [{'status':'incomplete','output':[]},

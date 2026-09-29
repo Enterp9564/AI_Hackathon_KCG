@@ -10,9 +10,22 @@ def evidence_for(snapshot, query):
     evidence = []
     session = snapshot['session']
     from .manuals import manual_evidence
-    evidence.extend(manual_evidence())
+    evidence.extend(manual_evidence(session))
+    if session.get('linkone'):
+        from .manuals import local_catalog_applies
+        evidence.append({'id':'resource_scope','title':'현재 사건의 자원 자료 범위',
+            'content':json.dumps({'location':session['facts'].get('location'),'named_dispatch_allowed':local_catalog_applies(session),
+                'policy':'등록 목록은 실시간 가용성 아님. 관할 범위에 맞는 목록이 없으면 특정 동해 세력을 추천하지 말고 필요한 자원 종류와 확인 조건만 제안. 링크온 location_force는 관찰된 관리 세력으로 위치·여력·임무를 확인하지 않고 출동 가능으로 취급하지 않음.'},ensure_ascii=False)})
+    if snapshot.get('linkone_evidence'):
+        evidence.append(snapshot['linkone_evidence'])
+        from pathlib import Path
+        reference=Path(__file__).parent/'knowledge'/'linkone-semantics.md'
+        evidence.append({'id':'linkone_semantics','title':'링크온 데이터 해석 사전 · 2026-09-28',
+                         'content':reference.read_text(encoding='utf-8')})
+        evidence.append({'id':'ship_tilt_guidance','title':'선박 경사 관측·설계 참고 기준 및 적용 조건',
+                         'content':reference.with_name('ship-tilt-guidance.md').read_text(encoding='utf-8')})
     if session['facts']:
-        evidence.append({'id':'facts','title':f"사용자 상황 S{session['version']}",
+        evidence.append({'id':'facts','title':f"{'링크온 수신 상황' if session.get('linkone') else '사용자 상황'} S{session['version']}",
                          'content':json.dumps(session['facts'],ensure_ascii=False)})
     if session.get('weather'):
         evidence.append({'id':'weather','title':'Open-Meteo 모델 기상 조회',

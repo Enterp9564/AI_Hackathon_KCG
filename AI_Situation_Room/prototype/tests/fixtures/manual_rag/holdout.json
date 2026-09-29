@@ -1,0 +1,14 @@
+[
+ {"id":"h1","query":"선실 연기가 번지고 있어. 다른 배의 지원을 검토해줘","expected":["sar-draft:05-vessel-emergency"]},
+ {"id":"h2","query":"어제 확인한 좌표 뒤로 선박이 떠내려갔다. 수색 자료가 필요해","expected":["sar-draft:03-search-planning"]},
+ {"id":"h3","query":"긴급 구조 요청만 들렸고 정확한 위치를 모른다","expected":["sar-draft:01-intake"]},
+ {"id":"h4","query":"응급 환자의 관찰 내용과 상태 변화는 인계할 때 어떻게 전달할까","expected":["sar-draft:07-medical"]},
+ {"id":"h5","query":"해상 추락자를 끌어올리기 전 파주기와 너울을 검토해줘","expected":["sar-draft:04-rescue-resources"]},
+ {"id":"h6","query":"구조 인원 일부를 다른 선박으로 재이송했다. 명부 집계 검토","expected":["sar-draft:06-mass-rescue"]},
+ {"id":"h7","query":"기관실에 불길이 있고 바다의 실종자가 떠내려가고 있다","expected":["sar-draft:05-vessel-emergency","sar-draft:03-search-planning"]},
+ {"id":"h8","query":"RCC와 OSC의 조정 및 지휘 담당을 확인해야 한다","expected":["sar-draft:02-coordination"]},
+ {"id":"h9","query":"지원 종료 후에도 새 정보에 따라 수색을 재개할 수 있나","expected":["sar-draft:08-review-close"]},
+ {"id":"h10","query":"된장찌개 재료 추천","expected":[]},
+ {"id":"h11","query":"내일 영화 상영 시간표","expected":[]},
+ {"id":"h12","query":"스마트폰 배터리 교체 비용","expected":[]}
+]

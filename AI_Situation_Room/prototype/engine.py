@@ -7,14 +7,15 @@ from collections import deque
 from contextlib import nullcontext
 from .models import DemoModel, ResponsesModel, ModelError, MODEL, ROLES, effort
 from .tools import evidence_for
-from .manuals import normalize_orders, recommended_dispatch
+from .manuals import normalize_orders, recommended_dispatch, local_catalog_applies
 
 
 class Engine:
-    def __init__(self, store, demo_model=None, live_model=None):
+    def __init__(self, store, demo_model=None, live_model=None, manual_search=None):
         self.store=store
         self.demo_model=demo_model or DemoModel()
         self.live_model=live_model or ResponsesModel()
+        self.manual_search=manual_search
         self.pool=ThreadPoolExecutor(max_workers=4,thread_name_prefix='session')
         self.agents=ThreadPoolExecutor(max_workers=6,thread_name_prefix='agent')
         self.lock=threading.Lock()
@@ -63,17 +64,21 @@ class Engine:
         started=time.time()
         provider=self.demo_model if run['mode']=='demo' else self.live_model
         try:
+            if 'manual_search' in context:
+                self.store.record_manual_context(run['session_id'],run['id'],stage,role,
+                    context['manual_search'],[e for e in context['evidence'] if e['id'].startswith('sar:')])
             with (nullcontext() if slot_held else self.slots):
                 result,metadata=provider.respond(role,stage,context)
             self.validate(result,stage,context)
+            if not local_catalog_applies(context['session']):result['dispatch_orders']=[]
             self.store.record_call(run['session_id'],run_id=run['id'],role=role,stage=stage,
                 requested_model=MODEL,reasoning_effort=effort(role),mode=run['mode'],
                 status='completed',started_at=started,ended_at=time.time(),**metadata)
             return result
-        except Exception:
+        except Exception as exc:
             self.store.record_call(run['session_id'],run_id=run['id'],role=role,stage=stage,
                 requested_model=MODEL,reasoning_effort=effort(role),mode=run['mode'],
-                status='failed',started_at=started,ended_at=time.time())
+                status='failed',started_at=started,ended_at=time.time(),diagnostics=getattr(exc,'diagnostics',{}))
             raise
 
     def validate(self, result, stage, context):
@@ -104,6 +109,19 @@ class Engine:
             if not isinstance(result.get('recommendation'),str):raise ModelError('권고 형식이 잘못되었습니다.')
             if set(result['evidence_ids'])-{e['id'] for e in context['evidence']}:
                 raise ModelError('현재 세션에 없는 근거를 인용했습니다.')
+            links=result.get('evidence_links',[])
+            if not isinstance(links,list) or len(links)>12:
+                raise ModelError('매뉴얼 근거 연결 형식이 잘못되었습니다.')
+            for link in links:
+                if not isinstance(link,dict) or any(not isinstance(link.get(k),str) or not link[k].strip() for k in ('claim','application')):
+                    raise ModelError('매뉴얼 근거의 주장·적용 이유가 필요합니다.')
+                ids=link.get('evidence_ids')
+                if not isinstance(ids,list) or not ids or any(not isinstance(x,str) for x in ids) or set(ids)-set(result['evidence_ids']):
+                    raise ModelError('매뉴얼 연결은 보고가 실제 인용한 근거만 사용할 수 있습니다.')
+                if link['claim'] not in [result['summary'],result['recommendation'],*result['findings']]:
+                    raise ModelError('매뉴얼 연결의 주장은 보고 문장과 일치해야 합니다.')
+                if not isinstance(link.get('limitations'),list) or any(not isinstance(x,str) for x in link['limitations']):
+                    raise ModelError('매뉴얼 적용 제한 형식이 잘못되었습니다.')
             self.validate_dispatch_orders(result.get('dispatch_orders',[]))
             self.validate_requests(result.get('information_requests',[]),ROLES.get(context.get('assignment',{}).get('role','commander'),'상황실장'))
 
@@ -175,6 +193,8 @@ class Engine:
             snap=self.store.snapshot(sid)
             run=self.store.update_run(rid,status='running',started_at=time.time(),
                 based_on_version=snap['session']['version'])
+            if self.manual_search:
+                self.store.update_run(rid,manual_search={'status':'not_requested','generation':self.manual_search.generation})
             # Only prior/current turns, never future queued user requests.
             ordered_runs=[r['id'] for r in snap['runs']]
             previous_ids=ordered_runs[:ordered_runs.index(rid)+1]
@@ -182,6 +202,9 @@ class Engine:
             snap['messages']=history
             context={'session':snap['session'],'request':run,'history':history,
                      'evidence':evidence_for(snap,run['prompt'])}
+            if snap['session'].get('linkone'):
+                req=run['request_id']
+                context['review_purpose']=('initial_baseline' if snap['session']['linkone'].get('revision')==1 else 'changed_snapshot') if req.startswith('linkone:') else ('reanalysis' if req.startswith('linkone-review:') else 'user_question')
             if len(json.dumps(context,ensure_ascii=False))>180000:
                 raise ModelError('세션이 초기 프로토타입의 입력 한도를 초과했습니다. 새 세션을 사용하세요. 기존 기록은 보존됩니다.')
             self.store.event(sid,'상황실장 · 요청 해석과 임무 배정',run_id=rid)
@@ -193,6 +216,10 @@ class Engine:
                 plan_context=dict(plan_context,history=[{'role':m['role'],'content':m['content'],'external_report_id':m.get('external_report_id')} for m in plan_history[-4:]],
                     evidence=[e for e in plan_evidence if e['id'] in ('facts','incident','weather') or e['id'] in [m['id'] for m in history[-4:]] or e['title']!='사용자 신고 원문'])
             decision=self.call(run,'commander','plan',plan_context)
+            if snap['session'].get('linkone'):
+                decision['update']={}
+                if not decision.get('tasks'):
+                    decision['tasks']=[{'role':'intel','instruction':'현재 링크온 수신본과 변경사항을 검토하고 근거와 미확인 사항을 보고하세요.','reason':'링크온 전용 세션은 원본을 수정하지 않고 분석합니다.'}]
             if run.get('external_report_id'):
                 decision['update']={}
                 if not decision.get('tasks'):
@@ -231,7 +258,18 @@ class Engine:
                 latest=history[-1]['id']
                 agent_context=dict(context,evidence=[e for e in context['evidence'] if e['id']==latest or e['title']!='사용자 신고 원문'])
             self.store.update_run(rid,decision=decision)
-            futures=[self.agents.submit(self.agent,run,a,agent_context) for a in decision['tasks']]
+            specialist_contexts=[agent_context for _ in decision['tasks']]
+            if self.manual_search:
+                from .manual_rag.context import prepare_manual_context, with_manuals, combine_results
+                results=[prepare_manual_context(run,context['session'],a,self.manual_search,
+                         evidence=context['evidence']) for a in decision['tasks']]
+                specialist_contexts=[with_manuals(agent_context,r) for r in results]
+                combined=combine_results(results)
+                combined['items']=list({e['id']:e for r in results for e in r['items']}.values())
+                agent_context=with_manuals(agent_context,combined)
+                context=with_manuals(context,combined)
+                self.store.update_run(rid,manual_search=context['manual_search'])
+            futures=[self.agents.submit(self.agent,run,a,c) for a,c in zip(decision['tasks'],specialist_contexts)]
             reports=[]
             failure=None
             for f in futures:
@@ -253,6 +291,11 @@ class Engine:
                 key=item['question']
                 if key not in seen:
                     seen.add(key);dedup.append(item)
+            if context['session'].get('linkone'):
+                # The existing synthesis call selects/merges questions; keep agent originals in tasks.
+                selected=self.information_requests(final.get('information_requests',[]),'상황실장')
+                selected.sort(key=lambda q:{'high':0,'medium':1,'low':2}.get(q['priority'],1))
+                dedup=list({q['question']:q for q in selected}.values())[:2]
             final['information_requests']=dedup
             final['dispatch_orders']=self.dispatch_orders(final.get('dispatch_orders',[]),decision['dispatch_orders'])
             if dedup:
@@ -261,6 +304,7 @@ class Engine:
             final['timeline']=[{'text':m['content'],'source_id':m['id'],'received_at':m['created_at']} for m in history if m['role']=='user' and m.get('kind')!='simulation']
             final['report_ids']=[r['id'] for r in reports]
             final['external_report_ids']=sorted({e['external_report_id'] for e in context['evidence'] if e.get('external_report_id')})
+            final['linkone_snapshot_id']=run.get('linkone_snapshot_id')
             final['basis_version']=run['based_on_version']
             final['assumptions']=run['assumptions']
             self.store.finish_run(rid,final)

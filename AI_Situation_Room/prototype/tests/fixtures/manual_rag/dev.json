@@ -1,0 +1,14 @@
+[
+ {"id":"d1","query":"기관실 화재와 외부 소화 지원이 필요하다","expected":["sar-draft:05-vessel-emergency"]},
+ {"id":"d2","query":"실종자의 마지막 목격 위치와 표류를 검토해줘","expected":["sar-draft:03-search-planning"]},
+ {"id":"d3","query":"조난 신고가 왔지만 위치가 없다","expected":["sar-draft:01-intake"]},
+ {"id":"d4","query":"환자 의료 정보를 이송 기관에 인계해야 한다","expected":["sar-draft:07-medical"]},
+ {"id":"d5","query":"사람이 바다에 빠졌다. 인양 준비를 검토해줘","expected":["sar-draft:04-rescue-resources"]},
+ {"id":"d6","query":"많은 승선원의 명부와 재이송 인원을 확인해야 한다","expected":["sar-draft:06-mass-rescue"]},
+ {"id":"d7","query":"화재가 발생했고 실종자는 표류 중이다","expected":["sar-draft:05-vessel-emergency","sar-draft:03-search-planning"]},
+ {"id":"d8","query":"지원 기관의 지휘와 조정 책임은 어떻게 확인하지","expected":["sar-draft:02-coordination"]},
+ {"id":"d9","query":"수색 종료 후 새 목격 보고가 왔다","expected":["sar-draft:08-review-close","sar-draft:03-search-planning"]},
+ {"id":"d10","query":"케이크 만드는 방법","expected":[]},
+ {"id":"d11","query":"오늘 주식 가격 알려줘","expected":[]},
+ {"id":"d12","query":"축구 우승 팀은 어디야","expected":[]}
+]

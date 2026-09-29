@@ -1,0 +1,91 @@
+{
+  "schema_version": 1,
+  "checked_at": "2026-09-28",
+  "sources": [
+    {
+      "source_id": "mois-water-2025",
+      "title": "물놀이 행동요령",
+      "publisher": "행정안전부 / 정책브리핑",
+      "url": "https://www.korea.kr/news/customizedNewsView.do?newsId=148947099&pWise=sub&pWiseSub=J2",
+      "published_at": "2025-08-05",
+      "source_kind": "public_safety_guidance",
+      "locator": "본문: 물놀이 행동요령 ①~⑥",
+      "license_note": "페이지 텍스트: 출처표시·비상업적 이용·변경금지 조건 표기. 전체 원문·이미지는 묶음에 포함하지 않음.",
+      "checked_at": "2026-09-28",
+      "full_original_stored": false,
+      "verification": "official_page_body_read",
+      "operational_review": "not_reviewed"
+    },
+    {
+      "source_id": "kcg-coastal-2022",
+      "title": "평택서 3월 2차 대조기 위험예보 '주의보' 발령 알림",
+      "publisher": "평택해양경찰서",
+      "url": "https://www.kcg.go.kr/pyeongtaekcgs/na/ntt/selectNttInfo.do?nttSn=36328",
+      "published_at": "2022-03-10",
+      "source_kind": "historical_notice",
+      "locator": "본문 5. 안전수칙",
+      "license_note": "개별 본문의 재배포 허락 범위 미확인. 전체 원문·첨부는 묶음에 포함하지 않음.",
+      "checked_at": "2026-09-28",
+      "full_original_stored": false,
+      "verification": "official_page_body_read",
+      "operational_review": "not_reviewed"
+    },
+    {
+      "source_id": "kcg-rescue-2024",
+      "title": "서해해경청, 올 들어 응급환자 247명 이송",
+      "publisher": "서해지방해양경찰청",
+      "url": "https://www.kcg.go.kr/seohaecgh/na/ntt/selectNttInfo.do?nttSn=53666",
+      "published_at": "2024-05-14",
+      "source_kind": "case_report",
+      "locator": "본문: 부안 해상 환자 이송 및 신안 매물도 인근 어선 화재 사례",
+      "license_note": "공공누리 출처표시·상업적 이용금지·변경금지 표기. 전체 원문·사진·첨부 미포함.",
+      "checked_at": "2026-09-28",
+      "full_original_stored": false,
+      "verification": "official_page_body_read",
+      "operational_review": "not_reviewed"
+    },
+    {
+      "source_id": "kcg-pollution-2026",
+      "title": "여수해경, 2026 여수세계섬박람회 성공개최 기원 민·관 합동 해상방제훈련 실시",
+      "publisher": "여수해양경찰서 / 해양경찰청",
+      "url": "https://www.kcg.go.kr/kcg/na/ntt/selectNttInfo.do?nttSn=69826",
+      "published_at": "2026-06-11",
+      "source_kind": "exercise_report",
+      "locator": "본문: 충돌·화물유 유출을 가정한 훈련과 초동 조치",
+      "license_note": "공공누리 출처표시·상업적 이용금지 표기. 전체 원문·사진·첨부 미포함.",
+      "checked_at": "2026-09-28",
+      "full_original_stored": false,
+      "verification": "official_page_body_read",
+      "operational_review": "not_reviewed"
+    },
+    {
+      "source_id": "imo-iamsar-overview",
+      "title": "IAMSAR Manual",
+      "publisher": "International Maritime Organization",
+      "url": "https://www.imo.org/en/ourwork/safety/pages/iamsarmanual.aspx",
+      "published_at": null,
+      "source_kind": "publication_overview",
+      "locator": "The IAMSAR manual is divided into three volumes",
+      "license_note": "소개 페이지를 확인함. 매뉴얼 본문 이용권·본문 파일은 확보하지 않음.",
+      "checked_at": "2026-09-28",
+      "full_original_stored": false,
+      "verification": "official_page_body_read",
+      "operational_review": "not_reviewed"
+    },
+    {
+      "source_id": "haeon-basic-draft",
+      "title": "동해 해상사고 기본 대응 매뉴얼 · HAEON(해온)용",
+      "publisher": "HAEON 프로젝트",
+      "url": null,
+      "local_path": "prototype/manuals/basic-response-manual.md",
+      "published_at": "2026-09-26",
+      "source_kind": "project_draft",
+      "locator": "1. 접수 즉시 확인할 항목 / 4. 보고·갱신 규칙",
+      "license_note": "기존 프로젝트 초안. 외부 기관 승인 문서가 아님.",
+      "checked_at": "2026-09-28",
+      "full_original_stored": false,
+      "verification": "local_file_read",
+      "operational_review": "not_reviewed"
+    }
+  ]
+}

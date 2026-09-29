@@ -18,14 +18,23 @@ def asset_catalog():
     return _read_catalog()['units']
 
 
-def manual_evidence():
+def local_catalog_applies(session):
+    if not session or not session.get('linkone'):return True
+    location=str(session.get('facts',{}).get('location',''))
+    # Only explicit local incident locations qualify; an operator's station does not.
+    return any(name in location for name in ('묵호','동해시','동해항','울릉','독도')) and not any(name in location for name in ('제주','부산','서귀포'))
+
+
+def manual_evidence(session=None):
     catalog = _read_catalog()
-    return [
+    items=[
         {'id':'basic_manual','title':'동해 해상사고 기본 대응 매뉴얼',
          'content':(ROOT / 'basic-response-manual.md').read_text(encoding='utf-8')},
         {'id':'donghae_assets','title':'동해 가용세력 후보 목록',
          'content':json.dumps(catalog,ensure_ascii=False), 'summary':{'source':catalog['source']}},
     ]
+    if not local_catalog_applies(session):items=[e for e in items if e['id']!='donghae_assets']
+    return items
 
 
 def _unit(asset_id):
@@ -41,6 +50,7 @@ def _order(asset_id, order, reason, priority='high'):
 
 def recommended_dispatch(prompt, session):
     """Return conservative order proposals for clear maritime danger keywords."""
+    if not local_catalog_applies(session):return []
     incident = session.get('incident') or {}
     text = ' '.join(str(x) for x in [prompt, session.get('facts',{}).get('location',''),
                                      session.get('facts',{}).get('notes',''),

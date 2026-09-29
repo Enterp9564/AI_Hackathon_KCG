@@ -1,0 +1,197 @@
+{
+  "schema_version": 1,
+  "prepared_at": "2026-09-28",
+  "purpose": "Public international SAR draft for offline reference and later RAG integration",
+  "primary": "international/README.md",
+  "app_connected": false,
+  "retrieval_implemented": false,
+  "expert_approved": false,
+  "original_pdf_count": 6,
+  "original_pdf_pages": 561,
+  "international_topics": 8,
+  "international_curated_chunks": 14,
+  "supplementary_topics": 6,
+  "supplementary_chunks": 6,
+  "files": [
+    {
+      "path": "INTERNAL_IMPORT.md",
+      "bytes": 1991,
+      "sha256": "cf1add4c8dcdd67ed1307bb886eb3f7919763636d0e5537b898c6fa34a5b2ab7"
+    },
+    {
+      "path": "README.md",
+      "bytes": 3105,
+      "sha256": "99f13044e47fedb67a5a1a723ea6ee577baf54a2517a75d0be3283c97c2dad64"
+    },
+    {
+      "path": "chunks.jsonl",
+      "bytes": 11703,
+      "sha256": "fa4367f98d5f774e49ea5012cfab50d49812487f88a365257eac490b33745ebe"
+    },
+    {
+      "path": "evaluation-cases.json",
+      "bytes": 6910,
+      "sha256": "eba583fa157700cb3d4b298e13dfe970335b807a026bda1e2ed20014c1958d72"
+    },
+    {
+      "path": "international/README.md",
+      "bytes": 4804,
+      "sha256": "c42f52807654b576c679343149689979c92ee255ade744476fbffe4f68222766"
+    },
+    {
+      "path": "international/amsa-natsar-2026.pages.jsonl",
+      "bytes": 1336373,
+      "sha256": "0f15c972194e49d6179885090c87b3f6dde53945ab04a652b049a9b05b70aba3"
+    },
+    {
+      "path": "international/chunks.jsonl",
+      "bytes": 23099,
+      "sha256": "16c9ce41281560221578d1846a4adca7eab90b89f834a3b509d596af23ee74e3"
+    },
+    {
+      "path": "international/downloads.json",
+      "bytes": 3029,
+      "sha256": "a09f0d22362ff4398cbd31051bb875b891a3c5c892caafcf986cc2a0338378c7"
+    },
+    {
+      "path": "international/evaluation-cases.json",
+      "bytes": 6927,
+      "sha256": "d4e29f1c6bceb7f6329901af2d2a45e996abc1dd0eafac9cd925f1f793df468d"
+    },
+    {
+      "path": "international/imo-comsar-31.pages.jsonl",
+      "bytes": 50026,
+      "sha256": "e46bf6d0d140bedf2db9acc474fe7c4b80c480d92ed5415492a8d3c8c2e21b52"
+    },
+    {
+      "path": "international/imo-msc-1183.pages.jsonl",
+      "bytes": 13393,
+      "sha256": "51368e968340d3b6e099788e6fcc2e27e69b6e600cb2e628ec2bf7303ee1cb64"
+    },
+    {
+      "path": "international/imo-msc-1218.pages.jsonl",
+      "bytes": 12298,
+      "sha256": "51275f9f1412aad93aa1e7164049eea208aa79160139ce3ef0865fc6773fb3ab"
+    },
+    {
+      "path": "international/imo-msc-1447.pages.jsonl",
+      "bytes": 4651,
+      "sha256": "af24e4903c7382ee7f9787f1a4b6367c21d7b2d5b90611143b39ee0663a67b42"
+    },
+    {
+      "path": "international/imo-msc-959.pages.jsonl",
+      "bytes": 4227,
+      "sha256": "92f01e5a89fc21559c052300f3a3aeb1727e265397d6381bfb5d27a34085aa0b"
+    },
+    {
+      "path": "international/originals/amsa-natsar-2026.pdf",
+      "bytes": 12048401,
+      "sha256": "9ac09c787c7f80b951bc3d4406757e9e82fa492f6f8858aebc6247bf0ecd0520"
+    },
+    {
+      "path": "international/originals/imo-comsar-31.pdf",
+      "bytes": 174100,
+      "sha256": "4910a6c85895962d83b7e654d9aa565ae75722ef1aafe8b2db769e0635a1a754"
+    },
+    {
+      "path": "international/originals/imo-msc-1183.pdf",
+      "bytes": 142896,
+      "sha256": "d323d79b8cf239abf43d29800261472c95fc6bccb44e8c28afc753a12f7a9699"
+    },
+    {
+      "path": "international/originals/imo-msc-1218.pdf",
+      "bytes": 183098,
+      "sha256": "14dcd7b1812705fedb2d5fac1252f1aeea4361a7c569ea5595867d64cef68db8"
+    },
+    {
+      "path": "international/originals/imo-msc-1447.pdf",
+      "bytes": 17034,
+      "sha256": "9f8e32725904e2324e2afda80b89098cb46a5581cf86dc733c76ea73fedd4a14"
+    },
+    {
+      "path": "international/originals/imo-msc-959.pdf",
+      "bytes": 37288,
+      "sha256": "3969afa95539a354a0eb85e0a6db3230d88224c33cc91fcf8cd02ef3f56b59b1"
+    },
+    {
+      "path": "international/sources.json",
+      "bytes": 8351,
+      "sha256": "5501733ca7df643f0d91e563fc1fa4d44fa190667c23f93d1c8791b639089407"
+    },
+    {
+      "path": "international/topics/01-intake.md",
+      "bytes": 4218,
+      "sha256": "d70d4b1cdb59d87e65c2f25aaa666de4400bc7592a245e04f4a55a2fc2d7bb9c"
+    },
+    {
+      "path": "international/topics/02-coordination.md",
+      "bytes": 2378,
+      "sha256": "36becf9cca2080bb9e8ba9d54101d9eb8b1454117c8ea634218c369aef06a4a8"
+    },
+    {
+      "path": "international/topics/03-search-planning.md",
+      "bytes": 3303,
+      "sha256": "1550b255cbf8868b54af3dd7ca40e1aa7b078cfc20d5551b6ea95c7afac7ed63"
+    },
+    {
+      "path": "international/topics/04-rescue-resources.md",
+      "bytes": 4186,
+      "sha256": "ff9d9e88adee9be8b025636cbfbc5238d9f9e1828fd75221e2fe09d0805a1adc"
+    },
+    {
+      "path": "international/topics/05-vessel-emergency.md",
+      "bytes": 2582,
+      "sha256": "3e6331a91e7be665433c40085366a0efc45ef763ceea8ca41ee1663dc3433d1b"
+    },
+    {
+      "path": "international/topics/06-mass-rescue.md",
+      "bytes": 2398,
+      "sha256": "d369626eb746f09373b024ce4cd5752baddd80bcfc78234eae595a9b309544a9"
+    },
+    {
+      "path": "international/topics/07-medical.md",
+      "bytes": 3408,
+      "sha256": "3a99eda26e55f1f0aada833dbe4b14e4e55a10a5fce1a5cfcd55efc91152d7fe"
+    },
+    {
+      "path": "international/topics/08-review-close.md",
+      "bytes": 2378,
+      "sha256": "aca96d5c450559538ec8daca24cd00a53e0ca199e4d00313fbc52d5b96f8304e"
+    },
+    {
+      "path": "sources.json",
+      "bytes": 4306,
+      "sha256": "f37c16de9257a35c76696ad26c49e821277e5db5c7e9a52ce5210c6cca6449ae"
+    },
+    {
+      "path": "topics/01-intake.md",
+      "bytes": 1634,
+      "sha256": "ad92343f926493088bd1f65c82c42ac9ddf6772556fe94734132a856776ceabe"
+    },
+    {
+      "path": "topics/02-water-rescue.md",
+      "bytes": 1779,
+      "sha256": "9c6b82cb60ab4ffd57ad9352d4097dc97797708de52d985d783309c2c3139d0f"
+    },
+    {
+      "path": "topics/03-coastal-isolation.md",
+      "bytes": 1755,
+      "sha256": "3988ce5c8f718bbaa1278b18c8e0af7d717e6a9721006fc6fd7dfaca942401ea"
+    },
+    {
+      "path": "topics/04-transport-fire.md",
+      "bytes": 1929,
+      "sha256": "98d63fe858538a67c37e8700f52f5df0f4fa5b8afd2fa9bad8ffc1f9b340a265"
+    },
+    {
+      "path": "topics/05-collision-pollution.md",
+      "bytes": 1969,
+      "sha256": "44a32c7a8f6169027d1449a22e5af1880d57902e05b9d9dcfd296e70e7c37ad0"
+    },
+    {
+      "path": "topics/06-sar-coordination.md",
+      "bytes": 1836,
+      "sha256": "957b27a54bb7caaed49c2e7c7db981d4f9585dd277ddbd4fed3e555d0d2df306"
+    }
+  ]
+}

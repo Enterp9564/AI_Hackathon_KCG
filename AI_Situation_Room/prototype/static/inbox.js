@@ -5,7 +5,7 @@ const inboxStatus={pending:'검토 대기',deferred:'나중에 검토',sent:'인
 const inboxActionLabel={received:'수신',seen:'확인',later:'나중에',reject:'반영 안 함',quote_sent:'인용 전송'};
 const inboxDate=value=>new Date(typeof value==='number'?value*1000:value).toLocaleString('ko-KR');
 function renderInbox(){
-  for(const [project,id] of Object.entries({'link-one':'notifyLink','resaid-ai':'notifyResaid'})){
+  for(const [project,id] of Object.entries({'resaid-ai':'notifyResaid'})){
     const pending=inboxState.reports.filter(r=>r.project===project&&['pending','deferred'].includes(r.status));
     const button=$('#'+id);
     button.querySelector('.inbox-count').textContent=pending.length;
@@ -60,7 +60,6 @@ async function openInbox(project){
   }
   await refreshInbox();
 }
-$('#notifyLink').onclick=()=>openInbox('link-one');
 $('#notifyResaid').onclick=()=>openInbox('resaid-ai');
 $('#closeInbox').onclick=()=>$('#inboxPanel').close();
 $('#inboxLinkForm').onsubmit=async e=>{

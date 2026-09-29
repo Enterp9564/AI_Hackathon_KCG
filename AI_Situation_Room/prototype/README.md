@@ -8,6 +8,12 @@
 
 Python 3.11+ 표준 HTTP 서버·SQLite·HTML/CSS/JavaScript로 실행한다. 별도 웹 프레임워크는 필요 없다. macOS 실행 파일은 TLS 인증서를 위해 `certifi`도 사용한다. 발표 자료는 별도 `presentation/`에 있다.
 
+## 선택 기능: 국제 SAR 로컬 검색 — 2026-09-29
+
+공개 국제 SAR 한국어 요약 14개를 요원·검증·최종 보고의 근거로 연결했다. 기본값은 `off`이며 기존 더블클릭 실행은 그대로다. 키워드 시험은 `python3 -m prototype.server --manual-search lexical`, 준비된 벡터 시험은 `prototype/runtime/manual-rag/venv/bin/python -m prototype.server --manual-search hybrid --manual-index prototype/runtime/manual-rag/indexes/curated-v1`로 실행한다. 실행 중인 서버는 종료한 뒤 재시작한다.
+
+[상세 설치·실행·저장 계약](../docs/implementation/24-local-manual-rag.md) · [검증 기록과 범위](../docs/superpowers/plans/2026-09-29-sar-rag-progress.md). 보고의 국제 SAR 버튼에서 당시 전달한 근거·페이지·적용 제한을 확인한다. 검색만 로컬이며 LIVE 생성은 기존 외부 API다. 원문 전체 검색과 로컬 생성 LLM은 후속 단계다.
+
 ## 더블클릭 실행
 
 1. `prototype/.secrets/openai_api_key.txt`에 API 키 한 줄을 직접 저장한다. 확장자는 `.txt`가 맞다. 숨김 폴더는 Finder에서 **Command+Shift+.**으로 표시한다.
@@ -92,3 +98,20 @@ python3 -m prototype.server --mcp-port 8862
 기본은 같은 PC 시험이다. 핫스팟에서는 --mcp-host와 --mcp-allowed-host를 지정한다. 담당자 화면/API는 loopback으로 유지한다. 수신만으로 AI/상황판을 변경하지 않으며, 프로젝트 알림의 **인용하여 전송**에서만 기존 지시를 실행한다. 초안은 유지되고 미확인 보고를 사실로 자동 반영하지 않는다.
 
 도구 계약은 [MCP 수신 서버](../docs/implementation/17-mcp-transport.md), 상태·이력은 [외부 수신함](../docs/implementation/16-external-inbox.md)을 읽는다. 실제 팀 앱·핫스팟 장비·이번 변경의 LIVE 호출 검증은 아직 하지 않았다.
+
+## 공개 국제 SAR 자료 — 2026-09-28
+
+[로컬 매뉴얼 자료](manuals/library/README.md)에 공개 국제 SAR 기반 초안을 준비했다. AMSA 2026 SAR 매뉴얼과 IMO 회람 5개의 원본 PDF, 페이지별 추출 텍스트, 한국어 분야별 초안 8개, 선별 구절 14개를 포함한다. 국내 안내·사례는 보조 자료다.
+
+현재 앱은 기존 기본 매뉴얼만 자동으로 읽는다. 새 분야별 MD는 기존 첨부 흐름에 넣을 수 있는 형식으로 준비했으며, 자동 구절 검색·Vector DB·로컬 LLM·일반 웹 검색 연결은 아직 없다. 내부 자료 연결 전에는 로컬 모델 경로와 외부 전송 차단을 구현해야 한다. 자세한 범위와 후속 설계는 [매뉴얼 로컬화](../docs/improvements/03-local-manuals.md)를 따른다.
+
+
+## 링크온 개발 DB 접속 준비
+
+현행 절차는 [DB 연결·동기화 운영 문서](../docs/operations/linkone-db-connection.md)를 따른다. 새 PC 준비부터 키 등록, 서버 지문 검증, DB 점검, 앱 수신, 장애 대응과 종료 절차까지 정리했다. 아래 준비 기록은 과거 검증 이력이다.
+
+[로컬 설정·공개키 전달·점검 명령](../docs/handoff/linkone-access/README.md)을 따른다. `linkone_access.py`는 독립 수동 접속 점검 도구이며 해온 서버 실행이나 자동 데이터 수신을 변경하지 않는다. 공개키 등록 후 터널과 DB 점검을 실행한다. 비밀·가상환경은 `.secrets/linkone/`에만 보관한다.
+
+### 링크온 수동 동기화 (2026-09-28)
+
+사이드바 **링크온 동기화** → 사건 선택 → 전용 세션 수신 → 자동 분석. 실제 DB 읽기 연동이며 기존 MCP 수신함과 별도입니다. 표별 대기 없이 수신하며, 연속 수신 요청 사이에는 5초 간격을 둡니다. 동일 자료는 분석을 반복하지 않습니다. **승선원 · 변경 내역**에서 검색·전후 비교·과거 수신본을 확인합니다. LIVE/DEMO를 구별하고 자동 원격 폴링은 하지 않습니다. 접속 준비·데이터 범위·한도·API는 [구현 문서](../docs/implementation/linkone-manual-sync.md)를 참조하세요.

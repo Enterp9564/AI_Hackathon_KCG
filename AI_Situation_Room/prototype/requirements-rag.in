@@ -1,0 +1,3 @@
+# Optional local vector search only. Baseline/off/lexical use the standard library.
+qdrant-client
+sentence-transformers

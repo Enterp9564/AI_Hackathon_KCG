@@ -1,0 +1,52 @@
+{
+  "schema_version": "1.0",
+  "source": "haeon",
+  "incident_id": "7fa6f0ba-e99b-4e2b-8be4-36ec12d4a101",
+  "incident_title": "청해호 가상 훈련",
+  "mode": "demo",
+  "state_version": 4,
+  "served_at": "2026-09-28T06:33:00Z",
+  "situation": {
+    "basis": "recorded_state",
+    "people": {
+      "total": 8,
+      "rescued": 4,
+      "remaining": 4
+    },
+    "location": {
+      "description": "묵호 동방 가상 훈련 해역",
+      "lat": null,
+      "lon": null
+    }
+  },
+  "summary": {
+    "status": "stale",
+    "freshness_basis": "ledger_version",
+    "text": "현재 장부에는 총 8명 중 3명 구조, 5명 미구조로 기록되어 있습니다. 링크온 보고의 현장 상태는 추가 확인이 필요합니다.",
+    "generated_at": "2026-09-28T06:30:00Z",
+    "based_on_version": 3,
+    "report_id": "run-example-001",
+    "findings": [
+      "현재 장부의 미구조 인원은 5명입니다."
+    ],
+    "recommendation": "남은 인원의 위치와 접근 가능 여부를 확인하세요.",
+    "uncertainties": [
+      "외부 보고의 현장 상태는 독립 확인되지 않았습니다."
+    ],
+    "information_requests": [
+      {
+        "question": "남은 인원은 어디에 있나요?",
+        "reason": "구조 접근 방향을 검토하는 데 필요합니다.",
+        "priority": "high"
+      }
+    ],
+    "contains_external_claims": true
+  },
+  "processing": {
+    "latest_analysis_status": "running",
+    "pending_analysis_count": 1,
+    "partner_pending_report_count": 0
+  },
+  "extensions": {},
+  "revision": "sha256:d95eb68c1cc01a5c013cdf6b189048f2246b0bec6d3aab26cdcf8453dcf2b016"
+}

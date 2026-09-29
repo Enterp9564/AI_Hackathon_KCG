@@ -99,7 +99,8 @@ class Store:
     def delete_session(self, sid):
         """Delete one session and its session-scoped records after a safe idle check."""
         with self.db() as db:
-            self._session(db, sid)
+            session=self._session(db, sid)
+            if session.get('linkone',{}).get('status')=='receiving':raise Conflict('링크온 자료 수신 중에는 삭제할 수 없습니다.')
             pending = any(run.get('status') in ('queued','running') for run in self._items(db, sid, 'runs'))
             if pending:
                 raise Conflict('진행 중인 지시가 있어 세션을 삭제할 수 없습니다. 작업이 끝난 뒤 다시 시도하세요.')
@@ -119,10 +120,17 @@ class Store:
             result = {'session': session}
             for kind in ('messages', 'runs', 'tasks', 'events', 'attachments', 'calls'):
                 result[kind] = self._items(db, sid, kind)
+            result['manual_contexts']=[{k:v for k,v in record.items() if k!='items'}
+                                      for record in self._items(db,sid,'manual_contexts')]
             for kind in ('runs', 'tasks', 'messages'):
                 for item in result[kind]:
                     if item.get('status') == 'completed' and item.get('based_on_version') != session['version']:
                         item['status'] = 'stale'
+            if session.get('linkone',{}).get('snapshot_id'):
+                from .linkone_data import evidence
+                from .manuals import local_catalog_applies
+                result['resource_scope']={'named_dispatch_allowed':local_catalog_applies(session)}
+                result['linkone_evidence']=evidence(self._object(db,session['linkone']['snapshot_id'],sid,'linkone_snapshots'))
             result['server_time'] = time.time()
             return result
 
@@ -147,6 +155,7 @@ class Store:
             raise ValueError('구조 보고 인원이 총원보다 많습니다.')
         with self.db() as db:
             session = self._session(db, sid)
+            if session.get('linkone'):raise Conflict('링크온 원본 집계는 동기화로만 변경할 수 있습니다.')
             if type(expected_version) is not int or session['version'] != expected_version:
                 raise Conflict('상황이 갱신되었습니다. 최신 값을 확인하고 다시 반영하세요.')
             before = session['facts']
@@ -171,6 +180,7 @@ class Store:
             if run.get('external_report_id'):
                 raise Conflict('외부 보고 인용은 사실 확정이 아닙니다. 확인한 상황은 직접 반영하세요.')
             session=self._session(db,sid)
+            if session.get('linkone'):raise Conflict('AI는 링크온 원본을 변경할 수 없습니다.')
             if run.get('update_applied'):
                 if run.get('applied_patch') != patch:raise Conflict('이미 반영된 요청에 다른 갱신입니다.')
                 return session
@@ -205,6 +215,7 @@ class Store:
 
     def _enqueue(self, db, sid, content, kind, assumptions, request_id, external_report_id=None):
         session = self._session(db, sid)
+        if session.get('linkone',{}).get('status')=='receiving':raise Conflict('자료 수신 완료 후 지시를 보내세요.')
         for previous in self._items(db, sid, 'runs'):
             if previous['request_id'] == request_id:
                 if (previous['prompt'], previous['kind'], previous['assumptions']) != (content, kind, assumptions):
@@ -215,6 +226,7 @@ class Store:
             raise Conflict('대기 중인 요청이 많습니다. 현재 작업 후 다시 보내주세요.')
         run = self._add(db, sid, 'runs', dict(request_id=request_id, prompt=content, kind=kind,
             assumptions=assumptions, status='queued', based_on_version=session['version'],
+            linkone_snapshot_id=session.get('linkone',{}).get('snapshot_id'),
             external_report_id=external_report_id, mode=session['mode'], started_at=None, ended_at=None, decision=None, final=None, error=None))
         self._add(db, sid, 'messages', dict(role='user', content=content, run_id=run['id'],
             kind=kind, assumptions=assumptions, external_report_id=external_report_id))
@@ -254,6 +266,25 @@ class Store:
         with self.db() as db:
             self._session(db, sid)
             return self._add(db, sid, 'calls', fields)
+
+    def record_manual_context(self, sid, rid, stage, role, search_record, items):
+        with self.db() as db:
+            run=self._object(db,rid,sid=sid,kind='runs')
+            record=self._add(db,sid,'manual_contexts',dict(run_id=rid,stage=stage,role=role,
+                search=search_record,items=items,
+                evidence=[{'id':e['id'],'title':e['title'],'source_title':e['source_title'],
+                           'pdf_pages':e['pdf_pages']} for e in items]))
+            run.setdefault('manual_context_ids',[]).append(record['id'])
+            self._update(db,rid,run)
+            return record['id']
+
+    def get_manual_context(self, sid, rid, context_id):
+        with self.db() as db:
+            self._session(db,sid)
+            self._object(db,rid,sid=sid,kind='runs')
+            record=self._object(db,context_id,sid=sid,kind='manual_contexts')
+            if record['run_id']!=rid:raise KeyError('현재 실행의 매뉴얼 근거가 아닙니다.')
+            return record
 
     def finish_run(self, rid, final, status='completed', error=None):
         with self.db() as db:

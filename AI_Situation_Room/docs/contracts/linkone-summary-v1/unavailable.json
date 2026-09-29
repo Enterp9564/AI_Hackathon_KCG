@@ -1,0 +1,42 @@
+{
+  "schema_version": "1.0",
+  "source": "haeon",
+  "incident_id": "7fa6f0ba-e99b-4e2b-8be4-36ec12d4a101",
+  "incident_title": "청해호 가상 훈련",
+  "mode": "demo",
+  "state_version": 0,
+  "served_at": "2026-09-28T06:25:00Z",
+  "situation": {
+    "basis": "recorded_state",
+    "people": {
+      "total": null,
+      "rescued": null,
+      "remaining": null
+    },
+    "location": {
+      "description": null,
+      "lat": null,
+      "lon": null
+    }
+  },
+  "summary": {
+    "status": "unavailable",
+    "freshness_basis": "ledger_version",
+    "text": null,
+    "generated_at": null,
+    "based_on_version": null,
+    "report_id": null,
+    "findings": [],
+    "recommendation": null,
+    "uncertainties": [],
+    "information_requests": [],
+    "contains_external_claims": false
+  },
+  "processing": {
+    "latest_analysis_status": "not_requested",
+    "pending_analysis_count": 0,
+    "partner_pending_report_count": 1
+  },
+  "extensions": {},
+  "revision": "sha256:493706c6bea1cec5cbcce2629cdca5c61c126431875031a31926d0d71345c342"
+}

@@ -1,27 +1,38 @@
 <!doctype html>
 <html lang="ko">
-<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>AI 종합상황실 · 운영 프로토타입</title><link rel="stylesheet" href="/style.css"><script src="/app.js" defer></script><script src="/inbox.js" defer></script></head>
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>AI 종합상황실 · 운영 프로토타입</title><link rel="stylesheet" href="/style.css"><script src="/app.js" defer></script>
+<script src="/manuals.js" defer></script><script src="/inbox.js" defer></script><script src="/linkone.js" defer></script><script src="/patient-alerts.js" defer></script><script src="/linkone-workspace.js" defer></script></head>
 <body>
 <div class="app-shell">
 <aside class="sidebar">
-  <a class="brand" href="/"><span class="brand-icon">◈</span><span>AI 종합상황실<small>MISSION CONTROL</small></span></a>
+  <a class="brand" href="/" aria-label="AI종합상황실 「해온」"><span class="brand-icon">◈</span><span>AI종합상황실<br>「해온」<small>MISSION CONTROL</small></span></a>
   <button id="newSession" class="primary new-session">＋ 새 세션</button>
+  <button id="linkoneConnect" class="new-session" aria-haspopup="dialog">링크온 동기화 ↻</button>
   <div class="side-label">독립된 상황실 <span id="sessionCount">0</span></div>
   <nav id="sessionList" aria-label="세션 목록"></nav>
   <div class="side-bottom"><span class="tiny-led"></span> LOCAL WORKSPACE<br><p>세션별 기억 · 저장되는 기록<br>최종 현장 판단은 담당자가 수행</p><button id="capabilities" class="quiet">구현 범위 및 실행 설정 ↗</button></div>
 </aside>
 <div class="workspace">
-<header class="topbar"><div><span class="eyebrow">AI OPERATIONS / PROTOTYPE 01</span><h1 id="sessionTitle">상황을 잇고, 판단을 돕다.</h1><div id="sessionMeta" class="muted">하나의 지시에서 함께 움직이는 AI 조직</div></div><div class="header-actions"><span id="modeBadge" class="badge">로컬 프로토타입</span><button id="pinButton" class="quiet" disabled>상황판에 고정</button><a id="backToRoom" class="button quiet" href="/" hidden>상황실로 돌아가기 ↩</a><a class="button quiet" href="/monitor" target="_blank" rel="noopener">대형 화면 ↗</a><button id="fullscreen" class="quiet" hidden>전체화면</button></div></header>
+<header class="topbar"><div><span class="eyebrow">AI OPERATIONS / PROTOTYPE 01</span><h1 id="sessionTitle">상황을 잇고, 판단을 돕다.</h1><div id="sessionMeta" class="muted">하나의 지시에서 함께 움직이는 AI 조직</div></div><div class="header-actions"><span id="modeBadge" class="badge">로컬 프로토타입</span><button id="pinButton" class="quiet" disabled>상황판에 고정</button><a id="backToRoom" class="button quiet" href="/" hidden>상황실로 돌아가기 ↩</a><div class="workspace-switch" role="group" aria-label="상황실 화면 전환"><button id="haeonWorkspaceButton" class="quiet active" aria-pressed="true" aria-controls="haeonWorkspace">해온 상황실</button><button id="linkoneWorkspaceButton" class="quiet" aria-pressed="false" aria-controls="linkoneWorkspace">링크온 상황실</button></div><a class="button quiet" href="/monitor" target="_blank" rel="noopener">대형 화면 ↗</a><button id="fullscreen" class="quiet" hidden>전체화면</button></div></header>
 <div class="inbox-toolbar" aria-label="외부 프로젝트 수신함">
   <span class="muted">외부 보고</span>
-  <button id="notifyLink" class="inbox-notify" aria-haspopup="dialog">Link-One <span class="inbox-count">0</span></button>
+  <button id="notifyLink" class="inbox-notify patient-notify" aria-haspopup="dialog">Link-One 환자 알림 <span class="inbox-count">확인 전</span></button>
   <button id="notifyResaid" class="inbox-notify" aria-haspopup="dialog">RESAID AI <span class="inbox-count">0</span></button>
   <span id="inboxConnection" class="muted" role="status">수신함 연결 중</span>
 </div>
 <div class="systembar"><span id="connection" role="status"><i class="tiny-led"></i> 서버 연결 중</span><span id="clock"></span></div>
 <div id="executionStatus" class="execution-status" role="status" aria-live="polite" aria-atomic="true" hidden></div>
+<section id="linkoneWorkspace" class="linkone-workspace" aria-label="링크온 상황실" hidden>
+  <div class="linkone-workspace-heading"><div><h2>링크온 상황실</h2><p id="linkoneWorkspaceContext" class="modal-note"></p></div><div class="linkone-workspace-actions"><button id="linkoneWorkspaceReload" class="quiet">링크온 다시 연결 ↻</button><a class="button quiet" href="https://114-110-181-118.sslip.io/" target="_blank" rel="noopener noreferrer">별도 창 ↗</a></div></div>
+  <p class="modal-note">처음 한 번 직접 로그인하고 사건을 선택해 주세요. 해온과 오갈 때 링크온 화면을 유지합니다. 새로고침·브라우저 종료·링크온 로그인 만료 시에는 다시 접속해야 할 수 있습니다.</p>
+  <p id="linkoneWorkspaceChanged" class="linkone-entry-note" role="status" hidden>해온 사건이 변경되었습니다. 링크온은 기존 화면을 유지하고 있으므로, 링크온에서도 현재 사건을 직접 선택해 주세요.</p>
+  <p class="modal-note">해온과 링크온의 사건 선택은 자동으로 맞춰지지 않습니다. Codex 내 브라우저에서 화면이 비면 Safari 등 일반 브라우저로 해온을 열거나 ‘별도 창’을 사용하세요.</p>
+  <div id="linkoneFrameHost" class="linkone-frame-host"></div>
+</section>
+<div id="haeonWorkspace">
 <div id="emptyState" class="empty-state"><div class="orb">◈</div><span class="eyebrow">YOUR NEXT DECISION STARTS HERE</span><h2>새로운 상황,<br><em>하나의 팀으로.</em></h2><p>상황실장에게 지시하면, 필요한 요원이 검토하고 보고합니다.<br>각 세션의 기억과 근거는 독립적으로 보존됩니다.</p><button id="startSession" class="primary">첫 상황실 열기 <span>→</span></button><div class="empty-steps"><span>01 지시</span><span>02 병렬 검토</span><span>03 보고 · 조언</span></div></div>
 <div id="room" hidden>
+<section id="linkoneStatus" class="panel linkone-status" aria-label="링크온 수신 상태" hidden></section>
 <div id="priority" class="priority"></div>
 <div class="room-grid">
 <section class="conversation panel"><div class="section-head"><div><span class="eyebrow">01 / DIALOGUE</span><h2>상황실장과 대화</h2></div></div><div id="messages" class="messages" aria-live="polite"></div><button id="newMessages" class="quiet" hidden>새 보고 보기 ↓</button>
@@ -30,6 +41,7 @@
 <aside class="situation"><div class="section-head"><div><span class="eyebrow">03 / SITUATION</span><h2>현재 상황</h2></div><button id="editFacts" class="quiet">수정</button></div><div id="facts" class="panel facts-panel"></div><div class="panel weather-panel"><div class="card-heading"><h3>기상 · 자료 신선도</h3><button id="weatherButton" class="quiet">조회 ↻</button></div><div id="weather"></div></div><div class="panel evidence-panel"><div class="card-heading"><h3>세션 자료</h3><span id="attachmentCount" class="small-badge">0</span></div><div id="evidence"></div></div><div class="scope-note">사건 정보는 사용자 입력 기준입니다.<br>현장 센서·실제 자원 시스템 미연동.</div></aside>
 </div>
 <section class="events panel"><div class="events-label"><span class="eyebrow">LIVE RECORD</span><strong>상황실 기록</strong></div><div id="events"></div></section>
+</div>
 </div>
 <footer><span>AI SITUATION ROOM</span><span>사실과 가정은 분리하고, 판단의 근거는 연결합니다.</span><span id="footerSession">LOCAL / PERSISTENT</span></footer>
 </div></div>
@@ -47,5 +59,13 @@
   <div id="inboxError" class="modal-error" role="alert"></div>
   <div id="inboxReports"></div>
 </dialog>
+<dialog id="linkoneDialog" aria-labelledby="linkoneTitle"><div class="modal-head"><h2 id="linkoneTitle">링크온 동기화</h2><button id="closeLinkone" aria-label="링크온 창 닫기">×</button></div><div id="linkoneBody"></div></dialog>
 <div id="toast" role="status" hidden></div>
+<dialog id="patientPanel" aria-labelledby="patientTitle">
+  <div class="modal-head"><div><span class="eyebrow">LINK-ONE / PATIENT ALERTS</span><h2 id="patientTitle">환자 알림</h2></div><button id="patientClose" aria-label="환자 알림 닫기">×</button></div>
+  <p id="patientConnection" class="modal-note" role="status"></p>
+  <div class="patient-nav"><button id="patientBack" class="quiet" hidden>← 목록으로</button><button id="patientMcp" class="quiet">외부 보고(MCP)</button></div>
+  <div id="patientError" class="modal-error" role="alert"></div><div id="patientBody"></div>
+  <p class="modal-note">링크온의 AI 참고 판정입니다. 읽음은 위험 해소를 뜻하지 않습니다. 해온 AI 검토는 인용 요청 시 실행됩니다.</p>
+</dialog>
 </body></html>
