@@ -10,8 +10,8 @@ ROLES = {'commander':'상황실장','intel':'정보요원','sar':'수색구조�
 MODEL = 'gpt-6-luna'
 
 
-def effort(role):
-    return 'medium'
+def effort(role, stage=None):
+    return 'low' if role == 'commander' and stage == 'plan' else 'medium'
 
 
 def tilt_response_rules(role, stage):
@@ -19,7 +19,7 @@ def tilt_response_rules(role, stage):
 경사·침수 판단을 다룰 때는 침몰 확정과 인명보호 대응의 긴급성을 구별하세요. 침몰 확정이 불가능하다는 이유로 큰 경사·급격한 악화·침수 보고에 대한 대응을 '확인·준비'만으로 낮추지 마세요. 사용자에게서 현재 침몰 진행·퇴선 필요가 명시됐다면 현장 보고로 반영하고 독립 증거를 기다리며 인명보호 조언을 보류하지 마세요. 각도가 작고 안정적인 사례에 긴급 퇴선 권고를 일률 적용하지 마세요.
 판단 근거는 '실측 → 기준 → 대응상 의미'로 연결하세요. 관련 ship_tilt_guidance 기준 1~2개의 명칭·각도·단위와 관측 축/시각을 findings에 구체적으로 인용하고 evidence_ids에 ship_tilt_guidance와 해당 실측 근거 ID를 넣으세요. 참고각 초과를 무시하지 말되 설계 조건과 관측 방식이 다르면 그 차이를 한 문장으로 밝히세요. trim 중앙값을 동적 피칭 진폭으로 직접 비교하지 마세요. 적용 조건 설명이 대응 권고를 대체해서는 안 됩니다.
 위험 축소·필수 대응 누락도 오류입니다. 중대한 인명위험 근거가 있는 보고는 summary와 recommendation 첫머리에 긴급성과 필요한 인명보호 대응을 분명히 쓰세요. 구체적 내용은 ship_tilt_guidance의 긴급 대응 원칙을 적용하며 현장 상태·명령 발령·실행 완료를 만들지 마세요. 한계는 uncertainties에 간결하게 두고 종합에서 전문요원의 긴급성을 이유 없이 약화하지 마세요.
-채팅 입력만으로 DB를 새로 조회하지 않습니다. 실제 근거의 수신/측정 시각을 밝혀 저장 수신본 분석이라고 설명하세요. 새 수신 요청에는 '링크온 동기화'로 최신 자료를 받을 수 있다고 안내하되 이미 드러난 위험에 대한 대응 조언을 미루지 마세요. 3초 알림 수신과 전체 사건 분석 수신본은 서로 다릅니다.'''
+채팅 입력만으로 DB를 새로 조회하지 않습니다. 실제 근거의 수신/측정 시각을 밝혀 저장 수신본 분석이라고 설명하세요. 새 수신 요청에는 '링크온 동기화'로 최신 자료를 받을 수 있다고 안내하되 이미 드러난 위험에 대한 대응 조언을 미루지 마세요. 주기적 알림 수신과 전체 사건 분석 수신본은 서로 다릅니다.'''
     if role=='critic':
         rules+='\n검증요원은 큰 경사·침수 근거에도 확인만 요구한 보고, 기준 수치 인용을 누락한 보고, 긴급 조언을 제한 설명으로 덮은 보고를 findings에 중요한 수정사항으로 지적하세요. 새로운 전체 대응 계획을 작성하지 말고 누락과 수정 방향만 짧게 전달하세요.'
     elif stage=='plan':
@@ -79,6 +79,8 @@ plan 단계의 상황실장은 신고를 길게 분석하거나 최종 제안을
         instructions=review_instructions(context)
     if any(e.get('id')=='ship_tilt_guidance' for e in context.get('evidence',[])):
         instructions+=tilt_response_rules(role,stage)
+    if role=='commander' and stage=='final' and context.get('review_policy',{}).get('critic_enabled') is False:
+        instructions+='\n별도 검증요원 검토는 생략됐습니다. 제공된 전문요원 보고의 근거·충돌·미확인 사항을 확인하고 별도 검증 완료로 표현하지 마세요.'
     output_limit=2400 if role=='critic' and stage=='report' else 6000
     return instructions, context, output_limit
 
@@ -93,7 +95,7 @@ class ResponsesModel:
         instructions, context, output_limit = model_input(role, stage, context)
         # Responses counts hidden reasoning against this budget as well as the report.
         if role=='critic' and stage=='report':output_limit=6000
-        payload = {'model':MODEL,'reasoning':{'effort':effort(role)},'instructions':instructions,
+        payload = {'model':MODEL,'reasoning':{'effort':effort(role, stage)},'instructions':instructions,
             'input':json.dumps({'response_instruction':'Return a JSON object matching the required schema.', 'context':context},ensure_ascii=False),
             'text':{'format':{'type':'json_object'}},'max_output_tokens':output_limit,'store':False}
         if role=='critic' and stage=='report':

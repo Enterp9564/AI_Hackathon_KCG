@@ -9,7 +9,7 @@ from .linkone_data import room_uuid
 from .linkone_alert_source import AlertSource,FIELDS,MAX_BYTES,MAX_ROOMS,MAX_ROWS
 from .vessel_alerts import VesselAlerts
 
-INTERVAL=3
+INTERVAL=2
 ERROR='환자 알림 연결 확인 필요 · 마지막 수신 결과를 유지합니다.'
 
 
@@ -105,7 +105,7 @@ class PatientAlerts:
                     state=dict(status='ready',last_success_at=now,last_attempt_at=began,next_check_at=max(began+INTERVAL,now if now-began<INTERVAL else now+INTERVAL),
                                poll_ms=round((now-began)*1000,2),interval_seconds=INTERVAL,error=None)
                     self.states[sid]=state
-                    # Persist only data changes / recovery; unchanged 3s checks stay in memory.
+                    # Persist only data changes / recovery; unchanged 2s checks stay in memory.
                     previous=db.execute('SELECT data FROM patient_alert_state WHERE session_id=?',(sid,)).fetchone()
                     if room in cleaned or not previous or json.loads(previous[0]).get('status')!='ready':
                         db.execute('INSERT OR REPLACE INTO patient_alert_state VALUES(?,?)',(sid,encode(state)))

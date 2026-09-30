@@ -18,13 +18,15 @@ from .manuals import manual_evidence
 STATIC=Path(__file__).parent/'static'
 
 
-def make_server(store,engine,port=8860,mcp_enabled=False,linkone_source=None,alert_source=None):
+def make_server(store,engine,port=8860,mcp_enabled=False,linkone_source=None,alert_source=None,current_source=None,current_interval=3):
     from .linkone_sync import LinkOneSync
     linkone=LinkOneSync(store,engine,linkone_source)
     inbox=Inbox(store)
     from .patient_alerts import PatientAlerts
     # Injected legacy test sources must never open a real external connection.
     alerts=PatientAlerts(store,alert_source,start=False)
+    from .linkone_current import CurrentSituation
+    current=CurrentSituation(store,current_source,interval=current_interval,start=False)
     token=secrets.token_urlsafe(32)
 
     class Handler(BaseHTTPRequestHandler):
@@ -56,12 +58,13 @@ def make_server(store,engine,port=8860,mcp_enabled=False,linkone_source=None,ale
             try:
                 if path=='/api/config':
                     return self.send_json(200,{'token':token,'live_available':engine.live_available(),'llm':engine.model_settings(),
-                        'manual_search':engine.manual_settings(),
-                        'profiles':{r:{'name':n,'model':MODEL,'effort':effort(r)} for r,n in ROLES.items()},
+                        'manual_search':engine.manual_settings(),'critic':engine.critic_settings(),
+                        'profiles':{r:{'name':n,'model':MODEL,'effort':effort(r),'stage_efforts':{stage:effort(r,stage) for stage in ('plan','report','final')}} for r,n in ROLES.items()},
                         'capabilities':{'sessions':True,'parallel':True,'csv':True,'lexical_search':True,
                         'vector_search':bool(engine.manual_search and engine.manual_search.ready_vector),'mcp':mcp_enabled,'inbox':True,'linkone':True,'weather_scheduler':False}})
                 if path=='/api/settings/llm':return self.send_json(200,engine.model_settings())
                 if path=='/api/settings/manual-search':return self.send_json(200,engine.manual_settings())
+                if path=='/api/settings/critic':return self.send_json(200,engine.critic_settings())
                 if path=='/api/linkone/rooms':return self.send_json(200,linkone.rooms())
                 if path=='/api/inbox':return self.send_json(200,inbox.list())
                 if path=='/api/manuals':return self.send_json(200,manual_evidence())
@@ -86,12 +89,13 @@ def make_server(store,engine,port=8860,mcp_enabled=False,linkone_source=None,ale
                     if digest(body)!=expected:return self.send_json(409,{'error':'원본 PDF가 실행 당시 판본과 다릅니다. 저장된 요약은 유지됩니다.'})
                     return self.respond(200,body,'application/pdf')
                 if len(pieces) in (4,5) and pieces[:2]==['api','sessions']:
+                    if len(pieces)==4 and pieces[3]=='linkone-current':return self.send_json(200,current.view(pieces[2],details=True))
                     if len(pieces)==4 and pieces[3]=='patient-alerts':return self.send_json(200,alerts.view(pieces[2]))
                     if pieces[3]=='linkone-history':return self.send_json(200,linkone.history(pieces[2]))
                     if pieces[3]=='linkone':return self.send_json(200,linkone.details(pieces[2],pieces[4] if len(pieces)==5 else None))
                 if len(pieces)==3 and pieces[:2]==['api','sessions']:
-                    return self.send_json(200,dict(store.snapshot(pieces[2]),llm=engine.model_settings()))
-                static={'/':'index.html','/monitor':'index.html','/app.js':'app.js','/model-settings.js':'model-settings.js','/manuals.js':'manuals.js','/alert-list.js':'alert-list.js','/patient-alerts.js':'patient-alerts.js','/inbox.js':'inbox.js','/linkone.js':'linkone.js','/linkone-workspace.js':'linkone-workspace.js','/style.css':'style.css'}.get(path)
+                    return self.send_json(200,dict(store.snapshot(pieces[2]),llm=engine.model_settings(),live_situation=current.view(pieces[2])))
+                static={'/':'index.html','/monitor':'index.html','/app.js':'app.js','/linkone-current.js':'linkone-current.js','/model-settings.js':'model-settings.js','/manuals.js':'manuals.js','/alert-list.js':'alert-list.js','/patient-alerts.js':'patient-alerts.js','/inbox.js':'inbox.js','/linkone.js':'linkone.js','/linkone-workspace.js':'linkone-workspace.js','/style.css':'style.css'}.get(path)
                 if static:
                     content=(STATIC/static).read_bytes()
                     mime=mimetypes.guess_type(static)[0] or 'application/octet-stream'
@@ -116,6 +120,7 @@ def make_server(store,engine,port=8860,mcp_enabled=False,linkone_source=None,ale
                     return self.send_json(200,probe(data))
                 if path=='/api/settings/llm':return self.send_json(200,engine.configure_model(data))
                 if path=='/api/settings/manual-search':return self.send_json(200,engine.configure_manual_search(data))
+                if path=='/api/settings/critic':return self.send_json(200,engine.configure_critic(data))
                 if path in ('/api/sessions','/api/linkone/connect'):
                     mode=data.get('mode','demo')
                     if mode=='live' and not engine.live_available():
@@ -168,12 +173,15 @@ def make_server(store,engine,port=8860,mcp_enabled=False,linkone_source=None,ale
     class Server(ThreadingHTTPServer):
         def server_close(self):
             super().server_close()
+            current.close()
             alerts.close()
             linkone.close()
     try:server=Server(('127.0.0.1',port),Handler)
     except Exception:
-        alerts.close();linkone.close();raise
+        current.close();alerts.close();linkone.close();raise
     if alert_source is not None or linkone_source is None:alerts.start()
+    if current_source is not None or (linkone_source is None and alert_source is None):current.start()
+    server.current_situation=current
     server.linkone=linkone
     server.patient_alerts=alerts
     return server
@@ -183,6 +191,7 @@ def main():
     parser=argparse.ArgumentParser(description='AI situation room local prototype')
     parser.add_argument('--port',type=int,default=8860)
     parser.add_argument('--db',default=str(Path(__file__).parent/'runtime'/'room.sqlite'))
+    parser.add_argument('--linkone-current-interval',type=int,choices=(0,3),default=3)
     parser.add_argument('--manual-search',choices=('off','lexical','hybrid'),default='off')
     parser.add_argument('--manual-index',help='명시적으로 준비한 로컬 SAR 인덱스 세대 폴더')
     parser.add_argument('--mcp-port',type=int,help='설정할 때만 MCP listener 활성화 (예: 8862)')
@@ -201,7 +210,7 @@ def main():
     if args.mcp_port is not None:
         from .mcp_server import make_mcp_server, load_tokens
         mcp=make_mcp_server(Inbox(store),load_tokens(args.mcp_tokens),args.mcp_host,args.mcp_port,args.mcp_allowed_host)
-    server=make_server(store,engine,args.port,mcp_enabled=mcp is not None)
+    server=make_server(store,engine,args.port,mcp_enabled=mcp is not None,current_interval=args.linkone_current_interval)
     if mcp:
         threading.Thread(target=mcp.serve_forever,daemon=True).start()
         print(f'MCP 수신: {args.mcp_host}:{mcp.server_port}/mcp · 담당자 승인 후 검토',flush=True)

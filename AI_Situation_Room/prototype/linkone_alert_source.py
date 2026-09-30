@@ -61,7 +61,8 @@ def read_poll(conn,rooms,known):
 
 
 class AlertSource:
-    def __init__(self):
+    def __init__(self,worker_module='prototype.linkone_alert_source'):
+        self.worker_module=worker_module
         self.proc=None;self.lock=threading.Lock();self.process_lock=threading.Lock();self.stopped=threading.Event()
 
     def poll(self,rooms,known):
@@ -70,7 +71,7 @@ class AlertSource:
             with self.process_lock:
                 if self.stopped.is_set():raise RuntimeError('source stopped')
                 if not self.proc:
-                    self.proc=subprocess.Popen([str(PRIVATE/'venv/bin/python'),'-m','prototype.linkone_alert_source'],
+                    self.proc=subprocess.Popen([str(PRIVATE/'venv/bin/python'),'-m',self.worker_module],
                         cwd=ROOT,stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.DEVNULL,start_new_session=True)
                 proc=self.proc
             try:

@@ -81,15 +81,28 @@ function renderSnapshot(data){
  $('#pinButton').disabled=false;$('#pinButton').textContent=pinned===sid?'✓ 상황판 고정됨':'상황판에 고정';
  $('#footerSession').textContent=`${s.id.slice(0,8).toUpperCase()} / ${data.messages.length} MESSAGES`;
  renderExecutionStatus(data);
- const signature=JSON.stringify([s,data.runs,data.tasks,data.attachments,data.events.length]);
+ const signature=JSON.stringify([s,data.runs,data.tasks,data.attachments,data.events.length,data.live_situation?.fingerprint,data.live_situation?.superseded,data.live_situation?.status]);
  if(signature!==contentSignature){contentSignature=signature;renderFacts(data);renderFlow(data);renderEvents(data);}
  renderMessages(data);renderRunSelect(data);renderTimeline(data);
+ if(typeof renderCurrentSituation==='function')renderCurrentSituation(data);
  if(typeof renderLinkone==='function')renderLinkone(data);
  if(typeof renderLinkoneWorkspace==='function')renderLinkoneWorkspace(data);
 }
 function renderRunSelect(data){const signature=JSON.stringify(data.runs.map(r=>[r.id,r.status]));if(signature===runSignature)return;runSignature=signature;$('#runSelect').innerHTML='<option value="">최신 실행 보기</option>'+[...data.runs].reverse().map((r,i)=>`<option value="${r.id}">${i===0?'최근':'이전'} · ${r.kind==='simulation'?'가정 비교':'상황 검토'} · ${statuses[r.status]}</option>`).join('');$('#runSelect').value=runId||'';}
 function currentRun(data){return (runId&&data.runs.find(r=>r.id===runId)) || [...data.runs].reverse().find(r=>r.status==='running') || data.runs.at(-1);}
 function compactText(value,max=170){const text=String(value||'').replace(/\s+/g,' ').trim();return text.length>max?text.slice(0,max-1)+'…':text;}
+function criticReviewState(run,tasks){
+ if(run?.critic_review?.status&&run.critic_review.status!=='pending')return run.critic_review.status;
+ const critic=tasks.find(t=>t.role==='critic');
+ if(critic)return critic.status==='stale'?'completed':critic.status;
+ if(run?.decision?.tasks?.length===0&&run?.final)return 'not_applicable';
+ if(run?.critic_enabled===false)return 'skipped';
+ return run?.critic_review?.status||'unknown';
+}
+function criticReviewLabel(run,tasks){
+ const state=criticReviewState(run,tasks);
+ return {skipped:'검증요원 생략 · 설정 OFF',completed:'검증요원 검토 반영',not_applicable:'직접 처리 · 검증요원 미호출',failed:'검증요원 검토 실패',running:'검증요원 검토 중',pending:'검증요원 검토 예정'}[state]||'검증 수행 여부 미확인';
+}
 function executionPhase(run,tasks){
  if(!run||!['queued','running'].includes(run.status))return 'inactive';
  if(run.status==='queued')return 'queued';
@@ -101,13 +114,13 @@ function executionPhase(run,tasks){
  if(tasks.some(t=>['failed','interrupted'].includes(t.status)))return 'stopping';
  if(critic&&['completed','stale'].includes(critic.status))return 'synthesis';
  if(assignments.length&&!specialists.length)return 'dispatching';
- if(assignments.length)return 'verification_wait';
+ if(assignments.length)return run.critic_enabled===false?'synthesis':'verification_wait';
  return 'synthesis';
 }
 function progressState(run,tasks){
  if(!run)return null;
  if(run.status==='failed'||run.status==='interrupted')return {label:'지시 처리 중단',phase:statuses[run.status],detail:run.error||'실행이 완료되지 않았습니다. 새 지시로 다시 검토할 수 있습니다.',tone:'error'};
- if(run.status==='completed'||run.status==='stale')return {label:run.status==='stale'?'재검토 필요':'지시 처리 완료',phase:'최종 보고 준비됨',detail:'요원 보고와 검증을 반영한 최종 판단을 확인하세요.',tone:run.status==='stale'?'warn':'complete'};
+ if(run.status==='completed'||run.status==='stale')return {label:run.status==='stale'?'재검토 필요':'지시 처리 완료',phase:'최종 보고 준비됨',detail:criticReviewState(run,tasks)==='skipped'?'전문요원 보고를 종합했습니다. 별도 검증요원 검토는 생략했습니다.':'최종 판단과 실제 검증 이력을 확인하세요.',tone:run.status==='stale'?'warn':'complete'};
  const phase=executionPhase(run,tasks),running=tasks.filter(t=>t.role!=='critic'&&t.status==='running').length;
  const states={
   queued:['임무 라우팅 대기','지시를 접수했습니다. 실행 순서를 기다리고 있습니다.'],
@@ -116,7 +129,7 @@ function progressState(run,tasks){
   specialists:[running?'요원 병렬 검토':'요원 실행 대기',running?`전문요원 ${running}명이 검토 중입니다. 개별 보고를 기다리고 있습니다.`:'배정된 전문요원이 실행 순서를 기다리고 있습니다.'],
   verification_wait:['검증요원 검토 대기','전문요원 보고를 모아 검증요원 검토를 준비하고 있습니다.'],
   verifying:['검증요원 검토 중','검증요원이 보고의 근거·누락·모순을 확인하고 있습니다. 상황실장은 검증 결과를 기다립니다.'],
-  synthesis:['상황실장 종합','요원 보고와 검증 결과를 반영해 상황실장이 최종 제안을 정리합니다.'],
+  synthesis:['상황실장 종합',run.critic_enabled===false?'별도 검증요원을 생략하고 상황실장이 전문요원 보고를 종합합니다.':'요원 보고와 검증 결과를 반영해 상황실장이 최종 제안을 정리합니다.'],
   stopping:['실행 종료 처리','요원 작업이 중단되어 실행 결과를 정리하고 있습니다.']
  };
  const [label,detail]=states[phase]||['상태 확인','현재 실행 상태를 확인하고 있습니다.'];
@@ -133,9 +146,10 @@ function renderMessages(data){
  if(nearBottom){box.scrollTop=box.scrollHeight;$('#newMessages').hidden=true;}else{box.scrollTop=oldTop;$('#newMessages').hidden=false;}
 }
 function renderFacts(data){
- const s=data.session,f=s.facts;
+ const s=data.session,v=typeof currentSituationView==='function'?currentSituationView(data):{usable:false},f=v.usable?{...s.facts,total:v.summary.total,rescued:v.summary.rescued,remaining:null}:s.facts;
  const unresolved=f.remaining??(f.total!=null&&f.rescued!=null?f.total-f.rescued:'—');
- $('#facts').innerHTML=`<div class="metric-row"><div class="metric"><strong>${f.total??'—'}</strong><small>${s.linkone?'링크온 명부 총원':'신고·정정 총원'}</small></div><div class="metric"><strong>${f.rescued??'—'}</strong><small>구조 보고</small></div><div class="metric"><strong>${unresolved}</strong><small>${f.remaining!=null?'선내 잔류':'미구조 (집계)'}</small></div></div><div class="fact-detail">위치 <b>${esc(f.location||'입력 대기')}</b><br>좌표 <b>${f.lat??'—'} / ${f.lon??'—'}</b><br>출처 <b>${esc(s.facts_source||'자료 없음')}</b>${f.notes?`<br>메모 <b>${esc(f.notes)}</b>`:''}</div>`;
+ $('#facts').innerHTML=`<div class="metric-row"><div class="metric"><strong>${f.total??'—'}</strong><small>${s.linkone?'링크온 명부 총원':'신고·정정 총원'}</small></div><div class="metric"><strong>${f.rescued??'—'}</strong><small>구조 보고</small></div><div class="metric"><strong>${unresolved}</strong><small>${f.remaining!=null?'선내 잔류':'미구조 (집계)'}</small></div></div><div class="fact-detail">위치 <b>${esc(f.location||'입력 대기')}</b><br>좌표 <b>${f.lat??'—'} / ${f.lon??'—'}</b><br>출처 <b>${esc(v.usable?'링크온 현재 상태 · 자동 수신':s.facts_source||'자료 없음')}</b>${f.notes?`<br>메모 <b>${esc(f.notes)}</b>`:''}</div>`;
+ $('#facts').insertAdjacentHTML('beforeend','<p id="currentSituationNote" class="modal-note"></p>');
  const incident=s.incident;
  if(incident){
    $('#facts').innerHTML+=`<div class="incident-preview"><strong>${esc(incident.vessel||'사건 현황')} ${incident.report_time?'· 명시 시각 '+esc(incident.report_time):''}</strong><p>${Object.entries(incident.distribution||{}).filter(([k,v])=>v>0).map(([k,v])=>`${esc(k)} ${v}명`).join(' · ')}</p>${Object.values(incident.roster||{}).map(p=>`<p>${esc(p.role)} <b>${esc(p.name||'이름 미확인')}</b> · ${esc(p.location||'위치 미확인')}</p>`).join('')}<button id="incidentDetails">명부 · 환자 · 변경 이력 ↗</button></div>`;
@@ -147,7 +161,7 @@ function renderFacts(data){
  }
  const conflicts=data.attachments.filter(a=>a.summary.total!=null&&f.total!=null&&a.summary.total!==f.total);
  const run=currentRun(data), latestVersionMismatch=run&&run.based_on_version!==s.version;
- let priority='현재 접수된 자료를 기준으로 검토합니다. 미확인 현장 변화는 자동 감지하지 않습니다.';
+ let priority=s.linkone?'현재 인원·상태는 자동 수신하며, AI 보고는 분석 당시 수신본을 기준으로 합니다.':'현재 접수된 자료를 기준으로 검토합니다. 미확인 현장 변화는 자동 감지하지 않습니다.';
  if(conflicts.length)priority=`확인 필요 · 사용자 총원 ${f.total}명 ↔ 첨부 명부 ${conflicts.at(-1).summary.total}명. 실제 탑승 명부인지 확인한 뒤 상황을 정정하세요.`;
  else if(latestVersionMismatch)priority=`재검토 필요 · 표시 보고는 S${run.based_on_version} 기준, 현재 상황은 S${s.version}입니다.`;
  else if(run?.status==='failed'||run?.status==='interrupted')priority=run.error||'작업이 완료되지 않았습니다. 새 요청으로 재검토하세요.';
@@ -188,14 +202,14 @@ function renderFlow(data){
  const done=tasks.filter(t=>t.role!=='critic'&&['completed','stale'].includes(t.status)).length;
  const final=run?.final;
  const commandSummary=active&&['verifying','verification_wait','synthesis','stopping'].includes(phase)?progressState(run,tasks).detail:active&&assigned?`상황실장이 ${assigned}개 전문 임무를 배정했습니다. 전문요원들이 각자 검토하고 필요한 정보를 다시 요청합니다.`:compactText(run?.decision?.summary||'요청 범위만 확인해 전문요원에게 임무를 전달합니다.');
- $('#flow').innerHTML=`<div class="command-card ${commandActive?'activity-glow':''}"><div class="card-top"><span class="role-name"><span class="role-icon">◈</span>상황실장</span>${active?`<span class="status ${commandActive?'running':'waiting'}">${commandActive?(phase==='synthesis'?'종합 중':'배정 중'):(phase==='verifying'||phase==='verification_wait'?'검증 결과 대기':phase==='queued'?'실행 대기':'요원 보고 대기')}</span>`:statusBadge(run?.status)}</div><div class="profile">빠른 라우팅 · 임무 배정 · 최종 종합</div><p class="request">사용자 → ${esc(run?.prompt||'새로운 지시를 기다리고 있습니다.')}</p><p>${esc(commandSummary)}</p>${run?.assumptions?`<p class="condition">변경 가정: ${esc(run.assumptions)}</p>`:''}${planningQuestions.length?requestHTML(planningQuestions,'진행 전 확인이 필요한 정보'):''}</div>${active&&!final?activityHTML(run,tasks):''}<div class="flow-arrow">↓ 임무 지시 · 독립 검토 병렬 실행</div><div class="agents-grid">${specialist}</div><div class="flow-arrow">↑ 개별 보고 수신 ${done} / ${assigned}</div><div class="panel critic-card ${phase==='verifying'?'activity-glow':''}"><span class="role-name">검증요원</span><span class="critic-text">${esc(compactText(critic?.report?.summary||critic?.error||(critic?'수신 보고의 근거·가정·모순을 점검합니다.':'선행 보고 대기 · 보고가 모이면 검증합니다.'),150))}</span>${critic?`<button data-task="${critic.id}">${statuses[critic.status]}</button>`:'<span class="small-badge">검증 대기</span>'}</div><div class="flow-arrow">↓ 상황실장 종합 → 사용자 최종 보고</div><div class="panel final-card"><div class="card-top"><h3>최종 보고 · 사용자 조언</h3><span class="small-badge">${run?'기준 S'+run.based_on_version:'AWAITING'}</span></div>${final?`<p class="final-summary">${esc(compactText(final.summary,220))}</p><p>${esc(compactText(final.recommendation,260))}</p>${dispatchHTML(final.dispatch_orders)}${requestHTML(final.information_requests)}${run.status==='stale'?'<p class="condition">현재 상황과 버전이 다릅니다. 재검토가 필요합니다.</p>':''}<button data-final="${run.id}">비교 · 근거 · 미확인사항 보기 ↗</button>`:`<p class="muted">${esc(run?.error||'요원들의 보고와 검증이 완료되면, 판단에 필요한 내용을 여기에서 확인합니다.')}</p>`}</div>`;
+ $('#flow').innerHTML=`<div class="command-card ${commandActive?'activity-glow':''}"><div class="card-top"><span class="role-name"><span class="role-icon">◈</span>상황실장</span>${active?`<span class="status ${commandActive?'running':'waiting'}">${commandActive?(phase==='synthesis'?'종합 중':'배정 중'):(phase==='verifying'||phase==='verification_wait'?'검증 결과 대기':phase==='queued'?'실행 대기':'요원 보고 대기')}</span>`:statusBadge(run?.status)}</div><div class="profile">빠른 라우팅 · 임무 배정 · 최종 종합</div><p class="request">사용자 → ${esc(run?.prompt||'새로운 지시를 기다리고 있습니다.')}</p><p>${esc(commandSummary)}</p>${run?.assumptions?`<p class="condition">변경 가정: ${esc(run.assumptions)}</p>`:''}${planningQuestions.length?requestHTML(planningQuestions,'진행 전 확인이 필요한 정보'):''}</div>${active&&!final?activityHTML(run,tasks):''}<div class="flow-arrow">↓ 임무 지시 · 독립 검토 병렬 실행</div><div class="agents-grid">${specialist}</div><div class="flow-arrow">↑ 개별 보고 수신 ${done} / ${assigned}</div><div class="panel critic-card ${phase==='verifying'?'activity-glow':''}"><span class="role-name">검증요원</span><span class="critic-text">${esc(compactText(critic?.report?.summary||critic?.error||(run?.critic_enabled===false?'요원 보고의 근거·가정·모순을 점검합니다.':critic?'수신 보고의 근거·가정·모순을 점검합니다.':'선행 보고 대기 · 보고가 모이면 검증합니다.'),150))}</span>${critic?`<button data-task="${critic.id}">${statuses[critic.status]}</button>`:run?.critic_enabled===false?'':'<span class="small-badge">검증 대기</span>'}</div><div class="flow-arrow">↓ 상황실장 종합 → 사용자 최종 보고</div><div class="panel final-card"><div class="card-top"><h3>최종 보고 · 사용자 조언</h3><span class="small-badge">${run?'기준 S'+run.based_on_version:'AWAITING'}</span></div>${final?`<p class="final-summary">${esc(compactText(final.summary,220))}</p><p>${esc(compactText(final.recommendation,260))}</p>${dispatchHTML(final.dispatch_orders)}${requestHTML(final.information_requests)}${run.status==='stale'?'<p class="condition">현재 상황과 버전이 다릅니다. 재검토가 필요합니다.</p>':''}<button data-final="${run.id}">비교 · 근거 · 미확인사항 보기 ↗</button>`:`<p class="muted">${esc(run?.error||'보고 종합이 완료되면 판단에 필요한 내용을 여기에서 확인합니다.')}</p>`}</div>`;
  if(assignments.length===0&&final){
    $('#flow').innerHTML=`<div class="command-card"><div class="card-top"><span class="role-name">◈ 상황실장 · 직접 반영</span>${statusBadge(run.status)}</div><p class="request">${esc(run.prompt)}</p><p>${esc(compactText(final.summary,220))}</p>${dispatchHTML(final.dispatch_orders)}${requestHTML(final.information_requests,'사용자에게 확인할 정보')}<div class="profile">요원 추가 호출 없음 · 저장 S${run.based_on_version}</div></div><div class="flow-arrow">↓ 원문 기록 → 상황·명부 저장 → 사용자 확인</div><div class="panel final-card"><h3>신고 반영 결과</h3>${list((final.findings||[]).slice(0,5))}${(final.findings||[]).length>5?'<p class="muted">전체 반영 내용은 아래에서 확인하세요.</p>':''}<button data-final="${run.id}">반영 내용과 근거 ↗</button></div>`;
  }
  $('#flow').querySelectorAll('[data-task]').forEach(b=>b.onclick=()=>{const t=snapshot.tasks.find(x=>x.id===b.dataset.task);showModal(roleNames[t.role]+' · 지시와 보고',`<div class="detail-meta">기준 S${t.based_on_version} · 시작 ${time(t.started_at)} · 완료 ${time(t.ended_at)}<br>임무 ${esc(t.id.slice(0,12))} · ${statuses[t.status]}</div><div class="report-section"><h3>상황실장의 임무 지시</h3><p>${esc(t.instruction)}</p><h3>배정 이유</h3><p>${esc(t.reason)}</p></div>${t.error?`<p class="error-text">${esc(t.error)}</p>`:''}${reportHTML(t.report,roleNames[t.role])}${typeof manualReportHTML==='function'?manualReportHTML(t.run_id,t.role):''}`);});
  $('#flow').querySelectorAll('[data-final]').forEach(b=>b.onclick=()=>openFinal(b.dataset.final));
 }
-function openFinal(id){const run=snapshot.runs.find(r=>r.id===id);if(run)showModal('상황실장 · 최종 보고와 조언',`<div class="detail-meta">${run.mode==='demo'?'DEMO · 실제 AI 미호출':(config?.llm?.provider==='local'?'LIVE · 로컬 LLM':'LIVE · OpenAI')} / 기준 S${run.based_on_version}<br>사용 보고 ${run.final?.report_ids?.length||0}건 · ${statuses[run.status]}</div>${reportHTML(run.final)}${typeof manualReportHTML==='function'?manualReportHTML(run.id):''}`);}
+function openFinal(id){const run=snapshot.runs.find(r=>r.id===id);if(run)showModal('상황실장 · 최종 보고와 조언',`<div class="detail-meta">${run.mode==='demo'?'DEMO · 실제 AI 미호출':(config?.llm?.provider==='local'?'LIVE · 로컬 LLM':'LIVE · OpenAI')} / 기준 S${run.based_on_version}<br>사용 보고 ${run.final?.report_ids?.length||0}건 · ${statuses[run.status]}<br>${esc(criticReviewLabel(run,snapshot.tasks.filter(t=>t.run_id===run.id)))}</div>${reportHTML(run.final)}${typeof manualReportHTML==='function'?manualReportHTML(run.id):''}`);}
 function renderTimeline(data){
  const run=currentRun(data),tasks=run?data.tasks.filter(t=>t.run_id===run.id&&t.started_at).sort((a,b)=>['intel','sar','resource','critic'].indexOf(a.role)-['intel','sar','resource','critic'].indexOf(b.role)):[];
  const assigned=run?.decision?.tasks?.length||0;

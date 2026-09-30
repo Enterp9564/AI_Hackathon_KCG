@@ -94,7 +94,7 @@ class AlertsTests(unittest.TestCase):
         view=self.alerts.view(self.sid)
         self.assertEqual(view['status'],'error');self.assertEqual(view['last_success_at'],stamp)
         self.assertEqual(len(view['items']),1);self.assertNotIn('private',str(view))
-        self.source.error=False;self.assertEqual(self.alerts.tick(),3)
+        self.source.error=False;self.assertEqual(self.alerts.tick(),2)
 
     def test_cross_room_response_fails_without_overwriting_good_data(self):
         self.alerts.tick()
@@ -150,7 +150,7 @@ class AlertsTests(unittest.TestCase):
 
     def test_slow_or_concurrent_poll_is_not_enqueued(self):
         self.alerts.poll_lock.acquire()
-        try:self.assertEqual(self.alerts.tick(),3)
+        try:self.assertEqual(self.alerts.tick(),2)
         finally:self.alerts.poll_lock.release()
         self.assertEqual(self.source.calls,0)
 

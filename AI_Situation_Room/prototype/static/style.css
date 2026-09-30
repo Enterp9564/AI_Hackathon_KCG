@@ -161,3 +161,5 @@ body.monitor #patientOverviewOpen{display:none}
 .incident-table .roster-sort{padding:5px 3px;text-align:left;white-space:nowrap;color:inherit}.incident-table th[aria-sort="ascending"],.incident-table th[aria-sort="descending"]{color:var(--cyan)}
 
 .transfer-overview{color:var(--red);font-weight:700}.transfer-badges{display:flex;flex-wrap:wrap;gap:4px}.transfer-badge{display:inline-block;border:1px solid #a85a60;background:#3c242c;color:#ffd3d6;border-radius:4px;padding:2px 5px;font-size:11px;line-height:1.4}.patient-advice{border-left:3px solid var(--red);padding:10px 12px;background:#2b2029;margin:12px 0}.patient-advice h4{margin:0 0 8px}.patient-advice p,.patient-reason p{overflow-wrap:anywhere}.patient-reason{border-bottom:1px solid var(--line);padding:6px 0}.patient-reason:last-child{border:0}
+
+.current-record{padding:10px 0;border-bottom:1px solid var(--line,#334155)}.current-record p{white-space:pre-wrap;overflow-wrap:anywhere}.current-record small{display:block}#currentRosterWrap{max-height:55vh;overflow:auto}#currentRosterRows details{min-width:220px;max-width:440px}

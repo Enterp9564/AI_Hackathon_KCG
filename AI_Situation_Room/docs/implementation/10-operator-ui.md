@@ -1,5 +1,8 @@
 # 10. 담당자 화면과 상호작용
 
+> 2026-09-30: [현재 상태 자동 수신](35-linkone-current-state.md)과 [검증요원 ON/OFF](36-critic-toggle.md) 구현. 승선원 창의 최신 상태와 분석 수신본을 구별하며 설정에서 별도 검증 여부를 바꾼다.
+
+
 > 임시 프로젝트명: **HAEON(해온)** · 해양경찰 멀티에이전트 의사결정 지원 시스템. [명칭·소개 기준](../PROJECT_NAMING.md) (2026-09-27). ‘AI 오케스트라’는 협업 방식의 설명이며 이름에 포함하지 않는다.
 
 > 현재 구현 기준: 2026-09-27. [목록](README.md) · 구현: [index.html](../../prototype/static/index.html), [app.js](../../prototype/static/app.js), [style.css](../../prototype/static/style.css)

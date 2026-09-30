@@ -64,6 +64,4 @@ def with_manuals(context, result):
     evidence.update({item['id']: item for item in result.get('items',[])})
     combined = dict(context, evidence=list(evidence.values()),
                     manual_search={k:v for k,v in result.items() if k != 'items'})
-    if len(json.dumps(combined, ensure_ascii=False)) > 180000:
-        raise ValueError('매뉴얼을 포함한 입력 한도를 초과했습니다. 기존 기록은 보존됩니다.')
     return combined

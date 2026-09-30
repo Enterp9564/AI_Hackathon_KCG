@@ -39,6 +39,12 @@ class Engine:
     def model_settings(self):
         return dict(self.model_config,openai_available=bool(getattr(self.live_model,'key',None)),live_available=self.live_available())
 
+    def critic_settings(self):
+        return self.store.critic_settings()
+
+    def configure_critic(self,data):
+        return self.store.set_critic_enabled(data.get('enabled'))
+
     def manual_settings(self):
         service=self._manual_search_service
         return {'enabled':self.manual_search is not None,
@@ -129,12 +135,12 @@ class Engine:
             self.validate(result,stage,context)
             result['dispatch_orders']=normalize_orders(result.get('dispatch_orders',[]),context['session'])
             self.store.record_call(run['session_id'],run_id=run['id'],role=role,stage=stage,
-                requested_model=requested,reasoning_effort='none' if local else effort(role),mode=run['mode'],provider=provider_name,
+                requested_model=requested,reasoning_effort='none' if local else effort(role, stage),mode=run['mode'],provider=provider_name,
                 status='completed',started_at=started,ended_at=time.time(),**metadata)
             return result
         except Exception as exc:
             self.store.record_call(run['session_id'],run_id=run['id'],role=role,stage=stage,
-                requested_model=requested,reasoning_effort='none' if local else effort(role),mode=run['mode'],provider=provider_name,
+                requested_model=requested,reasoning_effort='none' if local else effort(role, stage),mode=run['mode'],provider=provider_name,
                 status='failed',started_at=started,ended_at=time.time(),diagnostics=getattr(exc,'diagnostics',{}))
             raise
 
@@ -269,8 +275,6 @@ class Engine:
             if snap['session'].get('linkone'):
                 req=run['request_id']
                 context['review_purpose']=('initial_baseline' if snap['session']['linkone'].get('revision')==1 else 'changed_snapshot') if req.startswith('linkone:') else ('reanalysis' if req.startswith('linkone-review:') else 'user_question')
-            if len(json.dumps(context,ensure_ascii=False))>180000:
-                raise ModelError('세션이 초기 프로토타입의 입력 한도를 초과했습니다. 새 세션을 사용하세요. 기존 기록은 보존됩니다.')
             self.store.event(sid,'상황실장 · 요청 해석과 임무 배정',run_id=rid)
             # External claims and their summaries cannot become ordinary fact-update inputs.
             plan_history=history if run.get('external_report_id') else [m for m in history if not m.get('external_report_id') and not m.get('external_report_ids')]
@@ -309,6 +313,7 @@ class Engine:
                 snap['session']=session
                 context['evidence']=evidence_for(snap,run['prompt'])
             if not decision['tasks']:
+                self.store.update_run(rid,critic_review={'status':'not_applicable'})
                 from .incident import receipt
                 source_id=run.get('source_id') or next(m['id'] for m in history if m.get('role')=='user')
                 final=receipt(context['session'],source_id,decision['summary'],decision['questions'],decision['dispatch_orders'])
@@ -340,12 +345,24 @@ class Engine:
                 try: reports.append(f.result())
                 except Exception as exc: failure=exc
             if failure:raise failure
-            critic={'role':'critic','instruction':'수신 보고의 근거 누락·모순·가정 혼동을 점검하세요.',
-                    'reason':'종합 전에 보고의 불확실성과 충돌을 확인합니다.'}
-            reports.append(self.agent(run,critic,dict(agent_context,reports=list(reports))))
+            enabled=run.get('critic_enabled',True)
+            if enabled:
+                critic={'role':'critic','instruction':'수신 보고의 근거 누락·모순·가정 혼동을 점검하세요.',
+                        'reason':'종합 전에 보고의 불확실성과 충돌을 확인합니다.'}
+                self.store.update_run(rid,critic_review={'status':'running'})
+                try:reports.append(self.agent(run,critic,dict(agent_context,reports=list(reports))))
+                except Exception:
+                    self.store.update_run(rid,critic_review={'status':'failed'})
+                    raise
+                review={'status':'completed'}
+            else:
+                review={'status':'skipped','reason':'disabled_by_setting'}
+                self.store.event(sid,'검증요원 생략 · 설정 OFF',event_type='critic_skipped',run_id=rid)
+            self.store.update_run(rid,critic_review=review)
             self.store.event(sid,'상황실장 · 보고 종합과 최종 조언',run_id=rid)
             final=self.call(run,'commander','final',dict(context,reports=reports,
-                                                        dispatch_orders=decision['dispatch_orders']))
+                review_policy={'critic_enabled':enabled,'critic_status':review['status']},
+                dispatch_orders=decision['dispatch_orders']))
             if any(r['report'].get('unmatched_evidence_links') for r in reports):
                 final['uncertainties'].append('요원 보고의 일부 문장별 매뉴얼 연결이 불일치하여 제외됐습니다. 원 보고의 제외 이력을 확인하세요. 이 연결은 근거 검증 완료로 취급하지 않습니다.')
             requests=self.information_requests(decision.get('questions',[]),'상황실장')

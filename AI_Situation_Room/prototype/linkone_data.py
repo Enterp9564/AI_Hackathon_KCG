@@ -76,6 +76,21 @@ def recent(table,rows):
     return sorted(rows,key=order)[-30:]
 
 
+def person_summary(room, people_rows, state_rows):
+    eligible=[p for p in people_rows if active(p)]
+    states={s['person_id']:s for s in state_rows}
+    total=len(eligible) if (room.get('roster_version') or 0)>0 else None
+    rescued=sum(states.get(p['id'],{}).get('rescue') in ('RESCUED_ON_SHIP','RESCUED_OFF_SHIP') for p in eligible)
+    summary=dict(total=total,known_people=len(eligible),rescued=rescued,
+        unresolved=total-rescued if total is not None else None,
+        unrecorded=sum(p['id'] not in states for p in eligible),excluded=len(people_rows)-len(eligible),
+        on_ship=sum(states.get(p['id'],{}).get('location_kind')=='SHIP' for p in eligible),
+        locations=dict(Counter(states.get(p['id'],{}).get('location_kind','UNKNOWN') for p in eligible)),
+        severity=dict(Counter(states[p['id']].get('severity','UNKNOWN') for p in eligible if p['id'] in states)),
+        note='링크온 명부 기준. 상태 미기록은 미구조 집계에 포함하되 위치·중증도를 추정하지 않습니다. 선내 위치가 기록된 인원은 전체 선내 잔류와 다를 수 있습니다.')
+    return summary
+
+
 def prepare(payload,room_id):
     room_id=room_uuid(room_id)
     if payload.get('room_id')!=room_id or payload.get('complete') is not True:raise ValueError('미완료 또는 다른 사건의 수신본입니다.')
@@ -106,18 +121,8 @@ def prepare(payload,room_id):
     for event in data['person_event']:
         if event.get('undo_of') is not None and str(event['undo_of']) not in events:raise ValueError('취소 대상 이력이 누락되었습니다.')
     room=data['room'][0]
-    eligible=[p for p in data['person'] if active(p)]
-    states={s['person_id']:s for s in data['person_state']}
-    total=len(eligible) if (room.get('roster_version') or 0)>0 else None
-    rescued=sum(states.get(p['id'],{}).get('rescue') in ('RESCUED_ON_SHIP','RESCUED_OFF_SHIP') for p in eligible)
-    summary=dict(total=total,known_people=len(eligible),rescued=rescued,
-        unresolved=total-rescued if total is not None else None,
-        unrecorded=sum(p['id'] not in states for p in eligible),excluded=len(people)-len(eligible),
-        on_ship=sum(states.get(p['id'],{}).get('location_kind')=='SHIP' for p in eligible),
-        locations=dict(Counter(states.get(p['id'],{}).get('location_kind','UNKNOWN') for p in eligible)),
-        severity=dict(Counter(states[p['id']].get('severity','UNKNOWN') for p in eligible if p['id'] in states)),
-        table_counts={t:len(rows) for t,rows in data.items()},
-        note='링크온 명부 기준. 상태 미기록은 미구조 집계에 포함하되 위치·중증도를 추정하지 않습니다. 선내 위치가 기록된 인원은 전체 선내 잔류와 다를 수 있습니다.')
+    summary=person_summary(room,data['person'],data['person_state'])
+    summary['table_counts']={t:len(rows) for t,rows in data.items()}
     canonical=json.dumps(data,ensure_ascii=False,sort_keys=True,separators=(',',':'),allow_nan=False)
     return dict(room_id=room_id,data=data,summary=summary,hash=hashlib.sha256(canonical.encode()).hexdigest(),
         received_at=payload.get('received_at'),revisions=payload.get('revisions',{}),complete=True,projection_version=2)

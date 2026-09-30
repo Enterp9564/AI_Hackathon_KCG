@@ -203,6 +203,20 @@ class Store:
             self._update(db,rid,run)
             return after
 
+    def _critic_enabled(self, db):
+        row=db.execute("SELECT value FROM settings WHERE key='critic_enabled'").fetchone()
+        return json.loads(row[0]) is not False if row else True
+
+    def critic_settings(self):
+        with self.db() as db:
+            return dict(enabled=self._critic_enabled(db),scope='server',applies_to='new_requests')
+
+    def set_critic_enabled(self, enabled):
+        if type(enabled) is not bool:raise ValueError('검증요원 켜기·끄기를 선택하세요.')
+        with self.db() as db:
+            db.execute("INSERT OR REPLACE INTO settings(key,value) VALUES('critic_enabled',?)",(encode(enabled),))
+        return dict(enabled=enabled,scope='server',applies_to='new_requests')
+
     def enqueue(self, sid, content, kind, assumptions, request_id):
         content, request_id = text(content), text(request_id, 120)
         if request_id.startswith('inbox:'):
@@ -226,6 +240,7 @@ class Store:
             raise Conflict('대기 중인 요청이 많습니다. 현재 작업 후 다시 보내주세요.')
         run = self._add(db, sid, 'runs', dict(request_id=request_id, prompt=content, kind=kind,
             assumptions=assumptions, status='queued', based_on_version=session['version'],
+            critic_enabled=self._critic_enabled(db),critic_review={'status':'pending'},
             linkone_snapshot_id=session.get('linkone',{}).get('snapshot_id'),
             external_report_id=external_report_id, mode=session['mode'], started_at=None, ended_at=None, decision=None, final=None, error=None))
         self._add(db, sid, 'messages', dict(role='user', content=content, run_id=run['id'],

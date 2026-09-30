@@ -128,7 +128,7 @@ function renderPatientAlerts(){
  $('#patientTitle').textContent='중요 알림 · 환자 / 선박';$('#patientPanel').classList.toggle('has-patient-detail',!!patientDetail);
  $('#patientBack').hidden=!patientDetail;
  const current=snapshot?.session?.id===sid?snapshot.session.title:'사건 확인 중';
- $('#patientConnection').textContent=!same?'환자 알림 확인 중':!d.linked?'현재 사건은 Link-One DB에 연결되지 않았습니다.':`${current} · 기본 3초 확인 · 마지막 성공 ${patientDate(d.last_success_at)}${d.status==='error'?' · 연결 실패, 재시도 대기':d.status==='waiting'?' · 첫 확인 대기':''}`;
+ $('#patientConnection').textContent=!same?'환자 알림 확인 중':!d.linked?'현재 사건은 Link-One DB에 연결되지 않았습니다.':`${current} · 기본 ${Number(d.interval_seconds)||2}초 확인 · 마지막 성공 ${patientDate(d.last_success_at)}${d.status==='error'?' · 연결 실패, 재시도 대기':d.status==='waiting'?' · 첫 확인 대기':''}`;
  if(same&&d.linked)renderPatientList(d);else{$('#patientList').innerHTML='<p class="patient-empty">'+(!same?'현재 사건의 알림을 확인하고 있습니다.':'링크온 동기화에서 사건을 연결하면 환자 판정이 표시됩니다.')+'</p>';patientListSignature='';}
  const selected=allAlertItems(d).find(x=>x.id===patientDetail),replacement=patientSelected&&allAlertItems(d).find(x=>alertIdentity(x)===alertIdentity(patientSelected));
  const versionHTML=patientDetail&&!selected?'<p class="error-text">'+(replacement?'새 판정 도착':'이번 조회에서 확인되지 않음')+' · 보고 있는 원문을 유지합니다.</p>'+(replacement?'<button id="patientLatest" class="quiet">최신 판정 보기</button>':''):'';

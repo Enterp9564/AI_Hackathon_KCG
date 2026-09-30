@@ -1,5 +1,8 @@
 # Link-One 환자 AI 판정: DB 계약 조사
 
+> 2026-09-30 개정: 정상 알림 DB 조회 주기는 2초, 브라우저 캐시 조회는 1초. 오류 백오프 6/12/24/48/60초는 유지한다. 이전 3초 표기는 과거 계약이다. [현재 상태 3초 수신과의 구분](../implementation/35-linkone-current-state.md).
+
+
 > 2026-09-29 이송 코드 표시 확인: AIR_TRANSFER=헬기 이송 필요, HOSPITAL_TRANSFER=의료기관 이송 필요, VESSEL_TRANSFER=함정 이송 필요(Link-One UI 표기). 두 지정 환자의 AIR_TRANSFER가 해온 저장 원문에도 포함됨을 확인했다. 이 코드는 AI 권고이며 실제 현장 요청/출동 명령이 아니다. [주요 알림 표시 구현](../implementation/31-transfer-advice-alerts.md).
 
 > 2026-09-29 수신 확장: person_state.management와 updated_at(전달명 management_updated_at)을 현재 사건/인물로 조인한다. ENDED만 활성 환자 알림에서 제외하고 원문·이력은 유지한다. 관리 재개 시 재알림. [종결 수신·화면 계약](../implementation/30-ended-patient-alerts.md).
