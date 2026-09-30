@@ -11,11 +11,11 @@ def evidence_for(snapshot, query):
     session = snapshot['session']
     from .manuals import manual_evidence
     evidence.extend(manual_evidence(session))
-    if session.get('linkone'):
-        from .manuals import local_catalog_applies
+    if session is not None:
+        from .manuals import resource_scope
         evidence.append({'id':'resource_scope','title':'현재 사건의 자원 자료 범위',
-            'content':json.dumps({'location':session['facts'].get('location'),'named_dispatch_allowed':local_catalog_applies(session),
-                'policy':'등록 목록은 실시간 가용성 아님. 관할 범위에 맞는 목록이 없으면 특정 동해 세력을 추천하지 말고 필요한 자원 종류와 확인 조건만 제안. 링크온 location_force는 관찰된 관리 세력으로 위치·여력·임무를 확인하지 않고 출동 가능으로 취급하지 않음.'},ensure_ascii=False)})
+            'content':json.dumps({'location':session['facts'].get('location'),**resource_scope(session),
+                'policy':'등록 목록은 실시간 가용성 아님. 관할 범위에 맞는 목록이 없으면 등록되지 않은 관할의 세력을 추천하지 말고 필요한 자원 종류와 확인 조건만 제안. 링크온 location_force는 관찰된 관리 세력으로 위치·여력·임무를 확인하지 않고 출동 가능으로 취급하지 않음.'},ensure_ascii=False)})
     if snapshot.get('linkone_evidence'):
         evidence.append(snapshot['linkone_evidence'])
         from pathlib import Path

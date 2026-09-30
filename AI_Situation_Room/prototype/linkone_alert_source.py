@@ -10,12 +10,13 @@ import time
 from .linkone_access import PRIVATE
 from .linkone_data import room_uuid
 from .linkone_source import ROOT, connection
+from .vessel_alerts import read_vessel_poll
 
 MAX_ROOMS=32
 MAX_ROWS=1000
 MAX_BYTES=2_000_000
 FIELDS=('id room_id person_id status urgency summary outcomes pre_ktas reasons missing '
-        'based_on_event_id based_on_at finished_at last_event_id').split()
+        'based_on_event_id based_on_at finished_at last_event_id management management_updated_at').split()
 
 # Only explicitly selected data participates in fingerprints or crosses the tunnel.
 # Current state is joined with both person and room identity.
@@ -26,7 +27,7 @@ BASE='''WITH latest AS (
  FROM public.patient_ai_analysis a WHERE a.room_id=ANY(%s::uuid[])
  ORDER BY a.room_id,a.person_id,a.finished_at DESC,a.id DESC LIMIT 1001
 ), projected AS (
- SELECT l.*,s.last_event_id::text FROM latest l
+ SELECT l.*,s.last_event_id::text,s.management::text,s.updated_at AS management_updated_at FROM latest l
  LEFT JOIN public.person_state s ON s.room_id=l.room_id AND s.person_id=l.person_id
 ) '''
 FINGERPRINT=BASE+'''SELECT room_id::text,count(*) AS count,
@@ -54,6 +55,8 @@ def read_poll(conn,rooms,known):
                 for row in cur.fetchall():
                     row={k:str(v) if k in ('room_id','person_id') else v for k,v in row.items()}
                     result[row['room_id']]['rows'].append(row)
+            vessel=read_vessel_poll(conn,rooms,known)
+            for room in rooms:result[room]['vessel']=vessel[room]
             return result
 
 

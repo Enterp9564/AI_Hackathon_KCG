@@ -7,6 +7,8 @@ from collections import deque
 from contextlib import nullcontext
 from .models import DemoModel, ResponsesModel, ModelError, MODEL, ROLES, effort
 from .tools import evidence_for
+from .store import Conflict
+from . import local_llm
 from .manuals import normalize_orders, recommended_dispatch, local_catalog_applies
 
 
@@ -15,7 +17,14 @@ class Engine:
         self.store=store
         self.demo_model=demo_model or DemoModel()
         self.live_model=live_model or ResponsesModel()
-        self.manual_search=manual_search
+        with store.db() as db:
+            row=db.execute("SELECT value FROM settings WHERE key='llm'").fetchone()
+        self.model_config=json.loads(row[0]) if row else {'provider':'openai','base_url':local_llm.DEFAULT_URL,'model':local_llm.DEFAULT_MODEL}
+        self.local_model=local_llm.LocalModel(self.model_config) if self.model_config['provider']=='local' else None
+        self._manual_search_service=manual_search
+        with store.db() as db:
+            setting=db.execute("SELECT value FROM settings WHERE key='manual_search_enabled'").fetchone()
+        self.manual_search=manual_search if not setting or json.loads(setting[0]) else None
         self.pool=ThreadPoolExecutor(max_workers=4,thread_name_prefix='session')
         self.agents=ThreadPoolExecutor(max_workers=6,thread_name_prefix='agent')
         self.lock=threading.Lock()
@@ -23,6 +32,50 @@ class Engine:
         self.draining=set()
         self.futures={}
         self.slots=threading.BoundedSemaphore(6)
+
+    def live_available(self):
+        return self.model_config['provider']=='local' or bool(getattr(self.live_model,'key',None))
+
+    def model_settings(self):
+        return dict(self.model_config,openai_available=bool(getattr(self.live_model,'key',None)),live_available=self.live_available())
+
+    def manual_settings(self):
+        service=self._manual_search_service
+        return {'enabled':self.manual_search is not None,
+                'mode':self.manual_search.mode if self.manual_search else 'off',
+                'ready_vector':bool(self.manual_search and self.manual_search.ready_vector),
+                'available':bool(service and service.mode=='hybrid' and service.ready_vector)}
+
+    def configure_manual_search(self,data):
+        enabled=data.get('enabled')
+        if type(enabled) is not bool:raise ValueError('매뉴얼 검색 켜기·끄기를 선택하세요.')
+        with self.lock:
+            with self.store.db() as db:
+                runs=[json.loads(r[0]) for r in db.execute("SELECT data FROM objects WHERE kind='runs'")]
+                if any(r.get('status') in ('queued','running') for r in runs):
+                    raise Conflict('진행·대기 중인 분석이 있습니다. 완료 후 매뉴얼 검색을 변경하세요.')
+                if enabled and not self.manual_settings()['available']:
+                    raise Conflict('벡터 검색 환경이 준비되지 않았습니다. 검색 환경과 인덱스를 준비해 서버를 실행하세요.')
+                db.execute("INSERT OR REPLACE INTO settings(key,value) VALUES('manual_search_enabled',?)",(json.dumps(enabled),))
+            self.manual_search=self._manual_search_service if enabled else None
+            return self.manual_settings()
+
+    def configure_model(self,data):
+        provider=data.get('provider')
+        if provider not in ('openai','local'):raise ValueError('지원하지 않는 모델 연결입니다.')
+        with self.lock:
+            with self.store.db() as db:
+                runs=[json.loads(r[0]) for r in db.execute("SELECT data FROM objects WHERE kind='runs'")]
+            if any(r.get('status') in ('queued','running') for r in runs):raise Conflict('진행·대기 중인 AI 작업이 있습니다. 완료 후 모델을 전환하세요.')
+            cfg=local_llm.local_config(data if provider=='local' else self.model_config)
+            if provider=='local':local_llm.probe(cfg)
+            elif not getattr(self.live_model,'key',None):raise Conflict('OpenAI API 키가 서버에 설정되어 있지 않습니다.')
+            cfg['provider']=provider
+            model=local_llm.LocalModel(cfg) if provider=='local' else None
+            with self.store.db() as db:
+                db.execute("INSERT OR REPLACE INTO settings(key,value) VALUES('llm',?)",(json.dumps(cfg),))
+            self.model_config=cfg;self.local_model=model
+            return self.model_settings()
 
     def submit(self, sid, prompt, kind, assumptions, request_id, inbox_report_id=None):
         with self.lock:
@@ -32,6 +85,7 @@ class Engine:
             else:
                 run=self.store.enqueue(sid,prompt,kind,assumptions,request_id)
             if run['id'] not in self.futures and run['status']=='queued':
+                run=self.store.update_run(run['id'],model_config=dict(self.model_config))
                 self.futures[run['id']]=Future()
                 self.queues.setdefault(sid,deque()).append(run['id'])
                 if sid not in self.draining:
@@ -62,7 +116,10 @@ class Engine:
 
     def call(self, run, role, stage, context, slot_held=False):
         started=time.time()
-        provider=self.demo_model if run['mode']=='demo' else self.live_model
+        provider=self.demo_model if run['mode']=='demo' else self.local_model if self.model_config['provider']=='local' else self.live_model
+        local=run['mode']!='demo' and self.model_config['provider']=='local'
+        requested=provider.model if local else MODEL
+        provider_name='demo' if run['mode']=='demo' else 'local' if local else 'openai'
         try:
             if 'manual_search' in context:
                 self.store.record_manual_context(run['session_id'],run['id'],stage,role,
@@ -70,14 +127,14 @@ class Engine:
             with (nullcontext() if slot_held else self.slots):
                 result,metadata=provider.respond(role,stage,context)
             self.validate(result,stage,context)
-            if not local_catalog_applies(context['session']):result['dispatch_orders']=[]
+            result['dispatch_orders']=normalize_orders(result.get('dispatch_orders',[]),context['session'])
             self.store.record_call(run['session_id'],run_id=run['id'],role=role,stage=stage,
-                requested_model=MODEL,reasoning_effort=effort(role),mode=run['mode'],
+                requested_model=requested,reasoning_effort='none' if local else effort(role),mode=run['mode'],provider=provider_name,
                 status='completed',started_at=started,ended_at=time.time(),**metadata)
             return result
         except Exception as exc:
             self.store.record_call(run['session_id'],run_id=run['id'],role=role,stage=stage,
-                requested_model=MODEL,reasoning_effort=effort(role),mode=run['mode'],
+                requested_model=requested,reasoning_effort='none' if local else effort(role),mode=run['mode'],provider=provider_name,
                 status='failed',started_at=started,ended_at=time.time(),diagnostics=getattr(exc,'diagnostics',{}))
             raise
 
@@ -112,16 +169,23 @@ class Engine:
             links=result.get('evidence_links',[])
             if not isinstance(links,list) or len(links)>12:
                 raise ModelError('매뉴얼 근거 연결 형식이 잘못되었습니다.')
+            matched=[];unmatched=[]
             for link in links:
                 if not isinstance(link,dict) or any(not isinstance(link.get(k),str) or not link[k].strip() for k in ('claim','application')):
                     raise ModelError('매뉴얼 근거의 주장·적용 이유가 필요합니다.')
                 ids=link.get('evidence_ids')
                 if not isinstance(ids,list) or not ids or any(not isinstance(x,str) for x in ids) or set(ids)-set(result['evidence_ids']):
                     raise ModelError('매뉴얼 연결은 보고가 실제 인용한 근거만 사용할 수 있습니다.')
-                if link['claim'] not in [result['summary'],result['recommendation'],*result['findings']]:
-                    raise ModelError('매뉴얼 연결의 주장은 보고 문장과 일치해야 합니다.')
                 if not isinstance(link.get('limitations'),list) or any(not isinstance(x,str) for x in link['limitations']):
                     raise ModelError('매뉴얼 적용 제한 형식이 잘못되었습니다.')
+                # Optional attribution must never create or rewrite a report claim.
+                target=matched if link['claim'] in [result['summary'],result['recommendation'],*result['findings']] else unmatched
+                target.append(link)
+            result.pop('unmatched_evidence_links',None)  # Server-owned exclusion record.
+            if links:result['evidence_links']=matched
+            if unmatched:
+                result['unmatched_evidence_links']=unmatched
+                result['uncertainties'].append('일부 문장별 매뉴얼 연결은 보고 문구와 불일치하여 제외했습니다. 해당 연결의 근거 적용은 확인이 필요합니다.')
             self.validate_dispatch_orders(result.get('dispatch_orders',[]))
             self.validate_requests(result.get('information_requests',[]),ROLES.get(context.get('assignment',{}).get('role','commander'),'상황실장'))
 
@@ -160,9 +224,9 @@ class Engine:
                     raise ModelError('출동 지시안에는 지시 내용과 이유가 필요합니다.')
 
     @staticmethod
-    def dispatch_orders(model_orders, manual_orders):
+    def dispatch_orders(model_orders, manual_orders, session=None):
         result=[]
-        for item in normalize_orders(manual_orders)+normalize_orders(model_orders):
+        for item in normalize_orders(manual_orders,session)+normalize_orders(model_orders,session):
             if item['asset_id'] not in {order['asset_id'] for order in result}:
                 result.append(item)
         return result
@@ -229,7 +293,7 @@ class Engine:
                                  external_report_id=run['external_report_id'])
             decision['questions']=self.information_requests(decision.get('questions',[]),'상황실장')
             decision['dispatch_orders']=self.dispatch_orders(decision.get('dispatch_orders',[]),
-                                                              recommended_dispatch(run['prompt'],context['session']))
+                                                              recommended_dispatch(run['prompt'],context['session']),context['session'])
             self.store.update_run(rid,decision=decision)
             if decision['questions']:
                 self.store.event(sid,'상황실장 → 사용자 추가 정보 요구',run_id=rid,
@@ -282,6 +346,8 @@ class Engine:
             self.store.event(sid,'상황실장 · 보고 종합과 최종 조언',run_id=rid)
             final=self.call(run,'commander','final',dict(context,reports=reports,
                                                         dispatch_orders=decision['dispatch_orders']))
+            if any(r['report'].get('unmatched_evidence_links') for r in reports):
+                final['uncertainties'].append('요원 보고의 일부 문장별 매뉴얼 연결이 불일치하여 제외됐습니다. 원 보고의 제외 이력을 확인하세요. 이 연결은 근거 검증 완료로 취급하지 않습니다.')
             requests=self.information_requests(decision.get('questions',[]),'상황실장')
             for item in reports:
                 requests.extend(self.information_requests(item['report'].get('information_requests',[]),ROLES[item['role']]))
@@ -291,13 +357,13 @@ class Engine:
                 key=item['question']
                 if key not in seen:
                     seen.add(key);dedup.append(item)
-            if context['session'].get('linkone'):
+            if context['session'].get('linkone') or (run['mode']=='live' and run.get('model_config',{}).get('provider')=='local'):
                 # The existing synthesis call selects/merges questions; keep agent originals in tasks.
                 selected=self.information_requests(final.get('information_requests',[]),'상황실장')
                 selected.sort(key=lambda q:{'high':0,'medium':1,'low':2}.get(q['priority'],1))
                 dedup=list({q['question']:q for q in selected}.values())[:2]
             final['information_requests']=dedup
-            final['dispatch_orders']=self.dispatch_orders(final.get('dispatch_orders',[]),decision['dispatch_orders'])
+            final['dispatch_orders']=self.dispatch_orders(final.get('dispatch_orders',[]),decision['dispatch_orders'],context['session'])
             if dedup:
                 self.store.event(sid,'추가 정보 요구 · 사용자 확인 필요',run_id=rid,
                                  information_requests=dedup)

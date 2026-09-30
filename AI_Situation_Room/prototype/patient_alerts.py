@@ -7,6 +7,7 @@ from datetime import datetime
 from .store import encode,uid,Conflict
 from .linkone_data import room_uuid
 from .linkone_alert_source import AlertSource,FIELDS,MAX_BYTES,MAX_ROOMS,MAX_ROWS
+from .vessel_alerts import VesselAlerts
 
 INTERVAL=3
 ERROR='환자 알림 연결 확인 필요 · 마지막 수신 결과를 유지합니다.'
@@ -25,11 +26,12 @@ def normalize(rows,room):
             val=clean[key]
             if val is not None and (not isinstance(val,str) or not val.isdecimal() or len(val)>20):raise ValueError('id')
         if not clean['id']:raise ValueError('id missing')
-        for key in ('based_on_at','finished_at'):
+        for key in ('based_on_at','finished_at','management_updated_at'):
+            if key=='management_updated_at' and clean[key] is None:continue
             if not isinstance(clean[key],str) or len(clean[key])>64:raise ValueError('timestamp')
             stamp=datetime.fromisoformat(clean[key].replace('Z','+00:00'))
             if stamp.tzinfo is None:raise ValueError('timezone')
-        for key in ('status','urgency','summary'):
+        for key in ('status','urgency','summary','management'):
             if clean[key] is not None and not isinstance(clean[key],str):raise ValueError('text')
         for key in ('outcomes','missing','reasons'):
             if clean[key] is not None and not isinstance(clean[key],list):raise ValueError('list')
@@ -42,6 +44,7 @@ class PatientAlerts:
     def __init__(self,store,source=None,start=True):
         self.store=store;self.source=source or AlertSource();self.known={};self.failures=0
         self.states={};self.targets={};self.stop=threading.Event();self.poll_lock=threading.Lock();self.thread=None
+        self.vessels=VesselAlerts(store)
         with store.db() as db:
             db.executescript('''CREATE TABLE IF NOT EXISTS patient_alerts (
                 id TEXT PRIMARY KEY,session_id TEXT NOT NULL REFERENCES sessions(id) ON DELETE CASCADE,
@@ -71,16 +74,18 @@ class PatientAlerts:
         targets={s['id']:s['linkone']['room_id'] for s in self.store.list_sessions() if s.get('linkone',{}).get('room_id')}
         rooms=sorted(set(targets.values()))
         for sid,room in targets.items():
-            if self.targets.get(sid)!=room:self.known.pop(room,None)
+            if self.targets.get(sid)!=room:self.known.pop(room,None);self.vessels.known.pop(room,None)
         self.targets=targets
         self.states={sid:v for sid,v in self.states.items() if sid in targets}
         self.known={r:v for r,v in self.known.items() if r in rooms}
+        self.vessels.known={r:v for r,v in self.vessels.known.items() if r in rooms}
+        self.vessels.states={s:v for s,v in self.vessels.states.items() if s in targets}
         if not rooms:
             self.source.close();self.failures=0;return INTERVAL
         began=time.time()
         try:
             if len(rooms)>MAX_ROOMS:raise ValueError('room limit')
-            result=self.source.poll(rooms,self.known)
+            result=self.source.poll(rooms,{**self.known,**{'vessel:'+r:v for r,v in self.vessels.known.items()}})
             if set(result)!=set(rooms) or len(encode(result).encode())>MAX_BYTES:raise ValueError('incomplete')
             cleaned={}
             for r,p in result.items():
@@ -96,6 +101,7 @@ class PatientAlerts:
                     except KeyError:continue
                     if s.get('linkone',{}).get('room_id')!=room:continue
                     if room in cleaned:self._save(db,sid,cleaned[room],now)
+                    self.vessels.accept(db,sid,room,result[room].get('vessel'),now)
                     state=dict(status='ready',last_success_at=now,last_attempt_at=began,next_check_at=max(began+INTERVAL,now if now-began<INTERVAL else now+INTERVAL),
                                poll_ms=round((now-began)*1000,2),interval_seconds=INTERVAL,error=None)
                     self.states[sid]=state
@@ -106,12 +112,15 @@ class PatientAlerts:
             self.known={r:p['fingerprint'] for r,p in result.items()};self.failures=0
             return INTERVAL
         except Exception:
+            # A SQLite rollback must not leave an uncommitted vessel fingerprint in memory.
+            self.vessels.known.clear();self.vessels.states.clear()
             self.failures+=1;delay=min(60,3*2**min(self.failures,5))
             self.source.close()
             with self.store.db() as db:
                 for sid in targets:
                     try:self.store._session(db,sid)
                     except KeyError:continue
+                    self.vessels.fail(db,sid,targets[sid])
                     state=self._state(db,sid)
                     state.update(status='error',error=ERROR,last_attempt_at=began,next_check_at=time.time()+delay,interval_seconds=INTERVAL)
                     self.states[sid]=state
@@ -141,6 +150,8 @@ class PatientAlerts:
             items=[json.loads(r[0]) for r in db.execute('SELECT data FROM patient_alerts WHERE session_id=? AND current=1',(sid,))]
             people={x['original']['person_id'] for x in items}
             missing={r[0] for r in db.execute('SELECT DISTINCT person_id FROM patient_alerts WHERE session_id=? AND current=0',(sid,))}-people
+            ended=[x['original']['person_id'] for x in items if x['original'].get('management')=='ENDED']
+            items=[x for x in items if x['original'].get('management')!='ENDED']
             items.sort(key=lambda x:({'IMMEDIATE':0,'WITHIN_30':1}.get(x['original']['urgency'],2),x['original']['person_id']))
             # Names are from the existing, explicitly fetched roster snapshot.
             names={}
@@ -149,7 +160,9 @@ class PatientAlerts:
                 names={p['id']:p.get('name') for p in snap['data']['person']}
             for item in items:item['person_name']=names.get(item['original']['person_id'])
             return dict(self._state(db,sid),session_id=sid,linked=linked,room_id=s.get('linkone',{}).get('room_id'),
-                        items=items,unread=sum(not x['seen_at'] for x in items),missing_count=len(missing))
+                        items=items,unread=sum(not x['seen_at'] for x in items),missing_count=len(missing),
+                        ended_count=len(ended),ended_person_ids=ended,
+                        vessel=self.vessels.view(db,sid,s.get('linkone',{}).get('room_id')))
 
     def history(self,sid):
         with self.store.db() as db:
@@ -173,6 +186,7 @@ class PatientAlerts:
         with self.store.db() as db:
             item,current=self._item(db,sid,oid);s=self.store._session(db,sid)
             if not current:raise Conflict('이 판정은 최신 목록에서 변경되었습니다. 새 판정을 확인하세요.')
+            if item['original'].get('management')=='ENDED':raise Conflict('링크온에서 관리 종결된 환자입니다. 현재 알림 검토 대상에서 제외되었습니다.')
             if s.get('linkone',{}).get('room_id')!=item['original']['room_id']:raise Conflict('연결 사건이 다릅니다.')
             if item.get('quote'):return item['quote']
             p=item['original']

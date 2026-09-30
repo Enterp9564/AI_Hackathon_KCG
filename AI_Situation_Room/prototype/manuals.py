@@ -10,30 +10,45 @@ from pathlib import Path
 ROOT = Path(__file__).parent / 'manuals'
 
 
-def _read_catalog():
-    return json.loads((ROOT / 'donghae_assets.json').read_text(encoding='utf-8'))
+def _read_catalog(region='donghae'):
+    return json.loads((ROOT / (region+'_assets.json')).read_text(encoding='utf-8'))
 
 
-def asset_catalog():
-    return _read_catalog()['units']
+def catalog_ids(session):
+    location=str((session or {}).get('facts',{}).get('location',''))
+    jeju=any(name in location for name in ('제주','서귀포'))
+    donghae=any(name in location for name in ('묵호','동해시','동해항','울릉','독도'))
+    elsewhere=any(name in location for name in ('부산','인천','목포','여수','통영','울산','포항','속초'))
+    if elsewhere or (jeju and donghae):return []
+    if jeju:return ['jeju_assets']
+    if donghae:return ['donghae_assets']
+    # Preserve the original local training default only for unlinked sessions.
+    return [] if session and 'linkone' in session else ['donghae_assets']
+
+
+def resource_scope(session):
+    ids=catalog_ids(session)
+    return {'named_dispatch_allowed':bool(ids),'catalog_ids':ids}
+
+
+def asset_catalog(session=None):
+    ids=['donghae_assets','jeju_assets'] if session is None else catalog_ids(session)
+    return [unit for id in ids for unit in _read_catalog(id.removesuffix('_assets'))['units']]
 
 
 def local_catalog_applies(session):
-    if not session or not session.get('linkone'):return True
-    location=str(session.get('facts',{}).get('location',''))
-    # Only explicit local incident locations qualify; an operator's station does not.
-    return any(name in location for name in ('묵호','동해시','동해항','울릉','독도')) and not any(name in location for name in ('제주','부산','서귀포'))
+    return bool(catalog_ids(session))
 
 
 def manual_evidence(session=None):
-    catalog = _read_catalog()
-    items=[
-        {'id':'basic_manual','title':'동해 해상사고 기본 대응 매뉴얼',
-         'content':(ROOT / 'basic-response-manual.md').read_text(encoding='utf-8')},
-        {'id':'donghae_assets','title':'동해 가용세력 후보 목록',
-         'content':json.dumps(catalog,ensure_ascii=False), 'summary':{'source':catalog['source']}},
-    ]
-    if not local_catalog_applies(session):items=[e for e in items if e['id']!='donghae_assets']
+    items=[{'id':'basic_manual','title':'동해 해상사고 기본 대응 매뉴얼',
+            'content':(ROOT / 'basic-response-manual.md').read_text(encoding='utf-8')}]
+    ids=['donghae_assets','jeju_assets'] if session is None else catalog_ids(session)
+    for id in ids:
+        catalog=_read_catalog(id.removesuffix('_assets'))
+        title='제주청 경비함정 후보 목록' if id=='jeju_assets' else '동해 가용세력 후보 목록'
+        items.append({'id':id,'title':title,'content':json.dumps(catalog,ensure_ascii=False),
+                      'summary':{'source':catalog['source']}})
     return items
 
 
@@ -50,7 +65,7 @@ def _order(asset_id, order, reason, priority='high'):
 
 def recommended_dispatch(prompt, session):
     """Return conservative order proposals for clear maritime danger keywords."""
-    if not local_catalog_applies(session):return []
+    if catalog_ids(session)!=['donghae_assets']:return []
     incident = session.get('incident') or {}
     text = ' '.join(str(x) for x in [prompt, session.get('facts',{}).get('location',''),
                                      session.get('facts',{}).get('notes',''),
@@ -82,9 +97,9 @@ def recommended_dispatch(prompt, session):
     return orders
 
 
-def normalize_orders(items):
+def normalize_orders(items, session=None):
     """Keep only known catalog units and complete model-generated orders."""
-    known = {item['asset_id'] for item in asset_catalog()}
+    known = {item['asset_id'] for item in asset_catalog(session)}
     result=[]
     for item in items or []:
         if not isinstance(item,dict) or item.get('asset_id') not in known:
@@ -95,7 +110,7 @@ def normalize_orders(items):
                        'reason':str(item.get('reason') or '기본 대응 매뉴얼상 역할 검토가 필요합니다.'),
                        'priority':str(item.get('priority') or 'high'),
                        'status':'제안·실제 출동 확인 필요',
-                       'basis':item.get('basis') or ['basic_manual','donghae_assets']})
+                       'basis':['basic_manual','jeju_assets' if unit['asset_id'].startswith('jeju_') else 'donghae_assets']})
     dedup=[];seen=set()
     for item in result:
         if item['asset_id'] not in seen:

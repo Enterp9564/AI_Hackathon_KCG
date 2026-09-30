@@ -25,6 +25,34 @@ class Source:
 
 
 class AlertsTests(unittest.TestCase):
+    def test_ended_patient_leaves_active_alerts_and_cannot_be_quoted(self):
+        from prototype.store import Conflict
+        self.alerts.tick();before=self.alerts.view(self.sid)['items'][0]
+        self.source.rows[0].update(management='ENDED',last_event_id='22',management_updated_at='2026-09-29T01:02:00Z')
+        self.alerts.tick();view=self.alerts.view(self.sid)
+        self.assertEqual(view['items'],[]);self.assertEqual(view['unread'],0)
+        self.assertEqual(view['ended_count'],1);self.assertEqual(view['missing_count'],0)
+        self.assertEqual(view['ended_person_ids'],[P1])
+        history=self.alerts.history(self.sid);self.assertEqual(len(history),2)
+        for item in history:
+            with self.assertRaises(Conflict):self.alerts.quote(self.sid,item['id'])
+        self.source.error=True;self.alerts.tick()
+        self.assertEqual(self.alerts.view(self.sid)['items'],[])
+        self.source.error=False
+        from prototype.patient_alerts import PatientAlerts
+        restarted=PatientAlerts(self.store,self.source,start=False);self.addCleanup(restarted.close)
+        self.assertEqual(restarted.view(self.sid)['ended_count'],1)
+        self.source.rows[0].update(management='MANAGED',last_event_id='23',management_updated_at='2026-09-29T01:03:00Z')
+        self.alerts.tick();view=self.alerts.view(self.sid)
+        self.assertEqual(view['ended_count'],0);self.assertEqual(view['unread'],1)
+        self.assertNotEqual(view['items'][0]['id'],before['id'])
+        self.assertEqual(self.store.snapshot(self.sid)['runs'],[])
+
+    def test_only_explicit_management_end_hides_alert(self):
+        for status in (None,'MANAGED','UNRECOGNIZED'):
+            self.source.rows[0]['management']=status;self.alerts.tick()
+            self.assertEqual(len(self.alerts.view(self.sid)['items']),1)
+
     def setUp(self):
         from prototype.patient_alerts import PatientAlerts
         self.tmp=tempfile.TemporaryDirectory();self.addCleanup(self.tmp.cleanup)
@@ -143,7 +171,8 @@ class AlertsHTTPTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmp:
             store=Store(Path(tmp)/'db');engine=Engine(store,demo_model=DemoModel(.001))
             server=make_server(store,engine,0,linkone_source=LegacySource())
-            server.patient_alerts.source=Source()
+            from prototype.tests.test_vessel_alerts import CombinedSource
+            server.patient_alerts.source=CombinedSource()
             threading.Thread(target=server.serve_forever,daemon=True).start()
             base=f'http://127.0.0.1:{server.server_port}'
             token=''
@@ -160,6 +189,12 @@ class AlertsHTTPTests(unittest.TestCase):
                     s['linkone']={'room_id':ROOM,'status':'ready'};store._put_session(db,s)
                 server.patient_alerts.tick();path='/api/sessions/'+s['id']
                 code,view=request(path+'/patient-alerts');self.assertEqual(code,200)
+                vessel=view['vessel']['items'][0]
+                self.assertEqual(request(path+'/vessel-alert-seen',{'alert_id':vessel['id']},'bad')[0],403)
+                self.assertEqual(request('/api/sessions/'+other['id']+'/vessel-alert-seen',{'alert_id':vessel['id']})[0],404)
+                self.assertEqual(request(path+'/vessel-alert-seen',{'alert_id':vessel['id']})[0],200)
+                self.assertEqual(request(path+'/patient-alerts')[1]['vessel']['unread'],0)
+                self.assertEqual(server.patient_alerts.source.vessel_rows[0]['ack_count'],0)
                 item=view['items'][0]
                 self.assertEqual(store.snapshot(s['id'])['runs'],[])
                 self.assertEqual(request(path+'/patient-alert-seen',{'alert_id':item['id']},'bad')[0],403)

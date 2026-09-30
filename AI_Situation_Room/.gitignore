@@ -1,0 +1,11 @@
+# Local machine metadata and generated Python files
+.DS_Store
+__pycache__/
+*.py[cod]
+
+# Credentials and runtime data must remain local
+.env
+.env.*
+!.env.example
+.secrets/
+prototype/runtime/

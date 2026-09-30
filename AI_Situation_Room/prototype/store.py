@@ -126,10 +126,10 @@ class Store:
                 for item in result[kind]:
                     if item.get('status') == 'completed' and item.get('based_on_version') != session['version']:
                         item['status'] = 'stale'
+            from .manuals import resource_scope
+            result['resource_scope']=resource_scope(session)
             if session.get('linkone',{}).get('snapshot_id'):
                 from .linkone_data import evidence
-                from .manuals import local_catalog_applies
-                result['resource_scope']={'named_dispatch_allowed':local_catalog_applies(session)}
                 result['linkone_evidence']=evidence(self._object(db,session['linkone']['snapshot_id'],sid,'linkone_snapshots'))
             result['server_time'] = time.time()
             return result

@@ -55,12 +55,13 @@ def make_server(store,engine,port=8860,mcp_enabled=False,linkone_source=None,ale
             path=urlparse(self.path).path
             try:
                 if path=='/api/config':
-                    return self.send_json(200,{'token':token,'live_available':bool(os.environ.get('OPENAI_API_KEY')),
-                        'manual_search':{'mode':engine.manual_search.mode if engine.manual_search else 'off',
-                                         'ready_vector':bool(engine.manual_search and engine.manual_search.ready_vector)},
+                    return self.send_json(200,{'token':token,'live_available':engine.live_available(),'llm':engine.model_settings(),
+                        'manual_search':engine.manual_settings(),
                         'profiles':{r:{'name':n,'model':MODEL,'effort':effort(r)} for r,n in ROLES.items()},
                         'capabilities':{'sessions':True,'parallel':True,'csv':True,'lexical_search':True,
                         'vector_search':bool(engine.manual_search and engine.manual_search.ready_vector),'mcp':mcp_enabled,'inbox':True,'linkone':True,'weather_scheduler':False}})
+                if path=='/api/settings/llm':return self.send_json(200,engine.model_settings())
+                if path=='/api/settings/manual-search':return self.send_json(200,engine.manual_settings())
                 if path=='/api/linkone/rooms':return self.send_json(200,linkone.rooms())
                 if path=='/api/inbox':return self.send_json(200,inbox.list())
                 if path=='/api/manuals':return self.send_json(200,manual_evidence())
@@ -89,8 +90,8 @@ def make_server(store,engine,port=8860,mcp_enabled=False,linkone_source=None,ale
                     if pieces[3]=='linkone-history':return self.send_json(200,linkone.history(pieces[2]))
                     if pieces[3]=='linkone':return self.send_json(200,linkone.details(pieces[2],pieces[4] if len(pieces)==5 else None))
                 if len(pieces)==3 and pieces[:2]==['api','sessions']:
-                    return self.send_json(200,store.snapshot(pieces[2]))
-                static={'/':'index.html','/monitor':'index.html','/app.js':'app.js','/manuals.js':'manuals.js','/patient-alerts.js':'patient-alerts.js','/inbox.js':'inbox.js','/linkone.js':'linkone.js','/linkone-workspace.js':'linkone-workspace.js','/style.css':'style.css'}.get(path)
+                    return self.send_json(200,dict(store.snapshot(pieces[2]),llm=engine.model_settings()))
+                static={'/':'index.html','/monitor':'index.html','/app.js':'app.js','/model-settings.js':'model-settings.js','/manuals.js':'manuals.js','/alert-list.js':'alert-list.js','/patient-alerts.js':'patient-alerts.js','/inbox.js':'inbox.js','/linkone.js':'linkone.js','/linkone-workspace.js':'linkone-workspace.js','/style.css':'style.css'}.get(path)
                 if static:
                     content=(STATIC/static).read_bytes()
                     mime=mimetypes.guess_type(static)[0] or 'application/octet-stream'
@@ -110,10 +111,15 @@ def make_server(store,engine,port=8860,mcp_enabled=False,linkone_source=None,ale
                 data=json.loads(self.rfile.read(length))
                 if not isinstance(data,dict):raise ValueError('JSON 객체가 필요합니다.')
                 path=urlparse(self.path).path
+                if path=='/api/settings/llm/test':
+                    from .local_llm import probe
+                    return self.send_json(200,probe(data))
+                if path=='/api/settings/llm':return self.send_json(200,engine.configure_model(data))
+                if path=='/api/settings/manual-search':return self.send_json(200,engine.configure_manual_search(data))
                 if path in ('/api/sessions','/api/linkone/connect'):
                     mode=data.get('mode','demo')
-                    if mode=='live' and not os.environ.get('OPENAI_API_KEY'):
-                        raise Conflict('실제 AI 모드는 서버 OPENAI_API_KEY 설정 후 사용할 수 있습니다.')
+                    if mode=='live' and not engine.live_available():
+                        raise Conflict('설정에서 로컬 LLM을 연결하거나 서버에 OpenAI API 키를 설정하세요.')
                     if path=='/api/linkone/connect':return self.send_json(202,linkone.connect(data.get('room_id'),mode))
                     return self.send_json(201,store.create_session(data.get('title'),mode))
                 parts=path.strip('/').split('/')
@@ -124,6 +130,7 @@ def make_server(store,engine,port=8860,mcp_enabled=False,linkone_source=None,ale
                 if action=='linkone-sync':return self.send_json(202,linkone.sync(sid))
                 if action=='linkone-analyze':return self.send_json(202,linkone.analyze(sid))
                 if action=='patient-alert-seen':return self.send_json(200,alerts.seen(sid,data.get('alert_id')))
+                if action=='vessel-alert-seen':return self.send_json(200,alerts.vessels.seen(sid,data.get('alert_id')))
                 if action=='patient-alert-review':
                     quoted=alerts.quote(sid,data.get('alert_id'))
                     result=engine.submit(sid,**quoted)

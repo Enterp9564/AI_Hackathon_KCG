@@ -26,7 +26,7 @@ external_report_id가 있는 요청·기록과 '미확인 외부 보고 인용' 
 외부 조치, 실제 도구 호출, 현장 구조 성공, 특정 확률·시간·지침을 수행/확인했다고 꾸미지 마세요.
 plan 단계의 update는 아래 구조의 부분 갱신입니다. 바뀐 필드만 반환하고 없는 정보는 추측하지 마세요.
 update={"facts":{"total":정수,"rescued":구조누계정수,"remaining":선내잔류정수,"location":"상대위치 포함","notes":"핵심 상황"},"vessel":"사고선박명", "report_time":"명시된 신고시각", "distribution":{"현재장소":사고선박대상자인원}, "roster":{"안정적인인물ID":{"name":"이름","role":"직책","location":"현재위치","condition":"보고된 상태","lifejacket":"착용상태"}}, "patients":{"안정적인환자그룹ID":{"kind":"화상/연기흡입","count":정수,"location":"현재위치","status":"예정/인계완료 및 증상"}}, "assets":{"안정적인자산ID":{"name":"자산명","own_crew":자체승선원정수,"status":"출동/도착/지원종료 등"}}, "conditions":{"fire":"화재현황","flooding":"침수","weather":"신고 기상","tow":"예인","pollution":"오염","evacuation":"퇴선현황"}}
-이 스키마는 예시이며 필요한 키만 사용하세요. JSON 숫자는 문자열이 아닙니다. 알 수 없는 값에 null/0을 쓰지 말고 필드를 생략하세요. dispatch_orders의 asset_id는 제공된 동해 가용세력 후보 목록의 ID만 사용하세요.
+이 스키마는 예시이며 필요한 키만 사용하세요. JSON 숫자는 문자열이 아닙니다. 알 수 없는 값에 null/0을 쓰지 말고 필드를 생략하세요. dispatch_orders의 asset_id는 해당 사건에 실제 제공된 동해 또는 제주 가용세력 후보 목록의 ID만 사용하세요.
 roster.condition에는 의식·증상·부상 보고 같은 건강 상태만 기록하세요. 퇴선 지시·잔류 의사는 conditions.evacuation에만 기록하세요. 새로운 보고로 해소된 과거 미확인·예정·중단 문구는 현재 상태에서 갱신하고 과거 경과는 원문에 남깁니다.
 roster/patients/assets는 기존 ID를 재사용하고 변경 없는 항목은 생략하세요. 신원을 모르는 사람에게 이름을 만들지 마세요.
 patients는 화상과 연기흡입의 서로 다른 환자 그룹. 일부가 이동하면 그룹을 분할하여 각 그룹의 인원과 위치를 추적하세요. 다른 필드는 그대로 유지하세요.

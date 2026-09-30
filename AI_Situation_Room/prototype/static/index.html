@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="ko">
 <head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>AI 종합상황실 · 운영 프로토타입</title><link rel="stylesheet" href="/style.css"><script src="/app.js" defer></script>
-<script src="/manuals.js" defer></script><script src="/inbox.js" defer></script><script src="/linkone.js" defer></script><script src="/patient-alerts.js" defer></script><script src="/linkone-workspace.js" defer></script></head>
+<script src="/model-settings.js" defer></script><script src="/manuals.js" defer></script><script src="/inbox.js" defer></script><script src="/linkone.js" defer></script><script src="/alert-list.js" defer></script><script src="/patient-alerts.js" defer></script><script src="/linkone-workspace.js" defer></script></head>
 <body>
 <div class="app-shell">
 <aside class="sidebar">
@@ -13,13 +13,17 @@
   <div class="side-bottom"><span class="tiny-led"></span> LOCAL WORKSPACE<br><p>세션별 기억 · 저장되는 기록<br>최종 현장 판단은 담당자가 수행</p><button id="capabilities" class="quiet">구현 범위 및 실행 설정 ↗</button></div>
 </aside>
 <div class="workspace">
-<header class="topbar"><div><span class="eyebrow">AI OPERATIONS / PROTOTYPE 01</span><h1 id="sessionTitle">상황을 잇고, 판단을 돕다.</h1><div id="sessionMeta" class="muted">하나의 지시에서 함께 움직이는 AI 조직</div></div><div class="header-actions"><span id="modeBadge" class="badge">로컬 프로토타입</span><button id="pinButton" class="quiet" disabled>상황판에 고정</button><a id="backToRoom" class="button quiet" href="/" hidden>상황실로 돌아가기 ↩</a><div class="workspace-switch" role="group" aria-label="상황실 화면 전환"><button id="haeonWorkspaceButton" class="quiet active" aria-pressed="true" aria-controls="haeonWorkspace">해온 상황실</button><button id="linkoneWorkspaceButton" class="quiet" aria-pressed="false" aria-controls="linkoneWorkspace">링크온 상황실</button></div><a class="button quiet" href="/monitor" target="_blank" rel="noopener">대형 화면 ↗</a><button id="fullscreen" class="quiet" hidden>전체화면</button></div></header>
+<header class="topbar"><div><span class="eyebrow">AI OPERATIONS / PROTOTYPE 01</span><h1 id="sessionTitle">상황을 잇고, 판단을 돕다.</h1><div id="sessionMeta" class="muted">하나의 지시에서 함께 움직이는 AI 조직</div></div><div class="header-actions"><span id="modeBadge" class="badge">로컬 프로토타입</span><button id="pinButton" class="quiet" disabled>상황판에 고정</button><a id="backToRoom" class="button quiet" href="/" hidden>상황실로 돌아가기 ↩</a><div class="workspace-switch" role="group" aria-label="상황실 화면 전환"><button id="haeonWorkspaceButton" class="quiet active" aria-pressed="true" aria-controls="haeonWorkspace">해온 상황실</button><button id="linkoneWorkspaceButton" class="quiet" aria-pressed="false" aria-controls="linkoneWorkspace">링크온 상황실</button></div><a class="button quiet" href="/monitor" target="_blank" rel="noopener">대형 화면 ↗</a><button id="fullscreen" class="quiet" hidden>전체화면</button><button id="settingsButton" class="quiet" aria-haspopup="dialog" aria-controls="modal">설정</button></div></header>
 <div class="inbox-toolbar" aria-label="외부 프로젝트 수신함">
   <span class="muted">외부 보고</span>
-  <button id="notifyLink" class="inbox-notify patient-notify" aria-haspopup="dialog">Link-One 환자 알림 <span class="inbox-count">확인 전</span></button>
+  <button id="notifyLink" class="inbox-notify patient-notify" aria-haspopup="dialog" aria-controls="patientPanel">Link-One 중요 알림 <span class="inbox-count">확인 전</span><span id="patientNew" hidden>새 알림</span></button>
   <button id="notifyResaid" class="inbox-notify" aria-haspopup="dialog">RESAID AI <span class="inbox-count">0</span></button>
   <span id="inboxConnection" class="muted" role="status">수신함 연결 중</span>
 </div>
+<section id="patientSummary" class="patient-overview" aria-label="현재 해온 사건 중요 알림" hidden>
+  <div><strong>중요 알림</strong> <span id="patientSummaryCase"></span><p id="patientSummaryCounts"></p><p id="patientTransferSummary" class="transfer-overview" hidden></p><small id="patientSummaryStatus"></small></div>
+  <button id="patientOverviewOpen" class="quiet" aria-controls="patientPanel">전체 점검 열기</button>
+</section>
 <div class="systembar"><span id="connection" role="status"><i class="tiny-led"></i> 서버 연결 중</span><span id="clock"></span></div>
 <div id="executionStatus" class="execution-status" role="status" aria-live="polite" aria-atomic="true" hidden></div>
 <section id="linkoneWorkspace" class="linkone-workspace" aria-label="링크온 상황실" hidden>
@@ -45,7 +49,7 @@
 </div>
 <footer><span>AI SITUATION ROOM</span><span>사실과 가정은 분리하고, 판단의 근거는 연결합니다.</span><span id="footerSession">LOCAL / PERSISTENT</span></footer>
 </div></div>
-<dialog id="modal"><div class="modal-head"><h2 id="modalTitle"></h2><button id="closeModal" aria-label="닫기">×</button></div><div id="modalBody"></div></dialog>
+<dialog id="modal" aria-labelledby="modalTitle"><div class="modal-head"><h2 id="modalTitle"></h2><button id="closeModal" aria-label="닫기">×</button></div><div id="modalBody"></div></dialog>
 <dialog id="inboxPanel" aria-labelledby="inboxTitle">
   <div class="modal-head"><h2 id="inboxTitle">외부 보고 수신함</h2><button id="closeInbox" aria-label="수신함 닫기">×</button></div>
   <p class="modal-note">수신만으로 AI나 상황판이 바뀌지 않습니다. 인용은 검토 요청이며, 사실 확정이 아닙니다.</p>
@@ -62,10 +66,13 @@
 <dialog id="linkoneDialog" aria-labelledby="linkoneTitle"><div class="modal-head"><h2 id="linkoneTitle">링크온 동기화</h2><button id="closeLinkone" aria-label="링크온 창 닫기">×</button></div><div id="linkoneBody"></div></dialog>
 <div id="toast" role="status" hidden></div>
 <dialog id="patientPanel" aria-labelledby="patientTitle">
-  <div class="modal-head"><div><span class="eyebrow">LINK-ONE / PATIENT ALERTS</span><h2 id="patientTitle">환자 알림</h2></div><button id="patientClose" aria-label="환자 알림 닫기">×</button></div>
+  <div class="modal-head"><div><span class="eyebrow">LINK-ONE / PATIENT ALERTS</span><h2 id="patientTitle" tabindex="-1">중요 알림 · 환자</h2></div><div><button id="patientExpand" class="quiet" aria-pressed="false">넓게 보기</button><button id="patientClose" aria-label="중요 알림 닫기">×</button></div></div>
   <p id="patientConnection" class="modal-note" role="status"></p>
-  <div class="patient-nav"><button id="patientBack" class="quiet" hidden>← 목록으로</button><button id="patientMcp" class="quiet">외부 보고(MCP)</button></div>
-  <div id="patientError" class="modal-error" role="alert"></div><div id="patientBody"></div>
-  <p class="modal-note">링크온의 AI 참고 판정입니다. 읽음은 위험 해소를 뜻하지 않습니다. 해온 AI 검토는 인용 요청 시 실행됩니다.</p>
+  <p id="patientPanelCounts" class="modal-note"></p>
+  <div class="patient-nav"><button id="patientBack" class="quiet" hidden>← 전체 목록</button><label>보기 <select id="patientFilter"><option value="all">전체</option><option value="unread">미열람</option><option value="IMMEDIATE">즉시 확인</option><option value="changed">판정 후 기록 변경</option><option value="transfer">이송 권고 전체</option><option value="AIR_TRANSFER">헬기 이송 권고</option><option value="HOSPITAL_TRANSFER">의료기관 이송 권고</option><option value="VESSEL_TRANSFER">함정 이송 권고</option><option value="LEVEL">선박 · 각도 도달</option><option value="RAPID">선박 · 급변</option><option value="STALE">선박 · 측정 지연</option><option value="source_unacked">선박 · 출처 확인 기록 없음</option></select></label><input id="patientSearch" type="search" placeholder="이름·대상·내용 검색" aria-label="중요 알림 검색"><button id="patientReorder" class="quiet">목록 갱신</button><button id="patientMcp" class="quiet">외부 보고(MCP)</button></div>
+  <div id="patientError" class="modal-error" role="alert"></div>
+  <div class="alert-type-bar"><label>유형 <select id="alertType"><option value="all">전체 알림</option><option value="patient">환자 판정</option><option value="vessel">선체경사 경고</option></select></label><span id="alertResultCount" class="muted"></span></div>
+  <div class="patient-split"><div class="alert-list-pane"><div class="alert-columns" role="group" aria-label="알림 목록 정렬"><button id="alertSort-name">이름 / 대상 ↕</button><button id="alertSort-situation">상황 ↕</button><button id="alertSort-content">내용 ↕</button><button id="alertSort-time">시간 ▼</button></div><div id="patientList" class="patient-list" aria-label="중요 알림 목록"></div></div><div class="patient-detail-pane"><div id="patientVersion" role="status"></div><div id="patientBody" tabindex="-1"></div></div></div>
+  <p class="modal-note">환자는 링크온 AI 참고 판정, 선체경사는 링크온 원본 경고입니다. 열람·출처 확인은 위험 해소를 뜻하지 않습니다.</p>
 </dialog>
 </body></html>

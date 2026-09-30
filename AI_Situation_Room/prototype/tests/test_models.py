@@ -6,6 +6,23 @@ from prototype.models import ResponsesModel, ModelError
 
 
 class ModelContractTests(unittest.TestCase):
+    def test_tilt_citation_and_underresponse_check_reach_final_and_critic(self):
+        sent=[]
+        def transport(request,timeout):
+            sent.append(json.loads(request.data))
+            return io.BytesIO(json.dumps({'status':'completed','output':[{'type':'message','content':[
+                {'type':'output_text','text':'{"summary":"점검"}'}]}]}).encode())
+        context={'session':{'linkone':{'revision':1}},'evidence':[{'id':'ship_tilt_guidance','content':'기준'}]}
+        with patch('prototype.models.urllib.request.urlopen',transport):
+            for role,stage in [('sar','report'),('commander','final'),('critic','report')]:
+                ResponsesModel(key='test').respond(role,stage,context)
+        for request in sent:
+            self.assertIn('실측 → 기준 → 대응상 의미',request['instructions'])
+            self.assertIn('위험 축소·필수 대응 누락',request['instructions'])
+            self.assertIn('침몰 확정과 인명보호 대응의 긴급성을 구별',request['instructions'])
+            self.assertIn('링크온 동기화',request['instructions'])
+            self.assertEqual(json.loads(request['input'])['context'],context)
+
     def test_actual_request_uses_role_effort_and_session_input(self):
         sent=[]
         def transport(request,timeout):

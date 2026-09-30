@@ -90,5 +90,43 @@ class ManualEngineTests(unittest.TestCase):
                       evidence_links=[dict(claim='r',evidence_ids=['missing'],application='a',limitations=[])])
         with self.assertRaises(ModelError): self.engine.validate(result,'report',{'evidence':[]})
 
+    def test_unmatched_claim_is_quarantined_without_rewriting_report(self):
+        valid = dict(claim='현장 확인 필요', evidence_ids=['sar:known'], application='위치 확인', limitations=[])
+        unmatched = dict(valid, claim='현장 확인 불필요')
+        result = dict(summary='현장 확인 필요', findings=[], recommendation='추가 확인',
+                      uncertainties=[], evidence_ids=['sar:known'], evidence_links=[valid, unmatched])
+        self.engine.validate(result, 'report', {'evidence':[{'id':'sar:known'}]})
+        self.assertEqual(result['summary'], '현장 확인 필요')
+        self.assertEqual(result['evidence_links'], [valid])
+        self.assertEqual(result['unmatched_evidence_links'], [unmatched])
+        self.assertTrue(any('문장별 매뉴얼 연결' in s for s in result['uncertainties']))
+
+    def test_malformed_unmatched_link_still_rejected(self):
+        result = dict(summary='s', findings=[], recommendation='r', uncertainties=[],
+                      evidence_ids=['sar:known'], evidence_links=[dict(claim='unmatched',
+                      evidence_ids=['sar:known'], application='a', limitations='invalid')])
+        with self.assertRaises(ModelError):
+            self.engine.validate(result, 'report', {'evidence':[{'id':'sar:known'}]})
+
+    def test_claim_mismatch_reaches_review_and_final_warning_without_extra_calls(self):
+        original = self.model.respond
+        def mismatch(role, stage, context):
+            result, metadata = original(role, stage, context)
+            if role == 'intel' and stage == 'report':
+                result['evidence_links'] = [dict(claim='보고에 존재하지 않는 재서술',
+                    evidence_ids=[result['evidence_ids'][0]], application='검토 근거', limitations=[])]
+            return result, metadata
+        self.model.respond = mismatch
+        run = self.submit()
+        self.assertEqual(run['status'], 'completed')
+        for role, stage, context in self.model.inputs:
+            if role == 'critic' or stage == 'final':
+                intel = next(t['report'] for t in context['reports'] if t['role']=='intel')
+                self.assertEqual(intel['evidence_links'], [])
+                self.assertEqual(intel['unmatched_evidence_links'][0]['claim'], '보고에 존재하지 않는 재서술')
+        self.assertTrue(any('문장별 매뉴얼 연결' in s for s in run['final']['uncertainties']))
+        calls=[(r,s) for r,s,_ in self.model.inputs]
+        self.assertEqual(len(calls),len(set(calls)))
+
 
 if __name__ == '__main__': unittest.main()

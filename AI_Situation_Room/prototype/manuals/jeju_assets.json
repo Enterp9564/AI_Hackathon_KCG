@@ -1,0 +1,47 @@
+{
+  "region": "제주지방해양경찰청",
+  "source": "Link-One 등록 세력 명칭·상위 소속, 2026-09-30 읽기 전용 확인",
+  "limitations": [
+    "링크온에 등록된 경비함정 3척이며 제주청 전체 실제 편제를 의미하지 않음",
+    "계정 ACTIVE는 계정 활성 상태로 실시간 출동 가능을 의미하지 않음",
+    "현 위치·정비·임무·승조원·장비·도착 시간은 별도 확인 필요"
+  ],
+  "units": [
+    {
+      "asset_id": "jeju_1505",
+      "name": "1505함",
+      "affiliation": "제주해양경찰서",
+      "class": "경비함정",
+      "range": "제주청 관할 · 현 위치·활동 범위 확인 필요",
+      "roles": [
+        "경비·구조 지원 검토"
+      ],
+      "availability": "미확인",
+      "specifications": "톤수·속력·장비·승조원 미확인"
+    },
+    {
+      "asset_id": "jeju_3012",
+      "name": "3012함",
+      "affiliation": "제주해양경찰서",
+      "class": "경비함정",
+      "range": "제주청 관할 · 현 위치·활동 범위 확인 필요",
+      "roles": [
+        "경비·구조 지원 검토"
+      ],
+      "availability": "미확인",
+      "specifications": "톤수·속력·장비·승조원 미확인"
+    },
+    {
+      "asset_id": "jeju_p36",
+      "name": "P-36",
+      "affiliation": "제주해양경찰서",
+      "class": "경비함정",
+      "range": "제주청 관할 · 현 위치·활동 범위 확인 필요",
+      "roles": [
+        "경비·구조 지원 검토"
+      ],
+      "availability": "미확인",
+      "specifications": "톤수·속력·장비·승조원 미확인"
+    }
+  ]
+}

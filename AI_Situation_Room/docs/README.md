@@ -1,5 +1,7 @@
 # HAEON(해온) 문서 시작점
 
+- **주요 알림 후속:** [정렬·필터와 선체경사 경고](implementation/29-alert-sorting-vessel.md) · [선박 DB 계약](contracts/linkone-vessel-alerts.md).
+
 > 2026-09-29: [국제 SAR 검색 M1 상세](implementation/24-local-manual-rag.md) 구현. 기본 off인 시험 기능이며 [검증 기록](superpowers/plans/2026-09-29-sar-rag-progress.md)에 완료 범위·남은 제한을 구분했다. 아래 2026-09-28 계획/자료 준비 기록 이후의 변경이다.
 
 해양경찰 멀티에이전트 의사결정 지원 시스템의 문서 안내다. 임시 이름은 HAEON(해온)이며 AI 오케스트라는 협업 방식의 설명이다.
@@ -11,7 +13,7 @@
 - **폴더를 정리/확장:** [폴더 구조 검토](FOLDER_GUIDE.md).
 - **이름·소개:** [명칭 기준](PROJECT_NAMING.md).
 - **향후 연동:** [프로젝트 API 개선 방향](improvements/01-project-api-integration.md).
-- **주요 알림 개선안:** [고정 요약·여러 환자 비교·클릭 전 버튼 강조](improvements/04-main-alerts.md). 화면·데이터 처리·구현 순서를 나눈 제안이며 아직 앱에 적용하지 않았다.
+- **주요 알림:** [개선안](improvements/04-main-alerts.md) · [P0 구현·검증](implementation/28-main-alerts-p0.md). 클릭 전 버튼 강조·고정 요약·여러 환자 비교를 구현했으며 선택 일괄 처리는 후속이다.
 - **링크온 상황 요약 조회:** [통신 인자·설계](superpowers/specs/2026-09-28-linkone-summary-api.md) · [구현계획](superpowers/plans/2026-09-28-linkone-summary-api.md) · [JSON 예제](contracts/linkone-summary-v1/README.md). 링크온이 필요할 때 조회하는 방식이며 신규 API는 미구현이다.
 - **교육 준비:** [1·2일차 예습자료](prestudy/README.md).
 

@@ -1,5 +1,16 @@
 # HAEON(해온) — 실행형 프로토타입
 
+> **2026-09-30 실행 기본값 변경:** 루트 `상황실 실행.command` 더블클릭은 준비된 `runtime/manual-rag/venv/bin/python`과 기본 앱 전용 `runtime/manual-rag/indexes/curated-main-v1`을 사용해 8860을 **hybrid 벡터 검색 활성**으로 시작한다. 준비되지 않은 환경은 안내 후 중단하며, 이미 실행 중인 서버가 검색 비활성이면 종료 후 재실행하도록 안내한다. 아래 `python3 -m prototype.server` 직접 실행의 CLI 기본값은 여전히 `off`다. 8861 시험 서버의 `curated-v1`과 Qdrant 저장 폴더를 공유하지 않는다.
+
+새 PC에서는 국제 SAR 검색 준비 절차에 따라 전용 가상환경·모델을 준비한 뒤 기본 앱용 인덱스를 만든다:
+
+```sh
+prototype/runtime/manual-rag/venv/bin/python -m prototype.manual_rag.prepare build-index --model prototype/runtime/manual-rag/models/e5-small --output prototype/runtime/manual-rag/indexes/curated-main-v1
+```
+
+이미 준비된 인덱스는 덮어쓰지 않는다. 자료·모델을 바꾸면 새 인덱스 경로를 만들고 실행 파일의 경로도 맞춘다.
+
+
 > 임시 프로젝트명: **HAEON(해온)** · 해양경찰 멀티에이전트 의사결정 지원 시스템. [명칭·소개 기준](../docs/PROJECT_NAMING.md) (2026-09-27). ‘AI 오케스트라’는 협업 방식의 설명이며 이름에 포함하지 않는다.
 
 > 구현을 이어갈 AI: [기능별 상세 구현 문서](../docs/implementation/README.md) · [향후 프로젝트 API 연동](../docs/improvements/01-project-api-integration.md). 상세 명세는 2026-09-27 소스를 대조했으며 기존 시험 결과와 구별한다.
@@ -115,3 +126,12 @@ python3 -m prototype.server --mcp-port 8862
 ### 링크온 수동 동기화 (2026-09-28)
 
 사이드바 **링크온 동기화** → 사건 선택 → 전용 세션 수신 → 자동 분석. 실제 DB 읽기 연동이며 기존 MCP 수신함과 별도입니다. 표별 대기 없이 수신하며, 연속 수신 요청 사이에는 5초 간격을 둡니다. 동일 자료는 분석을 반복하지 않습니다. **승선원 · 변경 내역**에서 검색·전후 비교·과거 수신본을 확인합니다. LIVE/DEMO를 구별하고 자동 원격 폴링은 하지 않습니다. 접속 준비·데이터 범위·한도·API는 [구현 문서](../docs/implementation/linkone-manual-sync.md)를 참조하세요.
+
+## 로컬 LLM 선택 — 2026-09-30
+
+LM Studio 서버를 실행한 뒤 해온 **설정 → 로컬 LM Studio → 연결 확인 → 설정 적용**을 사용한다. 기본 주소는 `http://127.0.0.1:1234/v1`, 모델은 `qwen/qwen3.6-35b-a3b`. LIVE 세션의 다음 지시부터 적용하며 DEMO는 유지한다. 설정은 서버 DB별로 저장한다. [설정·호환성·검증](../docs/implementation/32-local-llm-settings.md).
+
+
+## 2026-09-30 · 설정창에서 검색 전환
+
+오른쪽 위 **설정 → 매뉴얼 벡터 검색 → 국제 SAR 매뉴얼 검색 사용**으로 켜기·끄기를 선택한다. 즉시 저장되며 서버의 모든 세션에서 다음 분석부터 적용하고 재시작 후에도 유지한다. 진행·대기 중 분석이 있으면 완료 후 변경한다. 꺼도 기본 매뉴얼·사건 기록·과거 근거는 유지한다. 벡터 환경이 준비되지 않은 서버는 켜기가 제한되므로 준비된 더블클릭 실행 파일을 사용한다. GET/POST `/api/settings/manual-search`는 enabled(boolean), 조회에는 available·mode·ready_vector를 제공한다. POST는 기존 세션 토큰 인증을 따른다. 전체205개 회귀시험과 브라우저 켜기·끄기·저장 확인을 완료했으며 최종은 켜짐이다.

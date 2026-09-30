@@ -83,7 +83,7 @@ LIVE는 기존 실행 파일과 동일하게 API 키·certifi 인증서 설정�
 - `GET /api/manual-sources/{source_id}/pdf?sha256={original_sha256}`: 등록된 공개 PDF의 예상 판본과 실제 응답 바이트 해시를 검사한다. 해시 누락·판본 불일치 409, 미등록 출처 404. 임의 경로는 받지 않는다.
 - `/api/config`: `manual_search.mode`, `ready_vector`와 실제 벡터 준비 상태를 반환한다.
 
-새 보고의 선택 필드 `evidence_links`는 보고 문장·인용 ID·적용 이유·제한을 연결한다. ID·필드·보고 문장 일치는 검사하지만 의미상 뒷받침되는지는 별도 평가가 필요하다. 기존 `evidence_ids`를 유지한다.
+새 보고의 선택 필드 `evidence_links`는 보고 문장·인용 ID·적용 이유·제한을 연결한다. ID·필드 형식 오류는 차단한다. 2026-09-30부터 문구만 불일치하는 연결은 유효 연결에서 제외하고 `unmatched_evidence_links`에 보존하며 `uncertainties`에 경고한다. 보고 문장을 수정하거나 유사 문구를 자동 매칭하지 않는다. 검증요원·최종 종합에 제외 이력을 전달하고 최종 보고에도 요원 연결 제외 경고를 보존한다. 정확히 연결된 문장도 근거가 의미상 뒷받침하는지는 별도 평가가 필요하다. 기존 `evidence_ids`는 보고 단위의 참조 목록으로 유지하며 문장별 검증 완료를 뜻하지 않는다.
 
 ## 7. 검증과 남은 한계
 
@@ -100,3 +100,13 @@ prototype/runtime/manual-rag/venv/bin/python -m prototype.manual_rag.evaluate --
 벡터 라이브러리를 설치하지 않은 기본 Python 시험에서는 선택 의존성 시험을 skip한다. 브라우저는 Playwright가 있는 Node 환경에서 `CHROME_CHANNEL=chrome node prototype/tests/browser_manuals.cjs` 및 `browser_inbox.cjs`를 실행한다. 임시 DB를 쓰며 실제 운영 데이터와 분리한다.
 
 현재 corpus는 14개 요약이다. 원문 561쪽 전체 검색·표 계산·전문 의료 처치·내부 매뉴얼·로컬 생성 모델은 미구현이다. 기존 키워드 출동 후보의 부정/종료 표현 해석 한계도 이번 검색 연결로 해결된 것이 아니다. 벡터 검색의 정확도 우위·현장 운용 적합성은 주장하지 않는다.
+
+
+## 2026-09-30 · 기본 앱 실행 경로 활성화
+
+사용자 요청으로 더블클릭 실행은 기본 앱 전용 curated-main-v1 인덱스와 전용 가상환경을 사용해 hybrid를 켠다. 직접 서버 CLI의 기본값 off는 그대로다. Qdrant 로컬 인덱스는 프로세스 간 공유하지 않으며 8861 시험 앱의 curated-v1은 보존한다. 현재 8860 HTTP 설정에서 hybrid·ready_vector=true를 확인했다. 새 인덱스 오프라인 holdout 12건 통과. 상세 준비·검증은 prototype/README.md와 PROGRESS.md의 2026-09-30 기록을 따른다.
+
+
+## 2026-09-30 · 설정창에서 검색 전환
+
+오른쪽 위 **설정 → 매뉴얼 벡터 검색 → 국제 SAR 매뉴얼 검색 사용**으로 켜기·끄기를 선택한다. 즉시 저장되며 서버의 모든 세션에서 다음 분석부터 적용하고 재시작 후에도 유지한다. 진행·대기 중 분석이 있으면 완료 후 변경한다. 꺼도 기본 매뉴얼·사건 기록·과거 근거는 유지한다. 벡터 환경이 준비되지 않은 서버는 켜기가 제한되므로 준비된 더블클릭 실행 파일을 사용한다. GET/POST `/api/settings/manual-search`는 enabled(boolean), 조회에는 available·mode·ready_vector를 제공한다. POST는 기존 세션 토큰 인증을 따른다. 전체205개 회귀시험과 브라우저 켜기·끄기·저장 확인을 완료했으며 최종은 켜짐이다.
